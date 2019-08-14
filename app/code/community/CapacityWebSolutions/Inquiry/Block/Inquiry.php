@@ -79,6 +79,7 @@ class CapacityWebSolutions_Inquiry_Block_Inquiry extends Mage_Core_Block_Templat
 			$label = trim($this->getLinkLabel());
 			$storeID = Mage::app()->getStore()->getId();
 			$toplinkBlock = $this->getParentBlock();
+			if($toplinkBlock)
 			$toplinkBlock->addLink($this->__($label),$url_key,$label,true,array(),90);
 		}
 	}
