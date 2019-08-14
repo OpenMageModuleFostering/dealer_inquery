@@ -1,7 +1,7 @@
 <?php
 /***************************************************************************
 	@extension	: Dealer Inquiry Extension.
-	@copyright	: Copyright (c) 2014 Capacity Web Solutions.
+	@copyright	: Copyright (c) 2015 Capacity Web Solutions.
 	( http://www.capacitywebsolutions.com )
 	@author		: Capacity Web Solutions Pvt. Ltd.
 	@support	: magento@capacitywebsolutions.com	
@@ -39,13 +39,12 @@
  ?>
 
 <?php if($captcha_hide): ?>
-<script src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_JS).'inquiry/jquery.min.js'?>">
-</script>
+
 <script>
-var jq = $.noConflict();
-jq(document).ready(function(){
-jq("#img_refresh").click(function(){
-   jq("#captcha").load(location.href + " #captcha");
+//var jq = $.noConflict();
+jQuery(document).ready(function(){
+jQuery("#img_refresh").click(function(){
+   jQuery("#captcha").load(location.href + " #captcha");
 	});
 });
 </script>
@@ -64,7 +63,7 @@ jq("#img_refresh").click(function(){
 		}
 		else
 		{
-			alert ("captcha code does not match!");
+			alert ("Captcha code does not match!");
 			return false;
 		}
 	}
@@ -78,50 +77,21 @@ jq("#img_refresh").click(function(){
 		<div class="indicates"><span class="required"><em>*</em></span><?php echo $this->__($indicates); ?></div>
 	<?php } ?>
 	
-	<?php 
-		$msg = Mage::getSingleton('core/session')->getSomeSessionVar();
-	    if($msg == 'wrong') { ?>
-			<div id="messages">
-				<ul class="messages">
-					<li class="error-msg">
-						<ul><li>
-							<span style="font-size:12px;">captcha code does not match!</span>
-						</li></ul>
-					</li>
-				</ul>
-			</div>
-	<?php Mage::getSingleton('core/session')->unsSomeSessionVar();
-	      $msg = '';  } ?>
-	<?php 
-		$msgs = Mage::getSingleton('core/session')->getSomeSessionVar();
-	    if($msgs == 'email_wrong') { ?>
-			<div id="messages">
-				<ul class="messages">
-					<li class="error-msg">
-						<ul><li>
-							<span style="font-size:12px;">Email id already exits !</span>
-						</li></ul>
-					</li>
-				</ul>
-			</div>
-	<?php Mage::getSingleton('core/session')->unsSomeSessionVar();
-	      $msg = '';  } ?>	  
-
-    <form name="dealerInquiry" id="dealerInquiry" action="<?php echo $this->getUrl("inquiry/index/thanks"); ?>" method="post">
+	<form name="dealerInquiry" id="dealerInquiry" action="<?php echo $this->getUrl("inquiry/index/thanks"); ?>" method="post">
     	<div class="fieldset">
         	<ul class="form-list">
             	<li class="fields">
                 	<div class="field">
 						<label><?php if($first_name): ?><?php echo $first_name; ?><?php else: ?><?php echo "First Name:"; ?><?php endif; ?><span class="required"><em>*</em></span></label>
                         <div class="input-box">
-                        	<input type="text" name="fname" id="fname" size="45" class="input-text required-entry input-box" />
+                        	<input type="text" name="firstname" id="firstname" size="45" class="input-text required-entry input-box" />
                         </div>
                     </div>
                     <?php if($last_name_hide): ?> 
                     <div class="field">
                     	<label><?php if($last_name): ?><?php echo $last_name; ?><?php else: ?><?php echo "Last Name:"; ?><?php endif; ?><span class="required"><em>*</em></span></label>
                         <div class="input-box">
-                        	<input type="text" name="lname" size="45" class="input-text required-entry" />
+                        	<input type="text" name="lastname" size="45" class="input-text required-entry" />
                         </div>
                     </div>
                     <?php endif;  ?>
@@ -138,7 +108,7 @@ jq("#img_refresh").click(function(){
                     <div class="field">
                     	<label><?php if($vat_number): ?><?php echo $vat_number; ?><?php else: ?><?php echo "Tax/VAT Number:"; ?><?php endif;  ?></label>
                         <div class="input-box">
-                        	<input type="text" name="account_taxvat" size="45" class="input-text" /> 
+                        	<input type="text" name="taxvat" size="45" class="input-text" /> 
                         </div>
                     </div>
                     <?php endif; ?>
@@ -167,7 +137,7 @@ jq("#img_refresh").click(function(){
                 	 <div class="field">
                      	<label><?php if($state): ?><?php echo $state; ?><?php else: ?><?php echo "State / Province:"; ?><?php endif;  ?><span class="required"><em>*</em></span></label>
                         <div class="input-box">
-	                        <input type="text" name="state_id" size="45" class="input-text required-entry" />
+	                        <input type="text" name="state" size="45" class="input-text required-entry" />
                         </div>
                      </div>
                      <?php endif; ?>
@@ -232,7 +202,7 @@ jq("#img_refresh").click(function(){
                     <div class="field">
                         <label><?php if($description): ?><?php echo $description; ?><?php else: ?><?php echo "Business Description:"; ?><?php endif; ?></label>
                         <div class="input-box">
-                            <textarea name="bdesc" cols="75" rows="2" class="input-text"></textarea>
+                            <textarea name="desc" cols="75" rows="2" class="input-text"></textarea>
                         </div>
                     </div>
                 </li>

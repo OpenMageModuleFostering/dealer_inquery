@@ -1,23 +1,18 @@
 <?xml version="1.0"?>
-
-<!--
-/***************************************************************************
-	@extension	: Dealer Inquiry Extension.
-	@copyright	: Copyright (c) 2014 Capacity Web Solutions.
-	( http://www.capacitywebsolutions.com )
-	@author		: Capacity Web Solutions Pvt. Ltd.
-	@support	: magento@capacitywebsolutions.com	
-***************************************************************************/
--->
-
 <layout version="0.1.0">
 	<default>
-		 <reference name="top.links">
-            <action method="addLink" translate="label title" module="inquiry" ifconfig="inquiry/general/enabled"><label>Dealer Inquiry</label><url>inquiry/</url><title>Dealer Inquiry</title><prepare>true</prepare><urlParams/><position>90</position></action>
-        </reference>
+		<!-- Add top links for dealer inquiry -->
+		<reference name="top.links">
+		   <block type="inquiry/inquiry" name="inquirymanagetoplink" >
+				<action method="addTopLinkStores" ifconfig="inquiry/general/enabled"/> 
+		   </block> 
+		</reference>
 	</default>
 	<inquiry_index_index>
 	    <reference name="head">
+			<block type="inquiry/managejquery" name="managejquery" >
+				<action method="addJquery" ifconfig="inquiry/general/enabled"/> 
+			</block>
 			<action method="addCss"><stylesheet>css/inquiry.css</stylesheet></action>
 		</reference>     
 	   	<reference name="root">
@@ -29,7 +24,7 @@
 			</block>
 		</reference>
 	</inquiry_index_index>
-	<inquiry_index_thanks>
+	<inquiry_index_success>
 	    <reference name="head">
 			<action method="addCss"><stylesheet>css/inquiry.css</stylesheet></action>
 		</reference> 
@@ -41,5 +36,5 @@
 				<action method="setTemplate" ifconfig="inquiry/general/enabled"><template>inquiry/thanks.phtml</template></action>
 			</block>
 		</reference>
-	</inquiry_index_thanks>
+	</inquiry_index_success>
 </layout>

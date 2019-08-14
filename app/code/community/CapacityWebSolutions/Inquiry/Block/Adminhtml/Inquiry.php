@@ -6,13 +6,15 @@
 	@author		: Capacity Web Solutions Pvt. Ltd.
 	@support	: magento@capacitywebsolutions.com	
 ***************************************************************************/
- 
-class CapacityWebSolutions_Inquiry_Model_Mysql4_Inquiry_Collection extends Mage_Core_Model_Mysql4_Collection_Abstract
+
+class CapacityWebSolutions_Inquiry_Block_Adminhtml_Inquiry extends Mage_Adminhtml_Block_Widget_Grid_Container
 {
-    public function _construct()
+	public function __construct()
 	{
-  		parent::_construct();
-        $this->_init('inquiry/inquiry');
+		$this->_controller = 'adminhtml_inquiry';
+		$this->_blockGroup = 'inquiry';
+		$this->_headerText = Mage::helper('inquiry')->__('Dealer Manager');
+		parent::__construct();
+		$this->_removeButton('add');
 	}
 }
-

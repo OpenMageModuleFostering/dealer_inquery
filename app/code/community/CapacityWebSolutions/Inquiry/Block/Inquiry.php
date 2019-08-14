@@ -1,8 +1,7 @@
 <?php
-
 /***************************************************************************
 	@extension	: Dealer Inquiry Extension.
-	@copyright	: Copyright (c) 2014 Capacity Web Solutions.
+	@copyright	: Copyright (c) 2015 Capacity Web Solutions.
 	( http://www.capacitywebsolutions.com )
 	@author		: Capacity Web Solutions Pvt. Ltd.
 	@support	: magento@capacitywebsolutions.com	
@@ -10,8 +9,6 @@
  
 class CapacityWebSolutions_Inquiry_Block_Inquiry extends Mage_Core_Block_Template
 {
-
-/*Start fo functions for admin section.*/
 	public function getAllInquires()
 	{
 		if($collection = Mage::getModel("inquiry/inquiry")->getCollection())
@@ -24,15 +21,7 @@ class CapacityWebSolutions_Inquiry_Block_Inquiry extends Mage_Core_Block_Templat
 		$collection = Mage::getModel("inquiry/inquiry")->load($delId)->getData();
 		return $collection;
 	}
-	public function getIsCreated($email,$website_id)
-	{
-		$collection = Mage::getModel("customer/customer")->getCollection()->addFieldToFilter("email",$email)->addFieldToFilter("website_id",$website_id);
 	
-		if($collection->count())
-			return 1;
-		else
-			return 0;
-	}
 	public function getRandomCode()
 	{
 		$an = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
@@ -43,6 +32,14 @@ class CapacityWebSolutions_Inquiry_Block_Inquiry extends Mage_Core_Block_Templat
 			substr($an, rand(0, $su), 1);
 	}  
 	
-/*End of functions for admin section.*/
+	//for add top link
+	public function addTopLinkStores()
+	{	
+		$label = trim(Mage::getStoreConfig('inquiry/general/toplink'));
+		$storeID = Mage::app()->getStore()->getId();
+		$toplinkBlock = $this->getParentBlock();
+		$toplinkBlock->addLink($this->__($label),'inquiry/',$label,true,array(),90);
+	}
+
 }
 

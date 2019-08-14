@@ -1,13 +1,4 @@
 <?xml version="1.0"?>
-<!--
-/***************************************************************************
-	@extension	: Dealer Inquiry Extension.
-	@copyright	: Copyright (c) 2014 Capacity Web Solutions.
-	( http://www.capacitywebsolutions.com )
-	@author		: Capacity Web Solutions Pvt. Ltd.
-	@support	: magento@capacitywebsolutions.com	
-***************************************************************************/
--->
 <config>
     <tabs>
         <cws translate="label" module="inquiry">
@@ -41,16 +32,35 @@
 							<show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </enabled> 
+                        </enabled>
+						<toplink translate="label">
+							<label>Top Link</label>
+							<comment>Here, We can Set Dealer inquiry Top Link Label. </comment>
+							<frontend_type>text</frontend_type>
+							<sort_order>2</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</toplink>
 						<heading translate="label">
 							<label>Heading</label>
 							<comment>Here, We can Set Dealer inquiry Form title. </comment>
 							<frontend_type>text</frontend_type>
-							<sort_order>10</sort_order>
+							<sort_order>3</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
 						</heading>
+						<enable_js translate="label">
+							<label>Include Jquery</label>
+							<comment>Select Yes for include the jquery library. </comment>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<frontend_type>select</frontend_type>
+							<sort_order>4</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</enable_js>
 						<description translate="label">
 							<label>Description</label>
 							<comment>This text will appear under the Dealer inquiry Form title. </comment>
@@ -71,7 +81,7 @@
 						</btn_text>
 						<success_tital translate="label">
 							<label>Success Page Heading</label>
-							<comment>Here, We can Set Dealer inquiry Success Page tital.</comment>
+							<comment>Here, We can Set Dealer inquiry Success Page title.</comment>
 							<frontend_type>text</frontend_type>
 							<sort_order>30</sort_order>
 							<show_in_default>1</show_in_default>
