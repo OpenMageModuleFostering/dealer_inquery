@@ -125,21 +125,18 @@ jq("#img_refresh").click(function(){
                         	<input type="text" name="company" size="45" class="input-text required-entry" />
                         </div>
                     </div>
-                    <?php if($vat_number_hide): if($_taxvat->isEnabled()): if($_taxvat->isRequired()): ?>
+				
+					<?php if($vat_number_hide): ?>
                     <div class="field">
-                    	<label for="_accounttaxvat"><?php if($vat_number): ?><?php echo $vat_number; ?><?php else: ?><?php echo "Tax/VAT Number:"; ?><?php endif; ?><span class="required"><em>*</em></span></label>
-                    	<div class="input-box">
-                        	<input type="text" name="account_taxvat" size="45" class="input-text required-entry" />
-                        </div>
-                    </div>
-                    <?php else: ?>
-                    <div class="field">
-                    	<label for="_accounttaxvat"><?php if($vat_number): ?><?php echo $vat_number; ?><?php else: ?><?php echo "Tax/VAT Number:"; ?><?php endif;  ?></label>
+                    	<label><?php if($vat_number): ?><?php echo $vat_number; ?><?php else: ?><?php echo "Tax/VAT Number:"; ?><?php endif;  ?></label>
                         <div class="input-box">
-                        	<input type="text" name="account_taxvat" size="45" class="input-text" />
+                        	<input type="text" name="account_taxvat" size="45" class="input-text" /> 
                         </div>
                     </div>
-                    <?php endif; endif; endif; ?>
+                    <?php endif; ?>
+					
+					
+					
                     <?php if($address_hide): ?>  
                 	<div class="field">
                     	<label><?php if($address): ?><?php echo $address; ?> <?php else: ?><?php echo "Address:"; ?><?php endif; ?><span class="required"><em>*</em></span></label>

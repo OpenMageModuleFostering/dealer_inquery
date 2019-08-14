@@ -79,7 +79,7 @@ class CapacityWebSolutions_Inquiry_IndexController extends Mage_Core_Controller_
 		
 		$collection->save();
 		
-		$first_name = Mage::getStoreConfig('inquiry/change_label/f_name');
+			$first_name = Mage::getStoreConfig('inquiry/change_label/f_name');
 		if($first_name){
 			$first_name = Mage::getStoreConfig('inquiry/change_label/f_name');
 		}else {
@@ -105,25 +105,25 @@ class CapacityWebSolutions_Inquiry_IndexController extends Mage_Core_Controller_
 			$vat_number = "TAX/VAT Number";
 		} 
 	
-		$address = Mage::getStoreConfig('inquiry/change_label/address'); 
-		if($address){
-			$address = Mage::getStoreConfig('inquiry/change_label/address');
+		$address_name = Mage::getStoreConfig('inquiry/change_label/address'); 
+		if($address_name){
+			$address_name = Mage::getStoreConfig('inquiry/change_label/address');
 		}else{
-			$address = "Address";
+			$address_name = "Address";
 		} 
 
-		$city = Mage::getStoreConfig('inquiry/change_label/city'); 
-		if($city){
-			$city = Mage::getStoreConfig('inquiry/change_label/city');
+		$city_name = Mage::getStoreConfig('inquiry/change_label/city'); 
+		if($city_name){
+			$city_name = Mage::getStoreConfig('inquiry/change_label/city');
 		}else{
-			$city = "City";
+			$city_name = "City";
 		} 
 
-		$state = Mage::getStoreConfig('inquiry/change_label/state'); 
-		if($state){
-			$state = Mage::getStoreConfig('inquiry/change_label/state');
+		$state_name = Mage::getStoreConfig('inquiry/change_label/state'); 
+		if($state_name){
+			$state_name = Mage::getStoreConfig('inquiry/change_label/state');
 		}else{
-			$state = "State/Province";
+			$state_name = "State/Province";
 		} 
 		
 		$country = Mage::getStoreConfig('inquiry/change_label/country'); 
@@ -153,11 +153,11 @@ class CapacityWebSolutions_Inquiry_IndexController extends Mage_Core_Controller_
 			$email_name = "Email";
 		} 
 				
-		$website = Mage::getStoreConfig('inquiry/change_label/website');
-		if($website){
-			$website = Mage::getStoreConfig('inquiry/change_label/website');
+		$website_name = Mage::getStoreConfig('inquiry/change_label/website');
+		if($website_name){
+			$website_name = Mage::getStoreConfig('inquiry/change_label/website');
 		}else{
-			$website = "Website";
+			$website_name = "Website";
 		} 
 		$description = Mage::getStoreConfig('inquiry/change_label/description'); 
 		if($description){
@@ -165,7 +165,6 @@ class CapacityWebSolutions_Inquiry_IndexController extends Mage_Core_Controller_
 		}else{
 			$description = "Business Description";
 		} 
-		
 	
 		$adminContent = '<table border="0">
 							<tr>
@@ -183,7 +182,7 @@ class CapacityWebSolutions_Inquiry_IndexController extends Mage_Core_Controller_
 										</tr>
 										<tr>
 											<td>
-												<table border="0">
+											<table border="0">
 													<tr>
 														<td><label>'.$first_name.':</label></td>
 														<td><label>'.$fname.'</label></td>
@@ -201,15 +200,15 @@ class CapacityWebSolutions_Inquiry_IndexController extends Mage_Core_Controller_
 														<td><label>'.$taxvat.'</label></td>
 													</tr>
 													<tr>
-														<td><label>'.$address.':</label></td>
+														<td><label>'.$address_name.':</label></td>
 														<td><label>'.$address.'</label></td>
 													</tr>
 													<tr>
-														<td><label>'.$city.':</label></td>
+														<td><label>'.$city_name.':</label></td>
 														<td><label>'.$city.'</label></td>
 													</tr>
 													<tr>
-														<td><label>'.$state.':</label></td>
+														<td><label>'.$state_name.':</label></td>
 														<td><label>'.$state.'</label></td>
 													</tr>
 													<tr>
@@ -229,7 +228,7 @@ class CapacityWebSolutions_Inquiry_IndexController extends Mage_Core_Controller_
 														<td><label>'.$email.'</label></td>
 													</tr>
 													<tr>
-														<td><label>'.$website.':</label></td>
+														<td><label>'.$website_name.':</label></td>
 														<td><label>'.$website.'</label></td>
 													</tr>
 													<tr>

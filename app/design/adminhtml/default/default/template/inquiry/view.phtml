@@ -63,14 +63,14 @@
 							<?php echo $item['company'];?>
 						</td>
 					</tr>
-					<?php if($_taxvat->isEnabled()):?>
+				
 					<tr class="even pointer">
 						<td class=""width="15%">Tax/VAT Number</td>
 						<td class="a-left ">
 							<?php if($item['taxvat']==""): echo "-";else:echo $item['taxvat'];endif;?>
 						</td>
 					</tr>
-					 <?php endif; ?>
+				
 					 <tr class="even pointer">
 						<td class=""width="15%">Address</td>
 						<td class="a-left "><?php echo $item['address'];?></td>
