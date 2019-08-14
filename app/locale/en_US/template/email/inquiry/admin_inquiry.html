@@ -1,0 +1,145 @@
+<!--@subject {{var subject}}@-->
+ 
+<!--@styles
+body,td { color:#2f2f2f; font:11px/1.35em Verdana, Arial, Helvetica, sans-serif; }
+@-->
+ 
+<body style="background:#F6F6F6; font-family:Verdana, Arial, Helvetica, sans-serif; font-size:12px; margin:0; padding:0;">
+<div style="background:#F6F6F6; font-family:Verdana, Arial, Helvetica, sans-serif; font-size:12px; margin:0; padding:0;">
+<table cellspacing="0" cellpadding="0" border="0" height="100%" width="100%">
+        <tr>
+            <td align="center" valign="top" style="padding:20px 0 20px 0">
+                <!-- [ header starts here] -->
+                <table bgcolor="FFFFFF" cellspacing="0" cellpadding="10" border="0" width="650" style="border:1px solid #E0E0E0;">
+                    <tr>
+                        <td valign="top">
+                            <a href="{{store url=""}}"><img src="{{var logo_url}}" alt="{{var logo_alt}}" style="margin-bottom:10px;" border="0"/></a></td>
+                    </tr>
+                <!-- [ middle starts here] -->
+                    <tr>
+                        <td valign="top">
+                            <h1 style="font-size:22px; font-weight:normal; line-height:22px; margin:0 0 11px 0;">Hello {{var name}},</h1>
+							<table border="0">
+								<tr>
+									<td>
+										<p>Mr/Ms. {{var dealername}} have filled dealer inquiry form and details are below.</p>
+									</td>
+								</tr>
+								<tr>
+									<td>
+									<table border="0" width="100%">
+											<tr>
+												<td>{{var firstname_label}}:</td>
+												<td>{{var firstname}}</td>
+											</tr>
+											{{depend lastname}}
+											<tr>
+												<td>{{var lastname_label}}:</td>
+												<td>{{var lastname}}</td>
+											</tr>
+											{{/depend}}
+											<tr>
+												<td>{{var company_label}}:</td>
+												<td>{{var company}}</td>
+											</tr>
+											{{depend vat_number}}
+											<tr>
+												<td>{{var vat_number_label}}:</td>
+												<td>{{var vat_number}}</td>
+											</tr>
+											{{/depend}}
+											{{depend address}}
+											<tr>
+												<td>{{var address_label}}:</td>
+												<td>{{var address}}</td>
+											</tr>
+											{{/depend}}
+											{{depend city}}
+											<tr>
+												<td>{{var city_label}}:</td>
+												<td>{{var city}}</td>
+											</tr>
+											{{/depend}}
+											{{depend state}}
+											<tr>
+												<td>{{var state_label}}:</td>
+												<td>{{var state}}</td>
+											</tr>
+											{{/depend}}
+											{{depend country}}
+											<tr>
+												<td>{{var country_label}}:</td>
+												<td>{{var country}}</td>
+											</tr>
+											{{/depend}}
+											{{depend zip}}
+											<tr>
+												<td>{{var zip_label}}:</td>
+												<td>{{var zip}}</td>
+											</tr>
+											{{/depend}}
+											<tr>
+												<td>{{var phone_label}}:</td>
+												<td>{{var phone}}</td>
+											</tr>
+											<tr>
+												<td>{{var email_label}}:</td>
+												<td>{{var dealeremail}}</td>
+											</tr>
+											{{depend website}}
+											<tr>
+												<td>{{var website_label}}:</td>
+												<td>{{var website}}</td>
+											</tr>
+											{{/depend}}
+											{{depend description}}
+											<tr>
+												<td>{{var description_label}}:</td>
+												<td>{{var description}}</td>
+											</tr>
+											{{/depend}}
+											{{depend datetime}}
+											<tr>
+												<td>{{var datetime_label}}:</td>
+												<td>{{var datetime}}</td>
+											</tr>
+											{{/depend}}
+											{{depend upload_file}}
+											<tr>
+												<td>{{var upload_file_label}}:</td>
+												<td>{{var upload_file}}</td>
+											</tr>
+											{{/depend}}
+											{{depend extra_field_one}}
+											<tr>
+												<td>{{var extra_field_one_label}}:</td>
+												<td>{{var extra_field_one}}</td>
+											</tr>
+											{{/depend}}	
+											{{depend extra_field_two}}
+											<tr>
+												<td>{{var extra_field_two_label}}:</td>
+												<td>{{var extra_field_two}}</td>
+											</tr>
+											{{/depend}}	
+											{{depend extra_field_three}}
+											<tr>
+												<td>{{var extra_field_three_label}}:</td>
+												<td>{{var extra_field_three}}</td>
+											</tr>
+											{{/depend}}	
+																																				</table>
+									</td>
+								</tr>
+							</table>
+						</td>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#EAEAEA" align="center" style="background:#EAEAEA; text-align:center;"><center><p style="font-size:12px; margin:0;">Thank you, <strong>{{config path="general/store_information/name"}}</strong></p></center></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>

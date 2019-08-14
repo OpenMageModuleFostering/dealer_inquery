@@ -9,6 +9,8 @@
 
 class CapacityWebSolutions_Inquiry_Adminhtml_InquiryController extends Mage_Adminhtml_Controller_action
 {
+	const EMAIL_TEMPLATE_XML_PATH = 'inquiry/create_account/email_template';
+	
 	protected function _initAction() {
 		$this->loadLayout()->_setActiveMenu('cws');
 		return $this;
@@ -26,7 +28,19 @@ class CapacityWebSolutions_Inquiry_Adminhtml_InquiryController extends Mage_Admi
 		$this->_title($this->__('CWS Extension'))->_title($this->__('Dealer Inquiries'))->_title($this->__('Dealer Management'))->_title($this->__('Dealer Information'));
 		$id     = $this->getRequest()->getParam('id');
 		$model  = Mage::getModel('inquiry/inquiry')->load($id);
-
+		
+		$inquiry_file_collection = Mage::getModel('inquiry/inquiry')->getCollection()->inquiryFilter($id);
+		$filename = "";
+		$collection_data = $inquiry_file_collection->getData();
+		foreach($collection_data as $data){
+			if(next($collection_data)){
+				$filename.= $data['filename']."|";
+			}else{
+				$filename.= $data['filename'];
+			}
+		}
+		
+		$model->setData('filename',$filename);
 		if ($model->getId() || $id == 0) {
 			$data = Mage::getSingleton('adminhtml/session')->getFormData(true);
 			if (!empty($data)) {
@@ -82,12 +96,12 @@ class CapacityWebSolutions_Inquiry_Adminhtml_InquiryController extends Mage_Admi
                     $inquiry = Mage::getModel('inquiry/inquiry')->load($dealerId);
                     $inquiry->delete();
                 }
-                Mage::getSingleton('adminhtml/session')->addSuccess(
-                    Mage::helper('adminhtml')->__(
-                        'Total of %d record(s) were successfully deleted', count($dealerIds)
-                    )
-                );
-            } catch (Exception $e) {
+					Mage::getSingleton('adminhtml/session')->addSuccess(
+						Mage::helper('adminhtml')->__(
+							'Total of %d record(s) were successfully deleted', count($dealerIds)
+						)
+					);
+				} catch (Exception $e) {
                 Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
             }
         }
@@ -110,8 +124,11 @@ class CapacityWebSolutions_Inquiry_Adminhtml_InquiryController extends Mage_Admi
 		$customer->setWebsiteId($websiteId);
 		$customer->loadByEmail($dealer_data['email']);
 		
+		$groupid = Mage::getStoreConfig('inquiry/general/customer',$dealer_data['storeid']);
+		
 		if(!$customer->getId()) {
-			$customer   ->setWebsiteId($websiteId)
+			$customer	->setGroupId($groupid)
+						->setWebsiteId($websiteId)
 						->setStoreId($dealer_data['storeid'])
 						->setFirstname($dealer_data['firstname'])
 						->setLastname($dealer_data['lastname'])
@@ -123,10 +140,10 @@ class CapacityWebSolutions_Inquiry_Adminhtml_InquiryController extends Mage_Admi
 								 
 			try{
 				$customer->save();
-					
 				$this->addAddress($dealer_data,$customer->getId());
 				$this->sendMail($dealer_data,$randompass);
-								
+				Mage::getSingleton('core/session')->addSuccess("Customer Account Created successfully.");
+					
 				//for update is customer created status
 				$dealer_coll = Mage::getModel('inquiry/inquiry')->getCollection()
 								->addFieldToFilter('email',$customer->getEmail())
@@ -210,94 +227,26 @@ class CapacityWebSolutions_Inquiry_Adminhtml_InquiryController extends Mage_Admi
 		}
     }
 	
-	public function sendMail($dealer_data,$randompass){
-		
+	public function sendMail($dealer_data, $randompass){
+		$templateId = Mage::getStoreConfig(self::EMAIL_TEMPLATE_XML_PATH, $dealer_data['storeid']);
+		$customerEmailId = $dealer_data['email']; 
+		$customerName = $dealer_data['firstname']." ".$dealer_data['lastname'];
 		$adminEmail = Mage::getStoreConfig('trans_email/ident_general/email', $dealer_data['storeid']); 
 		$adminName = Mage::getStoreConfig('trans_email/ident_general/name', $dealer_data['storeid']);
-		$fromEmail = $adminEmail;
-		$fromName = $adminName;
-	 
-		$toEmail = $dealer_data['email']; 
-		//$toName = $dealer_data['firstname'].$dealer_data['lastname'];
-		
-		$email_logo = Mage::getStoreConfig('design/email/logo' ,$dealer_data['storeid']);
-		$subject_title = Mage::getStoreConfig('inquiry/register_email/heading',$dealer_data['storeid']);
-		$email_desc = Mage::getStoreConfig('inquiry/register_email/description',$dealer_data['storeid']);
 		$store_name = Mage::getStoreConfig('general/store_information/name', $dealer_data['storeid']);
-						
-		$img_media =  Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).'email/logo/'; 
-		$img_logo_final = $img_media.$email_logo;
-		
-		$skin = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN);
-		$skin_name = Mage::getStoreConfig('design/theme/skin',$dealer_data['storeid']);
-		if($skin_name == "")
-		{
-			$skin_name = "default";
-		}
-		else
-		{
-			$skin_name = $skin_name;
-		}
-		$package = Mage::getStoreConfig('design/package/name',$dealer_data['storeid']);
-		$default_logo =  Mage::getStoreConfig('design/header/logo_src',$dealer_data['storeid']);	
-
-		$logo_default = $skin."/frontend/".$package."/".$skin_name."/".$default_logo;
-	
-		if($img_logo_final == $img_media)
-		{
-			$logo_img = "<img src='$logo_default'/>"; 
-		}
-		else
-		{
-			$logo_img = "<img src='$img_logo_final'/>";
-		}
-
-		$email_desc = str_replace("{{Name}}",$dealer_data['firstname'].' '.$dealer_data['lastname'],$email_desc);	 
-		$email_desc = str_replace("{{username}}",$dealer_data['email'],$email_desc);	 
-		$email_desc = str_replace("{{password}}",$randompass,$email_desc);
-		$url = Mage::app()->getStore($dealer_data['storeid'])->getBaseUrl(Mage_Core_Model_Store::URL_TYPE_LINK).'customer/account/login/'; 				
-		$email_desc = str_replace("{{url}}",$url,$email_desc);	 
-		$email_desc = str_replace("{{storename}}",$store_name,$email_desc);	 
-
-		$body = '<table border="0">
-					<tr>
-						<td>
-							<table border="0">
-								<tr>
-									<td>'.$logo_img.'</td>
-								</tr>
-									<tr>
-										<td colspan="2">&nbsp;</td></tr>
-									<tr>
-									
-								
-								<tr>
-									<td><p>'.$email_desc.'</p></td>
-								</tr>
-								
-							</table>
-						</td>
-					</tr>
-				</table>';
-		
-		$headers = "";
-
-		$custSubject = $subject_title;
-		$headers  .= 'MIME-Version: 1.0'."\r\n";
-		$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-		$headers .= 'From:'. $adminName.' <'.$adminEmail.'>';
-		
-		
-		if(mail($toEmail,$custSubject,$body,$headers)){
-									
-		}else{
-			Mage::getSingleton('core/session')
-					->addError('Unable to send email.');
-		}
-				
-		Mage::getSingleton('core/session')->addSuccess("Customer Account Created successfully.");
-		return;
+		$mailSubject = Mage::getStoreConfig('inquiry/create_account/heading',$dealer_data['storeid']);
+ 		
+		$sender = Array('name'  => $adminName,
+					  'email' => $adminEmail);
+		 
+		$storeId = $dealer_data['storeid']; 
+		$loginlink = Mage::app()->getStore($storeId)->getBaseUrl(Mage_Core_Model_Store::URL_TYPE_LINK);
+		$vars = Array();
+		$vars = Array('password'=>$randompass,'loginlink'=>$loginlink,'subject'=>$mailSubject);
+		$translate  = Mage::getSingleton('core/translate');
+		Mage::getModel('core/email_template')
+			  ->setTemplateSubject($mailSubject)
+			  ->sendTransactional($templateId, $sender, $customerEmailId, $customerName, $vars, $storeId);
+		$translate->setTranslateInline(true);	
 	}
-	
-	
 }

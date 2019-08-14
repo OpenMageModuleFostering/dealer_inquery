@@ -94,7 +94,6 @@ class CapacityWebSolutions_Inquiry_Block_Adminhtml_Inquiry_Grid extends Mage_Adm
 		} else {
 			$cell = '<span class="grid-severity-major"><span>Not Created</span></span>';
 		}
-
 		return $cell;
 	}
 
@@ -108,8 +107,6 @@ class CapacityWebSolutions_Inquiry_Block_Adminhtml_Inquiry_Grid extends Mage_Adm
 			 'url'      => $this->getUrl('*/*/massDelete'),
 			 'confirm'  => Mage::helper('inquiry')->__('Are you sure?')
 		));
-
-	  
 		return $this;
 	}
 

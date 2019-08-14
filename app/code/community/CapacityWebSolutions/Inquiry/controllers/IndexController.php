@@ -9,18 +9,19 @@
 
 class CapacityWebSolutions_Inquiry_IndexController extends Mage_Core_Controller_Front_Action
 {	
-    public function indexAction()
-    {
+	const OWNER_EMAIL_TEMPLATE_XML_PATH = 'inquiry/admin_email/email_template';
+	const CUSTOMER_EMAIL_TEMPLATE_XML_PATH = 'inquiry/customer_email/email_template';
+	
+    public function indexAction() {
+		$this->_title($this->__('Dealer Inquiry'));
 		$this->loadLayout(array('default'));
 		$this->renderLayout();
 	}
 		
-	public function thanksAction()
-    {
+	public function thanksAction() {
 		if($this->getRequest()->getPost())
 		{
 			$data = $this->getRequest()->getPost();
-		 
 			$captcha =  $this->getRequest()->getParam("captcha");
 			$captcha_code =  $this->getRequest()->getParam("captcha_code");
 			if($captcha == $captcha_code)
@@ -28,7 +29,7 @@ class CapacityWebSolutions_Inquiry_IndexController extends Mage_Core_Controller_
 				$storeid = Mage::app()->getStore()->getStoreId();
 				$websiteid = Mage::app()->getWebsite()->getId(); 
 				
-				$country_name = explode('$$$',$data['country']);
+				
 				$data['storeid']=$storeid;
 				$data['websiteid']=$websiteid;
 				
@@ -38,7 +39,7 @@ class CapacityWebSolutions_Inquiry_IndexController extends Mage_Core_Controller_
 										->addFieldToFilter('storeid',$storeid);
 					   
 				if(!$collection->getSize())
-				{
+				{ 	
 					$data['createddt']=Mage::getModel('core/date')->date('Y-m-d H:i:s');
 					$customer = Mage::getModel("customer/customer"); 
 					$customer->setWebsiteId($data['websiteid']); 
@@ -46,240 +47,50 @@ class CapacityWebSolutions_Inquiry_IndexController extends Mage_Core_Controller_
 					
 					if($customer->getId()){
 						$data['iscustcreated']=1;
+					}
 							
+					if(!empty($data['date_time'])){
+						$data['date_time'] = preg_replace('#(\d{2})/(\d{2})/(\d{4})\s(.*)#', '$3-$2-$1 $4', $data['date_time']);//convert datetime to mysql format
+					}
+					
+					if(!empty($_FILES['file']['name'][0]))
+					{
+						$filetypes = Mage::getStoreConfig('inquiry/label_hide/file_type');
+						$filetype_array = array();
+						$filetype_array = explode(',',$filetypes);
+						foreach($_FILES['file']['name'] as $key => $fname)
+						{
+							try {
+								$path = Mage::getBaseDir('media') . DS . 'inquiry' . DS . 'upload' . DS;
+								$uploader = new Varien_File_Uploader(
+															array(
+														'name' => $_FILES['file']['name'][$key],
+														'type' => $_FILES['file']['type'][$key],
+														'tmp_name' => $_FILES['file']['tmp_name'][$key],
+														'error' => $_FILES['file']['error'][$key],
+														'size' => $_FILES['file']['size'][$key]
+															)
+													);
+								$fname = preg_replace('/[^a-zA-Z0-9._]/s', '', $_FILES['file']['name'][$key]);
+								$uploader->setAllowedExtensions($filetype_array);  //Allowed extension for file
+								$uploader->setAllowRenameFiles(false);             
+								$uploader->setFilesDispersion(false);
+								$path_parts = pathinfo($fname);
+								$fileName = $path_parts['filename'].'_'.time().'.'.$path_parts['extension'];//rename file
+								$uploader->save($path, $fileName);
+								$data['file'][] = $fileName;
+							}catch (Exception $e) {
+								$data['file'] = '';
+								Mage::getSingleton('core/session')->addError($e->getMessage());
+								$this->_redirect('*/*/');return;
+							}
+						}
 					}
 					$model->setData($data);
 					$model->save();
 		
-					$config_change_label = Mage::getStoreConfig('inquiry/change_label');
-					
-					$first_name = $config_change_label['f_name'];
-					if($first_name){
-						$first_name = $config_change_label['f_name'];
-					}else {
-						$first_name = "First Name";
-					}
-					
-					$last_name = $config_change_label['l_name']; 
-					if($last_name){
-						$last_name = $config_change_label['l_name'];
-					}else {
-						$last_name = "Last Name";
-					}
-					
-					$company_name = $config_change_label['company_name']; 
-					if($company_name){
-						$company_name = $config_change_label['company_name'];
-					}else{
-						$company_name = "Company Name";
-					}
-					
-					$vat_number = $config_change_label['vat_number'];
-					if($vat_number){
-						$vat_number = $config_change_label['vat_number'];
-					}else{
-						$vat_number = "TAX/VAT Number";
-					} 
-				
-					$address_name = $config_change_label['address']; 
-					if($address_name){
-						$address_name = $config_change_label['address'];
-					}else{
-						$address_name = "Address";
-					} 
-
-					$city_name = $config_change_label['city']; 
-					if($city_name){
-						$city_name = $config_change_label['city'];
-					}else{
-						$city_name = "City";
-					} 
-
-					$state_name = $config_change_label['state']; 
-					if($state_name){
-						$state_name = $config_change_label['state'];
-					}else{
-						$state_name = "State/Province";
-					} 
-					
-					$country = $config_change_label['country']; 
-					if($country){
-						$country = $config_change_label['country'];
-					}else{
-						$country = "Country";
-					} 
-					$postal_code = $config_change_label['postal_code']; 
-					if($postal_code){
-						$postal_code = $config_change_label['postal_code'];
-					}else{
-						$postal_code = "ZIP/Postal Code";
-					} 
-							
-					$contact_number = $config_change_label['contact_number']; 
-					if($contact_number){
-						$contact_number = $config_change_label['contact_number'];
-					}else{
-						$contact_number = "Contact Number";
-					} 
-								
-					$email_name = $config_change_label['email']; 
-					if($email_name){
-						$email_name = $config_change_label['email'];
-					}else{
-						$email_name = "Email";
-					} 
-							
-					$website_name = $config_change_label['website'];
-					if($website_name){
-						$website_name = $config_change_label['website'];
-					}else{
-						$website_name = "Website";
-					} 
-					$description = $config_change_label['description']; 
-					if($description){
-						$description = $config_change_label['description'];
-					}else{
-						$description = "Business Description";
-					} 
-		
-					$adminContent = '<table border="0">
-										<tr>
-											<td>
-												<table border="0">
-													<tr>
-														<Td>
-															<label><p style="Font-size:22px;"><b>Hello Administrator,</b></p></label>
-														</Td>
-													</tr>
-													<tr>
-														<Td>
-															<p>Mr/Ms. '.$data['firstname'].' '.$data['lastname'].' have filled dealer inquiry form and details are below.</p>
-														</td>
-													</tr>
-													<tr>
-														<td>
-														<table border="0">
-																<tr>
-																	<td><label>'.$first_name.':</label></td>
-																	<td><label>'.$data['firstname'].'</label></td>
-																</tr>
-																<tr>
-																	<td><label>'.$last_name.':</label></td>
-																	<td><label>'.$data['lastname'].'</label></td>
-																</tr>
-																<tr>
-																	<td><label>'.$company_name.':</label></td>
-																	<td><label>'.$data['company'].'</label></td>
-																</tr>
-																<tr>
-																	<td><label>'.$vat_number.':</label></td>
-																	<td><label>'.$data['taxvat'].'</label></td>
-																</tr>
-																<tr>
-																	<td><label>'.$address_name.':</label></td>
-																	<td><label>'.$data['address'].'</label></td>
-																</tr>
-																<tr>
-																	<td><label>'.$city_name.':</label></td>
-																	<td><label>'.$data['city'].'</label></td>
-																</tr>
-																<tr>
-																	<td><label>'.$state_name.':</label></td>
-																	<td><label>'.$data['state'].'</label></td>
-																</tr>
-																<tr>
-																	<td><label>'.$country.':</label></td>
-																	<td><label>'.$country_name[1].'</label></td>
-																</tr>
-																<tr>
-																	<td><label>'.$postal_code.':</label></td>
-																	<td><label>'.$data['zip'].'</label></td>
-																</tr>
-																<tr>
-																	<td><label>'.$contact_number.':</label></td>
-																	<td><label>'.$data['phone'].'</label></td>
-																</tr>
-																<tr>
-																	<td><label>'.$email_name.':</label></td>
-																	<td><label>'.$data['email'].'</label></td>
-																</tr>
-																<tr>
-																	<td><label>'.$website_name.':</label></td>
-																	<td><label>'.$data['website'].'</label></td>
-																</tr>
-																<tr>
-																	<td valign="top" width="15%"><label>'.$description.':</label></td>
-																	<td><label>'.$data['desc'].'</label></td>
-																</tr>
-																<tr>
-																	<td colspan="2">&nbsp;</td></tr>
-																<tr>
-																	<td colspan="2"><label>Thank You.</label></td>
-																</tr>
-															</table>
-														</td>
-													</tr>
-												</table>
-											</td>
-										</tr>
-									</table>';
-							
-					$adminSubject = "New Dealer Inquiry from dealer";
-					$adminName = Mage::getStoreConfig('trans_email/ident_general/name'); //sender name
-					$adminEmail = Mage::getStoreConfig('trans_email/ident_general/email');
-					$headers="";
-					$headers  .= 'MIME-Version: 1.0'."\r\n";
-					$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-					$headers .= 'From:'. $adminName.' <'.$adminEmail.'>';
-					mail($adminEmail,$adminSubject,$adminContent,$headers);
-					
-					$email_logo = Mage::getStoreConfig('design/email/logo');
-					$subject_title = Mage::getStoreConfig('inquiry/customer_email/heading');
-					$email_desc = Mage::getStoreConfig('inquiry/customer_email/description');
-					$email_desc = str_replace("{{Name}}",$data['firstname'].$data['lastname'],$email_desc);
-					$store_name = Mage::getStoreConfig('general/store_information/name');
-
-					$img_media =  Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).'email/logo/'; 
-
-					$img_logo_final = $img_media.$email_logo;
-					$default_logo =  Mage::getStoreConfig('design/header/logo_src');	
-					$logo_default = Mage::getDesign()->getSkinUrl().$default_logo; 
-					$email_desc = str_replace("{{Storename}}",$store_name,$email_desc);		
-					
-					if($img_logo_final == $img_media)
-					{
-						$logo_img = "<img src='$logo_default'/>"; 
-					}
-					else
-					{
-						$logo_img =   "<img src='$img_logo_final'/>";
-					}
-			
-					$customerContent = '<table border="0">
-											<tr>
-												<td>
-													<table border="0">
-														<tr>
-															<Td>'.$logo_img.'</Td>
-														</tr>
-														<tr>
-															<td colspan="2">&nbsp;</td></tr>
-														<tr>
-															<Td><p>'.$email_desc.'. </p></Td>
-														</tr>
-														
-													</table>
-												</td>
-											</tr>
-										</table>';
-					$headers = "";
-					$adminName = Mage::getStoreConfig('trans_email/ident_general/name'); //sender name
-					$custSubject = $subject_title;
-					$headers  .= 'MIME-Version: 1.0'."\r\n";
-					$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-					$headers .= 'From:'. $adminName.' <'.$adminEmail.'>';
-				
-					mail($data['email'],$custSubject,$customerContent,$headers);
+					$this->sendOwnerMail($data);//send mail to owner
+					$this->sendCustomerMail($data);//send mail to dealer
 				}
 				else
 				{
@@ -292,8 +103,241 @@ class CapacityWebSolutions_Inquiry_IndexController extends Mage_Core_Controller_
 				Mage::getSingleton('core/session')->addError(Mage::helper('inquiry')->__('Captcha code does not match!'));
 				$this->_redirect('*/*/');return;
 			}
+		
 		}
 		$this->_redirect('*/*/success');
+	}
+	
+	public function sendOwnerMail($data){
+		
+		$config_change_label = Mage::getStoreConfig('inquiry/change_label');
+		$adminSubject = Mage::getStoreConfig('inquiry/admin_email/heading');
+		$adminName = Mage::getStoreConfig('trans_email/ident_general/name'); //sender name
+		$adminEmail = Mage::getStoreConfig('trans_email/ident_general/email');
+		
+		//template variables
+		$emailTemplateVariables = array();
+		$emailTemplateVariables['subject'] = $adminSubject;	
+		$emailTemplateVariables['name'] = $adminName;
+		
+		$emailTemplateVariables['firstname'] = $data['firstname'];
+		$lastname = " ";
+		if(!empty($data['lastname'])){
+			$lastname = $emailTemplateVariables['lastname'] = $data['lastname'];
+		}
+		$emailTemplateVariables['dealername'] = $data['firstname'].' '.$lastname;
+		$emailTemplateVariables['company'] = $data['company'];
+		if(!empty($data['taxvat'])){
+			$emailTemplateVariables['vat_number'] = $data['taxvat'];
+		}
+		if(!empty($data['address'])){
+			$emailTemplateVariables['address'] = $data['address'];
+		}
+		if(!empty($data['city'])){
+			$emailTemplateVariables['city'] = $data['city'];
+		}
+		if(!empty($data['state'])){
+			$emailTemplateVariables['state'] = $data['state'];
+		}
+		if(!empty($data['country'])){
+			$country_name = explode('$$$',$data['country']);
+			$emailTemplateVariables['country'] = $country_name[1];
+		}
+		if(!empty($data['zip'])){
+			$emailTemplateVariables['zip'] = $data['zip'];
+		}
+		if(!empty($data['phone'])){
+			$emailTemplateVariables['phone'] = $data['phone'];
+		}
+		$emailTemplateVariables['dealeremail'] = $data['email'];
+		if(!empty($data['website'])){
+			$emailTemplateVariables['website'] = $data['website'];
+		}
+		if(!empty($data['desc'])){
+			$emailTemplateVariables['description'] =$data['desc'];
+		}
+		if(!empty($data['date_time'])){
+			$emailTemplateVariables['datetime'] =$data['date_time'];
+		}
+		
+		if(!empty($data['file'])){
+			foreach($data['file'] as $key=>$fname){
+				$file_link[$key] = "<a href='".Mage::getBaseUrl('media')."inquiry/upload/".$fname."' target='_blank'>".$fname."</a>";
+			}
+			$emailTemplateVariables['upload_file'] = implode(', ',$file_link);
+		}
+	
+		if(!empty($data['extra_field_one'])){
+			$emailTemplateVariables['extra_field_one'] =$data['extra_field_one'];
+		}
+		if(!empty($data['extra_field_two'])){
+			$emailTemplateVariables['extra_field_two'] =$data['extra_field_two'];
+		}
+		if(!empty($data['extra_field_three'])){
+			$emailTemplateVariables['extra_field_three'] =$data['extra_field_three'];
+		}
+		
+		//labels
+		if($config_change_label['f_name']){
+			$emailTemplateVariables['firstname_label'] = $config_change_label['f_name'];
+		}else {
+			$emailTemplateVariables['firstname_label'] = "First Name";
+		}
+		
+		if($config_change_label['l_name']){
+			$emailTemplateVariables['lastname_label'] = $config_change_label['l_name'];
+		}else {
+			$emailTemplateVariables['lastname_label'] = "Last Name";
+		}
+		
+		if($config_change_label['company_name']){
+			$emailTemplateVariables['company_label'] = $config_change_label['company_name'];
+		}else{
+			$emailTemplateVariables['company_label'] = "Company Name";
+		}
+				
+		if($config_change_label['vat_number']){
+			$emailTemplateVariables['vat_number_label'] = $config_change_label['vat_number'];
+		}else{
+			$emailTemplateVariables['vat_number_label'] = "TAX/VAT Number";
+		} 
+			
+		if($config_change_label['address']){
+			$emailTemplateVariables['address_label'] = $config_change_label['address'];
+		}else{
+			$emailTemplateVariables['address_label'] = "Address";
+		} 
+		
+		if($config_change_label['city']){
+			$emailTemplateVariables['city_label'] = $config_change_label['city'];
+		}else{
+			$emailTemplateVariables['city_label'] = "City";
+		} 
+		
+		if($config_change_label['state']){
+			$emailTemplateVariables['state_label'] = $config_change_label['state'];
+		}else{
+			$emailTemplateVariables['state_label'] = "State/Province";
+		} 
+			
+		if($config_change_label['country']){
+			$emailTemplateVariables['country_label'] = $config_change_label['country'];
+		}else{
+			$emailTemplateVariables['country_label'] = "Country";
+		} 
+		
+		if($config_change_label['postal_code']){
+			$emailTemplateVariables['zip_label'] = $config_change_label['postal_code'];
+		}else{
+			$emailTemplateVariables['zip_label'] = "ZIP/Postal Code";
+		} 
+			
+		if($config_change_label['contact_number']){
+			$emailTemplateVariables['phone_label'] = $config_change_label['contact_number'];
+		}else{
+			$emailTemplateVariables['phone_label'] = "Contact Number";
+		} 
+			
+		if($config_change_label['email']){
+			$emailTemplateVariables['email_label'] = $config_change_label['email'];
+		}else{
+			$emailTemplateVariables['email_label'] = "Email";
+		} 
+		
+		if(!empty($data['website'])){	
+			if($config_change_label['website']){
+				$emailTemplateVariables['website_label'] = $config_change_label['website'];
+			}else{
+				$emailTemplateVariables['website_label'] = "Website";
+			} 
+		}
+		
+		if(!empty($data['desc'])){
+			if($config_change_label['description']){
+				$emailTemplateVariables['description_label'] = $config_change_label['description'];
+			}else{
+				$emailTemplateVariables['description_label'] = "Business Description";
+			} 
+		}
+		
+		if(!empty($data['date_time'])){
+			if($config_change_label['datetime']){
+				$emailTemplateVariables['datetime_label'] = $config_change_label['datetime'];
+			}else{
+				$emailTemplateVariables['datetime_label'] = "Date Time";
+			}
+		}
+		
+		if(!empty($data['file'])){
+			if($config_change_label['upload_file']){
+				$emailTemplateVariables['upload_file_label'] = $config_change_label['upload_file'];
+			}else{
+				$emailTemplateVariables['upload_file_label'] = "Uploaded File(s)";
+			}
+		}
+		
+		if(!empty($data['extra_field_one'])){
+			if($config_change_label['extra_field_one']){
+				$emailTemplateVariables['extra_field_one_label'] = $config_change_label['extra_field_one'];
+			}else{
+				$emailTemplateVariables['extra_field_one_label'] = "Extra Field 2";
+			}
+		}
+		
+		if(!empty($data['extra_field_two'])){
+			if($config_change_label['extra_field_two']){
+				$emailTemplateVariables['extra_field_two_label'] = $config_change_label['extra_field_two'];
+			}else{
+				$emailTemplateVariables['extra_field_two_label'] = "Extra Field 2";
+			}
+		}
+		
+		if(!empty($data['extra_field_three'])){
+			if($config_change_label['extra_field_three']){
+				$emailTemplateVariables['extra_field_three_label'] = $config_change_label['extra_field_three'];
+			}else{
+				$emailTemplateVariables['extra_field_three_label'] = "Extra Field 3";
+			}
+		}
+				
+		//load the custom template to the email
+		$templateId = Mage::getStoreConfig(self::OWNER_EMAIL_TEMPLATE_XML_PATH);
+		
+		$sender = Array('name'  => $adminName,
+					  'email' => $adminEmail);
+		
+		$translate  = Mage::getSingleton('core/translate');
+		Mage::getModel('core/email_template')
+			  ->setTemplateSubject($adminSubject)
+			  ->sendTransactional($templateId, $sender, $adminEmail, $adminName, $emailTemplateVariables);
+		$translate->setTranslateInline(true); 
+	}
+	
+	public function sendCustomerMail($data){
+		$subject_title = Mage::getStoreConfig('inquiry/customer_email/heading');
+		$customerEmailId = $data['email'];
+		$lastname = " ";
+		if(!empty($data['lastname'])){
+			$lastname = $data['lastname'];
+		}
+		$customerName = $data['firstname']." ".$lastname;
+		$store_name = Mage::getStoreConfig('general/store_information/name');
+		$adminName = Mage::getStoreConfig('trans_email/ident_general/name'); //sender name
+		$adminEmail = Mage::getStoreConfig('trans_email/ident_general/email');			
+		
+		//load the custom template to the email 
+		$templateId = Mage::getStoreConfig(self::CUSTOMER_EMAIL_TEMPLATE_XML_PATH);
+		
+		$sender = Array('name'  => $adminName,
+					  'email' => $adminEmail);
+		
+		$vars = Array();
+		$vars = Array('name'=>$customerName,'subject'=>$subject_title);
+		$translate  = Mage::getSingleton('core/translate');
+		Mage::getModel('core/email_template')
+			  ->setTemplateSubject($subject_title)
+			  ->sendTransactional($templateId, $sender, $customerEmailId, $customerName, $vars);
+		$translate->setTranslateInline(true);	
 	}
 	
 	public function successAction(){

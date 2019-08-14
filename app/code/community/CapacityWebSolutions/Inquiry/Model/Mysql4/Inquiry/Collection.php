@@ -14,5 +14,15 @@ class CapacityWebSolutions_Inquiry_Model_Mysql4_Inquiry_Collection extends Mage_
   		parent::_construct();
         $this->_init('inquiry/inquiry');
 	}
+		
+	public function inquiryFilter($dealerid) {
+		$this->getSelect()->join(
+				array('dealerinquiry_files' => $this->getTable('inquiry/inquiryfiles')),
+				'main_table.dealerid = dealerinquiry_files.dealerid',
+				array('*')
+				)
+				->where('dealerinquiry_files.dealerid = ?', $dealerid);
+		return $this;
+	}
 }
 

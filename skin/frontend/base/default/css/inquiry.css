@@ -24,7 +24,7 @@
 .inquiryForm .fieldset .form-list input, .inquiryForm .fieldset .form-list select,
 .inquiryForm .fieldset .form-list textarea { background:#fff; border:1px solid #ddd; padding:5px; font-size:14px; color:#555; }
 .inquiryForm .fieldset .form-list input, .inquiryForm .fieldset .form-list select,
-.inquiryForm .fieldset .form-list textarea { width:100%; border-radius:0 0 0; -webkit-border-radius:0 0 0; box-shadow:1px 1px 1px #ddd; -webkit-box-shadow:1px 1px 1px #ddd; }
+.inquiryForm .fieldset .form-list textarea { width:100%; max-width:100%; border-radius:0 0 0; -webkit-border-radius:0 0 0; box-shadow:1px 1px 1px #ddd; -webkit-box-shadow:1px 1px 1px #ddd; }
 .inquiryForm .fieldset .form-list input:focus, .inquiryForm .fieldset .form-list select:focus,
 .inquiryForm .fieldset .form-list textarea:focus { box-shadow:0 0 3px #ffc45d; -webkit-box-shadow:0 0 3px #ffc45d; transition:all 0.5s ease-in-out 0s; -moz-transition:all 0.5s ease-in-out; -webkit-transition:all 0.5s ease-in-out; }
 .inquiryForm .fieldset .form-list li:after { clear:both; content:"."; display:block; font-size:0; height:0; line-height:0; overflow:hidden; }
@@ -41,6 +41,11 @@
 .inquiryForm button.button span { color:inherit; }
 .inquiryForm button.button span { background:none; border:0 none; font:inherit; height:inherit; }
 p.required, .validation-advice { color:#FF0000; font-size:13px; margin:5px 0 0; }
+
+.inquiryForm .fieldset .form-list  input#date_time { width:50%; }
+.inquiryForm .fieldset .form-list  input#file { width:70%; }
+img#date-picker-cal { display:inline-block; margin-left:10px; }
+div#clearfile { display:inline-block; margin-left:10px; }
 
 @media (max-width:1200px) { 
 	.inquiryForm .fieldset .form-list .field { width:60%; margin:0 0 10px 0; float:none; }

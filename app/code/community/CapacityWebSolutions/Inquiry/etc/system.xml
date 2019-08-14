@@ -25,26 +25,39 @@
                      <fields>
                         <enabled translate="label">
 							<label>Enabled</label>
-							<comment>Select Yes for display the Dealer inquiry on frontend.</comment>
+							<comment><![CDATA[Select Yes for display the Dealer inquiry on frontend.]]></comment>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+							<frontend_type>select</frontend_type>
+							<sort_order>0</sort_order>
+							<show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enabled>
+						<enable_toplink>
+							<label>Enabled Top Link</label>
+							<comment><![CDATA[Select Yes for display the Dealer inquiry top link on frontend.]]></comment>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
 							<frontend_type>select</frontend_type>
 							<sort_order>1</sort_order>
 							<show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </enabled>
+						</enable_toplink>
 						<toplink translate="label">
-							<label>Top Link</label>
-							<comment>Here, We can Set Dealer inquiry Top Link Label. </comment>
+							<label>Top Link Label</label>
+							<comment><![CDATA[Here, We can Set Dealer inquiry Top Link Label.]]></comment>
 							<frontend_type>text</frontend_type>
 							<sort_order>2</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
+							<depends>
+								<enable_toplink>1</enable_toplink>
+							</depends>
 						</toplink>
 						<heading translate="label">
 							<label>Heading</label>
-							<comment>Here, We can Set Dealer inquiry Form title. </comment>
+							<comment><![CDATA[Here, We can Set Dealer inquiry Form title.]]></comment>
 							<frontend_type>text</frontend_type>
 							<sort_order>3</sort_order>
 							<show_in_default>1</show_in_default>
@@ -53,7 +66,7 @@
 						</heading>
 						<enable_js translate="label">
 							<label>Include Jquery</label>
-							<comment>Select Yes for include the jquery library. </comment>
+							<comment><![CDATA[Select Yes for include the jquery library.]]></comment>
 							<source_model>adminhtml/system_config_source_yesno</source_model>
 							<frontend_type>select</frontend_type>
 							<sort_order>4</sort_order>
@@ -63,7 +76,7 @@
 						</enable_js>
 						<description translate="label">
 							<label>Description</label>
-							<comment>This text will appear under the Dealer inquiry Form title. </comment>
+							<comment><![CDATA[This text will appear under the Dealer inquiry Form title.]]></comment>
 							<frontend_type>textarea</frontend_type>
 							<sort_order>20</sort_order>
 							<show_in_default>1</show_in_default>
@@ -72,7 +85,7 @@
 						</description>
 						<btn_text translate="label">
 							<label>Submit button text</label>
-							<comment>Set text for the submit button of the form. If empty the default value "Submit" will be used</comment>
+							<comment><![CDATA[Set text for the submit button of the form. If empty the default value "Submit" will be used]]></comment>
 							<frontend_type>text</frontend_type>
 							<sort_order>30</sort_order>
 							<show_in_default>1</show_in_default>
@@ -81,7 +94,7 @@
 						</btn_text>
 						<success_tital translate="label">
 							<label>Success Page Heading</label>
-							<comment>Here, We can Set Dealer inquiry Success Page title.</comment>
+							<comment><![CDATA[Here, We can Set Dealer inquiry Success Page title.]]></comment>
 							<frontend_type>text</frontend_type>
 							<sort_order>30</sort_order>
 							<show_in_default>1</show_in_default>
@@ -90,7 +103,7 @@
 						</success_tital>
 						<success_des translate="label">
 							<label>Success Page Description</label>
-							<comment>This text will be displayed after the Dealer inquiry form submission.</comment>
+							<comment><![CDATA[This text will be displayed after the Dealer inquiry form submission.]]></comment>
 							<frontend_type>textarea</frontend_type>
 							<sort_order>40</sort_order>
 							<show_in_default>1</show_in_default>
@@ -99,20 +112,60 @@
 						</success_des>
 						<indicates translate="label">
 							<label>Indicates Required Label</label>
-							<comment>Here, We can Change Dealer inquiry Indicates Required Label. </comment>
+							<comment><![CDATA[Here, We can Change Dealer inquiry Indicates Required Label.]]> </comment>
 							<frontend_type>text</frontend_type>
 							<sort_order>50</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
 						</indicates>
+						<customer>
+							<label>Select Customer group for create customer</label>
+							<comment><![CDATA[Choose customer type from here for create different type of customer from Dealer Manager.]]></comment>
+							<source_model>inquiry/system_config_source_customergroup</source_model>
+							<frontend_type>select</frontend_type>
+							<sort_order>60</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</customer>
 					</fields>
                 </general>
             </groups>
 			<groups>
+				<admin_email translate="label">
+                    <label>Dealer Inquiry Owner Email Template</label>
+					<comment>After submit dealer inquiry form Owner get email notification so you can set Email Subject and Email template here. </comment>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>82</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <heading translate="label">
+							<label>Subject</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>10</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</heading>
+						<email_template translate="label">
+							<label>Email Template</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_email_template</source_model>
+							<sort_order>15</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</email_template>
+					</fields>
+                </admin_email>
+            </groups>
+			<groups>
                 <customer_email translate="label">
-                    <label>Dealer inquiry Email Template</label>
-					<comment>After submit dealer inquiry form customer get email notification so you can set Email Subject and Email content here. </comment>
+                    <label>Dealer Inquiry Customer Email Template</label>
+					<comment>After submit dealer inquiry form customer get email notification so you can set Email Subject and Email template here. </comment>
                     <frontend_type>text</frontend_type>
                     <sort_order>85</sort_order>
                     <show_in_default>1</show_in_default>
@@ -127,22 +180,22 @@
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
 						</heading>
-						<description translate="label">
-							<label>Email content</label>
-							<frontend_type>textarea</frontend_type>
-							<sort_order>20</sort_order>
+						<email_template translate="label">
+							<label>Email Template</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_email_template</source_model>
+							<sort_order>15</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
-							<comment><![CDATA[Please do not change {{Name}} & {{Storename}}]]> </comment>
-						</description>
+						</email_template>
 					</fields>
                 </customer_email>
             </groups>
 			<groups>
-                <register_email translate="label">
+                <create_account translate="label">
                     <label>Create Customer Email Template</label>
-					<comment>When admin click on create customer button. Customer get email notification of his username and password. So for that email you can set email Subject and email content here.</comment>
+					<comment>When admin click on create customer button. Customer get email notification of his username and password. So for that email you can set email Subject and email template here.</comment>
                     <frontend_type>text</frontend_type>
                     <sort_order>90</sort_order>
                     <show_in_default>1</show_in_default>
@@ -157,17 +210,17 @@
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
 						</heading>
-						<description translate="label">
-							<label>Email content</label>
-							<frontend_type>textarea</frontend_type>
-							<sort_order>20</sort_order>
+						<email_template translate="label">
+							<label>Email Template</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_email_template</source_model>
+							<sort_order>15</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
-							<comment><![CDATA[Please do not change {{Name}},{{username}},{{password}} & {{storename}}]]> </comment>
-						</description>
+						</email_template>
 					</fields>
-                </register_email>
+                </create_account>
             </groups>
             <groups>
                 <change_label translate="label">
@@ -282,6 +335,46 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </description>
+						<datetime translate="label">
+							<label>Date Time</label>
+							<frontend_type>text</frontend_type>
+                            <sort_order>13</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+						</datetime>
+						<upload_file>
+							<label>Upload File</label>
+							<frontend_type>text</frontend_type>
+                            <sort_order>14</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+						</upload_file>
+							<extra_field_one translate="label">
+							<label>Extra Field 1</label>
+							<frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+						</extra_field_one>
+						<extra_field_two translate="label">
+							<label>Extra Field 2</label>
+							<frontend_type>text</frontend_type>
+                            <sort_order>25</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+						</extra_field_two>
+						<extra_field_three translate="label">
+							<label>Extra Field 3</label>
+							<frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+						</extra_field_three>
 					</fields>
                 </change_label>
             </groups>
@@ -375,6 +468,64 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </captcha>
+						<datetime>
+							<label>Date Time</label>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<frontend_type>select</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+						</datetime>
+						<upload_file>
+							<label>Upload File</label>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<frontend_type>select</frontend_type>
+                            <sort_order>21</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+							<comment><![CDATA[The default file upload size is restricted by server, in general it is maximum 2MB, so if you need to allow more than 2MB to be uploaded then please contact your server support team to increase file upload size limit.]]></comment>
+						</upload_file>
+						<file_type translate="label">
+							<label>Allowed File Types</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>22</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<comment><![CDATA[Add comma separated file extensions<br>(for e.g. jpeg,jpg,png)]]></comment>
+							<depends>
+								<upload_file>1</upload_file>
+							</depends>
+						</file_type>
+						<field_one translate="label">
+                            <label>Extra Filed 1</label>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<frontend_type>select</frontend_type>
+                            <sort_order>25</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </field_one>
+						<field_two translate="label">
+                            <label>Extra Filed 2</label>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<frontend_type>select</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </field_two>
+						<field_three translate="label">
+                            <label>Extra Filed 3</label>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<frontend_type>select</frontend_type>
+                            <sort_order>35</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </field_three>
 				    </fields>
                 </label_hide>
             </groups>					

@@ -2,7 +2,7 @@
 <config>
 	<modules>
 		<CapacityWebSolutions_Inquiry>
-			<version>2.0.0</version>
+			<version>2.1.0</version>
 		</CapacityWebSolutions_Inquiry>
     </modules>
 	<global>
@@ -22,6 +22,9 @@
 						<inquiry>
 							<table>dealerinquiry</table>
 						</inquiry>
+						<inquiryfiles>
+							<table>dealerinquiry_files</table>
+						</inquiryfiles>
 					</entities>
 			</inquiry_mysql4>
 		</models>
@@ -45,6 +48,25 @@
                 </connection>
             </inquiry_read>
         </resources>
+		<template>
+			<email>
+				<inquiry_admin_email_email_template translate="label" module="inquiry">
+					<label>Dealer Inquiry-Admin Email</label>
+					<file>inquiry/admin_inquiry.html</file>
+					<type>html</type>
+				</inquiry_admin_email_email_template>
+				<inquiry_customer_email_email_template translate="label" module="inquiry">
+					<label>Dealer Inquiry-Customer Submit Form Email</label>
+					<file>inquiry/customer_inquiry.html</file>
+					<type>html</type>
+				</inquiry_customer_email_email_template>
+				<inquiry_create_account_email_template translate="label" module="inquiry">
+                    <label>Dealer Inquiry-Create Customer Email</label>
+                    <file>inquiry/create_customer.html</file>
+                    <type>html</type>
+                </inquiry_create_account_email_template>
+			</email>
+		</template>
 		<helpers> 
 			<inquiry>
 				<class>CapacityWebSolutions_Inquiry_Helper</class>
@@ -60,6 +82,16 @@
 				</connection>
 			</inquiry_setup>
 		</resources> 
+		<events>
+			<core_block_abstract_prepare_layout_before>
+                <observers>
+                    <capacityWebSolutions_inquiry_prepare_layout_before>
+                        <class>inquiry/observer</class>
+                        <method>prepareLayoutBefore</method>
+                    </capacityWebSolutions_inquiry_prepare_layout_before>
+                </observers>
+			</core_block_abstract_prepare_layout_before>
+		</events>
 	</global>
 	<admin>
 		<routers>
@@ -108,21 +140,21 @@
 				<sort_order>70</sort_order> 
 				<children>
 					<inquiry module="inquiry">
-				<title>Dealer Inquiries</title>
-				<sort_order>71</sort_order>               
-				<children>
-					<items module="inquiry">
-						<title>Dealer Management</title>
-						<sort_order>0</sort_order>
-						<action>inquiry/adminhtml_inquiry/index</action> 
-					</items>
-					<dealer_settings module="inquiry">
-						<title>Settings</title>
-						<sort_order>10</sort_order>
-						<action>adminhtml/system_config/edit/section/inquiry</action> 
-					</dealer_settings>
-				</children>
-			</inquiry>
+						<title>Dealer Inquiries</title>
+						<sort_order>71</sort_order>               
+						<children>
+							<items module="inquiry">
+								<title>Dealer Management</title>
+								<sort_order>0</sort_order>
+								<action>inquiry/adminhtml_inquiry/index</action> 
+							</items>
+							<dealer_settings module="inquiry">
+								<title>Settings</title>
+								<sort_order>10</sort_order>
+								<action>adminhtml/system_config/edit/section/inquiry</action> 
+							</dealer_settings>
+						</children>
+					</inquiry>
 				</children>
 			</cws>
 		</menu>
@@ -157,40 +189,29 @@
 		<inquiry>
 			<general>
 				<enabled>1</enabled>
+				<enable_toplink>1</enable_toplink>
 				<heading>Dealer Inquiry</heading>
 				<toplink>Dealer Inquiry</toplink>
+				<enable_js>1</enable_js>
 				<description>Write description here and it will display after Title.</description>
 				<success_tital>Thank You.</success_tital>
 				<success_des>Thank you for contacting us.</success_des>
+				<btn_text>Submit</btn_text>
 				<indicates>Indicates Required.</indicates>
+				<customer>1</customer>
 			</general>
+			<admin_email>
+				<heading>New Dealer Inquiry from dealer</heading>
+				<email_template>inquiry_admin_email_email_template</email_template>
+			</admin_email>
 			<customer_email>
 				<heading>Thank you for contacting Us.</heading>
-				<description><![CDATA[<h2>Hello {{Name}}, </h2>
-<br><br>
-Thank you for contacting Owner. A company representative will contact you with more information within two business days.
-<br><br>
-Thank You,{{Storename}}]]>
-				
-				</description>
+				<email_template>inquiry_customer_email_email_template</email_template>
 			</customer_email>
-			<register_email>
+			<create_account>
 				<heading>Registration Details of Dealer Inquiry</heading>
-				<description><![CDATA[<h2>Hello {{Name}}, </h2>
-<br>
-Thank You for Register with Owner.Your Login Details for access your Account.....
-<br><br>
-Login Email : {{username}}
-<br>
-Login Password : {{password}}
-<br><br>
-You can login directly in your account from here with given login details.....  
-<br><br>
-{{url}}
-<br><br>
-Thank You,{{storename}}]]>
-				</description>
-			</register_email>
+				<email_template>inquiry_create_account_email_template</email_template>
+			</create_account>
 			<change_label>
 				<f_name>First Name</f_name>
 				<l_name>Last Name</l_name>
@@ -204,7 +225,12 @@ Thank You,{{storename}}]]>
 				<contact_number>Contact Number</contact_number>
 				<email>Email</email>
 				<website>Website</website>
+				<datetime>Date Time</datetime>
+				<upload_file>Upload File</upload_file>
 				<description>Business Description</description>
+				<extra_field_one>Extra Field 1</extra_field_one>
+				<extra_field_two>Extra Field 2</extra_field_two>
+				<extra_field_three>Extra Field 3</extra_field_three>
 			</change_label>
 			<label_hide>
 				<l_name>1</l_name>
@@ -216,6 +242,12 @@ Thank You,{{storename}}]]>
 				<postal_code>1</postal_code>
 				<website>1</website>
 				<captcha>1</captcha>
+				<upload_file>0</upload_file>
+				<file_type>jpg,jpeg,png,doc,docx,pdf,txt</file_type>
+				<datetime>0</datetime>
+				<field_one>0</field_one>
+				<field_two>0</field_two>
+				<field_three>0</field_three>
 			</label_hide>
 		</inquiry>
 	</default>

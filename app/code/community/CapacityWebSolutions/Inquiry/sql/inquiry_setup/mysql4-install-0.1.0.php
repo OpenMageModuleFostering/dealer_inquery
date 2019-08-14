@@ -1,12 +1,4 @@
 <?php
-/***************************************************************************
-	@extension	: Dealer Inquiry Extension.
-	@copyright	: Copyright (c) 2015 Capacity Web Solutions.
-	( http://www.capacitywebsolutions.com )
-	@author		: Capacity Web Solutions Pvt. Ltd.
-	@support	: magento@capacitywebsolutions.com	
-***************************************************************************/
-
 $installer = $this;
 
 $installer->startSetup();

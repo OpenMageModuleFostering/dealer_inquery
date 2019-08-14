@@ -9,43 +9,21 @@
 
  $code =  trim($this->getRandomCode()); 
  $_taxvat = $this->getLayout()->createBlock('customer/widget_taxvat'); 
- $heading = trim(Mage::getStoreConfig('inquiry/general/heading'));
- $indicates = trim(Mage::getStoreConfig('inquiry/general/indicates'));
- $des_gen = trim(Mage::getStoreConfig('inquiry/general/description'));
- $btn_text = trim(Mage::getStoreConfig('inquiry/general/btn_text'));
- $first_name = trim(Mage::getStoreConfig('inquiry/change_label/f_name'));
- $last_name = trim(Mage::getStoreConfig('inquiry/change_label/l_name')); 
- $company_name = trim(Mage::getStoreConfig('inquiry/change_label/company_name')); 
- $vat_number = trim(Mage::getStoreConfig('inquiry/change_label/vat_number')); 
- $address = trim(Mage::getStoreConfig('inquiry/change_label/address')); 
- $city = trim(Mage::getStoreConfig('inquiry/change_label/city')); 
- $state = trim(Mage::getStoreConfig('inquiry/change_label/state')); 
- $country = trim(Mage::getStoreConfig('inquiry/change_label/country')); 
- $postal_code = trim(Mage::getStoreConfig('inquiry/change_label/postal_code')); 
- $contact_number = trim(Mage::getStoreConfig('inquiry/change_label/contact_number')); 
- $email = trim(Mage::getStoreConfig('inquiry/change_label/email')); 
- $website = trim(Mage::getStoreConfig('inquiry/change_label/website'));
- $description = trim(Mage::getStoreConfig('inquiry/change_label/description')); 
- $last_name_hide = Mage::getStoreConfig('inquiry/label_hide/l_name');  
- $vat_number_hide = Mage::getStoreConfig('inquiry/label_hide/vat_number'); 
- $address_hide = Mage::getStoreConfig('inquiry/label_hide/address'); 
- $city_hide = Mage::getStoreConfig('inquiry/label_hide/city'); 
- $state_hide = Mage::getStoreConfig('inquiry/label_hide/state'); 
- $country_hide = Mage::getStoreConfig('inquiry/label_hide/country'); 
- $postal_code_hide = Mage::getStoreConfig('inquiry/label_hide/postal_code'); 
- $website_hide = Mage::getStoreConfig('inquiry/label_hide/website');
- $captcha_hide = Mage::getStoreConfig('inquiry/label_hide/captcha');
 
  ?>
-
-<?php if($captcha_hide): ?>
-
+ <script>
+function clearFileInputField(tagId) {
+    document.getElementById(tagId).innerHTML = 
+                    document.getElementById(tagId).innerHTML;
+}
+</script>
+<?php if($this->getCaptchaHide()): ?>
 <script>
-//var jq = $.noConflict();
 jQuery(document).ready(function(){
 jQuery("#img_refresh").click(function(){
    jQuery("#captcha").load(location.href + " #captcha");
 	});
+
 });
 </script>
 <script language="JavaScript" type="text/JavaScript">
@@ -71,25 +49,25 @@ jQuery("#img_refresh").click(function(){
 <?php endif; ?>
 
 <div id="about-copy" class="inquiryForm">
-	<h1><img src="<?php echo $this->getSkinUrl('images/inquiry-icon.png') ?>" alt="" /><?php if($heading): ?><?php echo $this->__($heading); ?><?php endif; ?></h1>
-	<p><?php if($des_gen): ?><?php echo $des_gen; ?><?php endif; ?></p>
-    <?php if($indicates != "") { ?>
-		<div class="indicates"><span class="required"><em>*</em></span><?php echo $this->__($indicates); ?></div>
+	<h1><img src="<?php echo $this->getSkinUrl('images/inquiry-icon.png') ?>" alt="" /><?php if($this->getHeading()): ?><?php echo $this->__($this->getHeading()); ?><?php endif; ?></h1>
+	<p><?php if($this->getDesc()): ?><?php echo $this->getDesc(); ?><?php endif; ?></p>
+    <?php if($this->getIndicates()) { ?>
+		<div class="indicates"><span class="required"><em>*</em></span><?php echo $this->__($this->getIndicates()); ?></div>
 	<?php } ?>
 	
-	<form name="dealerInquiry" id="dealerInquiry" action="<?php echo $this->getUrl("inquiry/index/thanks"); ?>" method="post">
+	<form name="dealerInquiry" id="dealerInquiry" action="<?php echo $this->getUrl("inquiry/index/thanks"); ?>" method="post" enctype="multipart/form-data">
     	<div class="fieldset">
         	<ul class="form-list">
             	<li class="fields">
                 	<div class="field">
-						<label><?php if($first_name): ?><?php echo $first_name; ?><?php else: ?><?php echo "First Name:"; ?><?php endif; ?><span class="required"><em>*</em></span></label>
+						<label><?php if($this->getFirstName()): ?><?php echo $this->getFirstName(); ?><?php else: ?><?php echo "First Name:"; ?><?php endif; ?><span class="required"><em>*</em></span></label>
                         <div class="input-box">
                         	<input type="text" name="firstname" id="firstname" size="45" class="input-text required-entry input-box" />
                         </div>
                     </div>
-                    <?php if($last_name_hide): ?> 
+                    <?php if($this->getLastNameHide()): ?> 
                     <div class="field">
-                    	<label><?php if($last_name): ?><?php echo $last_name; ?><?php else: ?><?php echo "Last Name:"; ?><?php endif; ?><span class="required"><em>*</em></span></label>
+                    	<label><?php if($this->getLastName()): ?><?php echo $this->getLastName(); ?><?php else: ?><?php echo "Last Name:"; ?><?php endif; ?><span class="required"><em>*</em></span></label>
                         <div class="input-box">
                         	<input type="text" name="lastname" size="45" class="input-text required-entry" />
                         </div>
@@ -98,26 +76,24 @@ jQuery("#img_refresh").click(function(){
                 </li>
                 <li class="fields">
                 	<div class="field">
-                    	<label><?php if($company_name): ?><?php echo $company_name; ?><?php else: ?><?php echo "Company Name:"; ?><?php endif; ?><span class="required"><em>*</em></span></label>
+                    	<label><?php if($this->getCompanyName()): ?><?php echo $this->getCompanyName(); ?><?php else: ?><?php echo "Company Name:"; ?><?php endif; ?><span class="required"><em>*</em></span></label>
                         <div class="input-box">
                         	<input type="text" name="company" size="45" class="input-text required-entry" />
                         </div>
                     </div>
 				
-					<?php if($vat_number_hide): ?>
+					<?php if($this->getVatNumberHide()): ?>
                     <div class="field">
-                    	<label><?php if($vat_number): ?><?php echo $vat_number; ?><?php else: ?><?php echo "Tax/VAT Number:"; ?><?php endif;  ?></label>
+                    	<label><?php if($this->getVatNumber()): ?><?php echo $this->getVatNumber(); ?><?php else: ?><?php echo "Tax/VAT Number:"; ?><?php endif;  ?></label>
                         <div class="input-box">
                         	<input type="text" name="taxvat" size="45" class="input-text" /> 
                         </div>
                     </div>
                     <?php endif; ?>
 					
-					
-					
-                    <?php if($address_hide): ?>  
+					<?php if($this->getAddressHide()): ?>  
                 	<div class="field">
-                    	<label><?php if($address): ?><?php echo $address; ?> <?php else: ?><?php echo "Address:"; ?><?php endif; ?><span class="required"><em>*</em></span></label>
+                    	<label><?php if($this->getAddress()): ?><?php echo $this->getAddress(); ?> <?php else: ?><?php echo "Address:"; ?><?php endif; ?><span class="required"><em>*</em></span></label>
                         <div class="input-box">
 	                        <textarea name="address" cols="42" rows="1" class="input-text required-entry"></textarea>
                         </div>
@@ -125,17 +101,17 @@ jQuery("#img_refresh").click(function(){
                     <?php endif; ?>
                 </li>
                 <li class="fields">
-                    <?php if($city_hide): ?>
+                    <?php if($this->getCityHide()): ?>
                     <div class="field">
-                    	<label><?php if($city): ?><?php echo $city; ?><?php else: ?><?php echo "City:"; ?><?php endif;  ?><span class="required"><em>*</em></span></label>
+                    	<label><?php if($this->getCity()): ?><?php echo $this->getCity(); ?><?php else: ?><?php echo "City:"; ?><?php endif;  ?><span class="required"><em>*</em></span></label>
                         <div class="input-box">
                         	<input type="text" name="city" size="45" class="input-text required-entry" /> 
                         </div>
                     </div>
                     <?php endif; ?>
-                    <?php if($state_hide): ?>
+                    <?php if($this->getStateHide()): ?>
                 	 <div class="field">
-                     	<label><?php if($state): ?><?php echo $state; ?><?php else: ?><?php echo "State / Province:"; ?><?php endif;  ?><span class="required"><em>*</em></span></label>
+                     	<label><?php if($this->getState()): ?><?php echo $this->getState(); ?><?php else: ?><?php echo "State / Province:"; ?><?php endif;  ?><span class="required"><em>*</em></span></label>
                         <div class="input-box">
 	                        <input type="text" name="state" size="45" class="input-text required-entry" />
                         </div>
@@ -143,9 +119,9 @@ jQuery("#img_refresh").click(function(){
                      <?php endif; ?>
                 </li>
                 <li class="fields">
-                     <?php if($country_hide): ?>
+                     <?php if($this->getCountryHide()): ?>
                      <div class="field">
-                     	<label><?php if($country): ?><?php echo $country; ?><?php else: ?><?php echo "Country:"; ?><?php endif;  ?><span class="required"><em>*</em></span></label>
+                     	<label><?php if($this->getCountry()): ?><?php echo $this->getCountry(); ?><?php else: ?><?php echo "Country:"; ?><?php endif;  ?><span class="required"><em>*</em></span></label>
                         <div class="input-box">
                             <select name="country" id="country" class="drop" class="input-text required-entry">
                                 <?php
@@ -154,20 +130,20 @@ jQuery("#img_refresh").click(function(){
                                     $collection = Mage::getModel('directory/country')->getCollection();
                                     foreach ($collection as $country)
                                     {
-                                    $cid = $country->getId();
-                                    $cname = $country->getName(); 
-                                ?>
-                                    <option value="<?php echo $cid.'$$$'.$cname; ?>"<?php if($cid == $countryCode) echo "SELECTED" ?> ><?php echo $cname; ?></option>
-                                <?php 
-                                } 
+										$cid = $country->getId();
+										$cname = $country->getName(); 
+									?>
+										<option value="<?php echo $cid.'$$$'.$cname; ?>"<?php if($cid == $countryCode) echo "SELECTED" ?> ><?php echo $cname; ?></option>
+									<?php 
+									} 
                                 ?>
                             </select>
                         </div>
                      </div>
                      <?php endif; ?>
-                     <?php if($postal_code_hide): ?>
+                     <?php if($this->getPostalCodeHide()): ?>
                   	 <div class="field">
-                    	<label><?php if($postal_code): ?><?php echo $postal_code; ?><?php else: ?><?php echo "ZIP / Postal Code:"; ?><?php endif; ?><span class="required"><em>*</em></span></label>
+                    	<label><?php if($this->getPostalCode()): ?><?php echo $this->getPostalCode(); ?><?php else: ?><?php echo "ZIP / Postal Code:"; ?><?php endif; ?><span class="required"><em>*</em></span></label>
                         <div class="input-box">
                  			<input type="text" name="zip" id="zip" size="45" maxlength="10" class="required-entry input-text required-entry input-text required-entry validation-passed" />
                         </div>
@@ -176,7 +152,7 @@ jQuery("#img_refresh").click(function(){
                 </li>
                 <li class="fields">
                     <div class="field">
-                    	<label><?php if($contact_number): ?><?php echo $contact_number; ?><?php else: ?><?php echo "Contact Number:"; ?><?php endif; ?><span class="required"><em>*</em></span></label>
+                    	<label><?php if($this->getContactNumber()): ?><?php echo $this->getContactNumber(); ?><?php else: ?><?php echo "Contact Number:"; ?><?php endif; ?><span class="required"><em>*</em></span></label>
                         <div class="input-box">
                         	<input type="text" name="phone" size="45" onKeyPress="return isNumberKey(event)" maxlength="15" class="input-text validate input-text required-entry"/>
                         </div>
@@ -184,30 +160,87 @@ jQuery("#img_refresh").click(function(){
 				</li>
 				 <li class="fields">
                     <div class="field">
-	                	<label><?php if($email): ?><?php echo $email; ?><?php else: ?><?php echo "Email:"; ?><?php endif; ?><span class="required"><em>*</em></span></label>
+	                	<label><?php if($this->getEmail()): ?><?php echo $this->getEmail(); ?><?php else: ?><?php echo "Email:"; ?><?php endif; ?><span class="required"><em>*</em></span></label>
     	            	<div class="input-box">
                         	<input type="text" name="email" size="45" class="input-text validate-email required-entry" />
                         </div>
                     </div>
                 </li>
                 <li class="fields">
-                    <?php if($website_hide): ?>
+                    <?php if($this->getWebsiteHide()): ?>
                     <div class="field">
-                    	<label><?php if($website): ?><?php echo $website; ?><?php else: ?><?php echo "Website:"; ?><?php endif; ?></label>
+                    	<label><?php if($this->getWebsite()): ?><?php echo $this->getWebsite(); ?><?php else: ?><?php echo "Website:"; ?><?php endif; ?></label>
                         <div class="input-box">
                         	<input type="text" name="website" size="45" class="input-text" /> 
                         </div>
                     </div>
                     <?php endif; ?>
                     <div class="field">
-                        <label><?php if($description): ?><?php echo $description; ?><?php else: ?><?php echo "Business Description:"; ?><?php endif; ?></label>
+                        <label><?php if($this->getDescription()): ?><?php echo $this->getDescription(); ?><?php else: ?><?php echo "Business Description:"; ?><?php endif; ?></label>
                         <div class="input-box">
                             <textarea name="desc" cols="75" rows="2" class="input-text"></textarea>
                         </div>
                     </div>
                 </li>
+				<li class="fields">
+					<?php if($this->getDateTimeHide()): ?>
+                    <div class="field">
+                    	<label><?php if($this->getDateTime()): ?><?php echo $this->getDateTime(); ?><?php else: ?><?php echo "Date Time:"; ?><?php endif; ?></label>
+                        <div class="input-box">
+                        	<input type="text" name="date_time" id="date_time" size="45" class="input-text validate-date" placeholder="dd/mm/yyyy HH:MM:SS"/>  <img title="Select date" id="date-picker-cal" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN) . 'adminhtml/default/default/images/grid-cal.gif'; ?>">
+                        </div>
+                    </div>
+					<script type="text/javascript">// <![CDATA[
+					Calendar.setup({
+						inputField : 'date_time',
+						ifFormat : '%d/%m/%Y %H:%M:%S',
+						button : 'date-picker-cal',
+						align : 'Br',
+						singleClick : true ,
+						showsTime : true
+					});
+					
+					// ]]></script>
+					<?php endif; ?>
+					<?php if($this->getUploadFileHide()): ?>
+					<div class="field">
+                    	<label><?php if($this->getUploadFile()): ?><?php echo $this->getUploadFile(); ?><?php else: ?><?php echo "Upload File:"; ?><?php endif; ?></label>
+                        <div class="input-box"  id="uploadFile_div">
+                        	<input type="file" id="file" name="file[]" size="45" class="input-text" multiple="multiple"/>&nbsp;&nbsp;&nbsp;
+							<a id="clearfile" onclick="clearFileInputField('uploadFile_div')" 
+                         href="javascript:void(0);">Clear Uploaded File</a>
+						 </div>
+                    </div>
+					<?php endif; ?>
+				</li>
+				<li class="fields">
+                    <?php if($this->getFieldOneHide()): ?>
+                    <div class="field">
+                    	<label><?php if($this->getExtraFieldOne()): ?><?php echo $this->getExtraFieldOne(); ?><?php else: ?><?php echo "Extra Field 1:"; ?><?php endif; ?></label>
+                        <div class="input-box">
+                        	<input type="text" name="extra_field_one" size="45" class="input-text" /> 
+                        </div>
+                    </div>
+                    <?php endif; ?>
+					<?php if($this->getFieldTwoHide()): ?>
+                    <div class="field">
+                    	<label><?php if($this->getExtraFieldTwo()): ?><?php echo $this->getExtraFieldTwo(); ?><?php else: ?><?php echo "Extra Field 2:"; ?><?php endif; ?></label>
+                        <div class="input-box">
+                        	<input type="text" name="extra_field_two" size="45" class="input-text" /> 
+                        </div>
+                    </div>
+                    <?php endif; ?>
+					<?php if($this->getFieldThreeHide()): ?>
+                    <div class="field">
+                    	<label><?php if($this->getExtraFieldThree()): ?><?php echo $this->getExtraFieldThree(); ?><?php else: ?><?php echo "Extra Field 3:"; ?><?php endif; ?></label>
+                        <div class="input-box">
+                        	<input type="text" name="extra_field_three" size="45" class="input-text" /> 
+                        </div>
+                    </div>
+                    <?php endif; ?>
+				</li>
                 <li class="fields last">
-				<?php if($captcha_hide): ?>  
+				<?php if($this->getCaptchaHide()): ?>  
                 	<label>Capctha<span class="required"><em>*</em></span></label>
                     <div class="captcha-main">
                         <div id="captcha" class="captcha-left">
@@ -223,7 +256,7 @@ jQuery("#img_refresh").click(function(){
         	</ul>
             <div class="clear"></div>
             <div class="button-set">
-					<button type="submit" name="SUBMIT"  class="button" value="SUBMIT" onclick="return captchacode() ;"><span><span><?php if($btn_text): ?><?php echo $btn_text; ?><?php else: ?><?php echo "Submit"; ?><?php endif;  ?></span></span></button>
+					<button type="submit" name="SUBMIT"  class="button" value="SUBMIT" onclick="return captchacode() ;"><span><span><?php if($this->getBtnText()): ?><?php echo $this->getBtnText(); ?><?php else: ?><?php echo "Submit"; ?><?php endif;  ?></span></span></button>
             </div>
         </div>
     </form>
