@@ -47,6 +47,12 @@ class CapacityWebSolutions_Inquiry_Controller_Router extends Mage_Core_Controlle
 		));
 
 		$identifier = $condition->getIdentifier();
+		/* added for solve conflict with Blog */
+		$custom_url = Mage::getStoreConfig(self::CUSTOM_URL_KEY);
+		if($identifier!=$custom_url){
+			return false;
+		}
+		/* end */
 
 		if ($condition->getRedirectUrl()) {
 			Mage::app()->getFrontController()->getResponse()

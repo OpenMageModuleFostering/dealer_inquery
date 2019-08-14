@@ -252,4 +252,8 @@ class CapacityWebSolutions_Inquiry_Adminhtml_InquiryController extends Mage_Admi
 			  ->sendTransactional($templateId, $sender, $customerEmailId, $customerName, $vars, $storeId);
 		$translate->setTranslateInline(true);	
 	}
+	
+	protected function _isAllowed(){
+		return true;
+	}
 }

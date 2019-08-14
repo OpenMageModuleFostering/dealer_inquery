@@ -26,19 +26,44 @@
 	</menu>
 	<acl>
 		<resources>
+			<all>
+				<title>Allow Everything</title>
+			</all>
 			<admin>
 				<children>
-					<system>
+					<cws module="inquiry">
+						<title>MageBees</title>
 						<children>
-							<config>
+							<inquiry module="inquiry">
+								<title>Dealer Inquiries</title>
+								<sort_order>71</sort_order>								
 								<children>
-									<inquiry>
-										<title>Inquiry</title>
-									</inquiry>
+									<items module="inquiry">
+										<title>Dealer Management</title>
+										<sort_order>0</sort_order>
+										<action>adminhtml/inquiry/index</action> 
+									</items>
+									<dealer_settings module="inquiry">
+										<title>Settings</title>
+										<sort_order>10</sort_order>
+										<action>adminhtml/system_config/edit/section/inquiry</action>	
+									</dealer_settings>
 								</children>
-							</config>
+							</inquiry>
 						</children>
-					</system>
+					</cws>
+					<system>
+                        <children>
+                            <config>
+                                <children>
+                                    <inquiry translate="title">
+                                        <title>Dealer Inquiry Settings</title>
+                                        <sort_order>10</sort_order>
+                                    </inquiry>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
 				</children>
 			</admin>
 		</resources>

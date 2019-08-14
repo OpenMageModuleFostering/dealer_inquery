@@ -64,15 +64,13 @@ class CapacityWebSolutions_Inquiry_Block_Inquiry extends Mage_Core_Block_Templat
 		return $collection;
 	}
 	
-	public function getAllDealer($delId)
-	{
+	public function getAllDealer($delId){
 		$collection = Mage::getModel("inquiry/inquiry")->load($delId)->getData();
 		return $collection;
 	}
 	
 	//for add top link
-	public function addTopLinkStores()
-	{	
+	public function addTopLinkStores(){	
 		$enable_link = $this->getLinkEnabled();
 		$url_key =	$this->getUrlKey()?$this->getUrlKey():"inquiry";
 		if($enable_link){
@@ -85,8 +83,7 @@ class CapacityWebSolutions_Inquiry_Block_Inquiry extends Mage_Core_Block_Templat
 	}
 	
 	//for get form data from session after captcha not match
-	public function getFormData()
-    {
+	public function getFormData(){
 		$data = $this->getData('inquiry_data');
 		if (is_null($data)) {
 			$formData = Mage::getSingleton('core/session')->getInquiryFormData();
@@ -97,6 +94,15 @@ class CapacityWebSolutions_Inquiry_Block_Inquiry extends Mage_Core_Block_Templat
 			$this->setData('inquiry_data', $data);
 		}
 		return $data;
+	}
+	
+	public function getStateFromCountry($countrycode){
+		$code = explode('$$$',$countrycode);
+		$statearray = array();
+        if ($countrycode != '') {
+            $statearray = Mage::getModel('directory/region_api')->items($code[0]);
+		}
+		return $statearray;
 	}
 	
 }

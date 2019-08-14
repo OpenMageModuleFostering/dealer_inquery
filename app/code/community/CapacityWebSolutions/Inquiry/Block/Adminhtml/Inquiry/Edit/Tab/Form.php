@@ -84,17 +84,31 @@ class CapacityWebSolutions_Inquiry_Block_Adminhtml_Inquiry_Edit_Tab_Form extends
 				'value'		=> $data->getCity(),
 			));
 		}
-
+		$country = explode('$$$',$data->getCountry());
+		$statearray = Mage::getModel('directory/region_api')->items($country[0]);
+		if(!empty($statearray)){
+			foreach ($statearray as $_state) {
+				if($_state['region_id']== $data->getState()){
+					$state = $_state['name'];
+					break;
+				}else{
+					$state = $data->getState();
+				}
+			}
+		}
 		if($data->getState()){
 			$fieldset->addField('state', 'label', array(
 				'label'     => Mage::helper('inquiry')->__('State'),
 				'name'      => 'state',
-				'value'		=> $data->getState(),
+				//'value'		=> $data->getState(),
+				'value'		=> $state,
 			));
 		}
 		
+		
+		
 		if($data->getCountry()){
-			$country = explode('$$$',$data->getCountry());
+			
 			$fieldset->addField('country', 'label', array(
 				'label'     => Mage::helper('inquiry')->__('Country'),
 				'name'      => 'country',

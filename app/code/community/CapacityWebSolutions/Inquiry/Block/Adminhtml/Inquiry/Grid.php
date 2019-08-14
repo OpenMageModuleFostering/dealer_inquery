@@ -7,8 +7,7 @@
  ***************************************************************************/
 class CapacityWebSolutions_Inquiry_Block_Adminhtml_Inquiry_Grid extends Mage_Adminhtml_Block_Widget_Grid
 {
-	public function __construct()
-	{
+	public function __construct(){
 		parent::__construct();
 		$this->setId('inquiryGrid');
 		$this->setDefaultSort('dealerid');
@@ -16,15 +15,13 @@ class CapacityWebSolutions_Inquiry_Block_Adminhtml_Inquiry_Grid extends Mage_Adm
 		$this->setSaveParametersInSession(true);
 	}
 
-	protected function _prepareCollection()
-	{
+	protected function _prepareCollection()	{
 		$collection = Mage::getModel('inquiry/inquiry')->getCollection();
 		$this->setCollection($collection);
 		return parent::_prepareCollection();
 	}
 
-	protected function _prepareColumns()
-	{
+	protected function _prepareColumns(){
 	  $this->addColumn('dealerid', array(
 		  'header'    => Mage::helper('inquiry')->__('ID'),
 		  'align'     =>'right',
@@ -70,9 +67,7 @@ class CapacityWebSolutions_Inquiry_Block_Adminhtml_Inquiry_Grid extends Mage_Adm
 		  'index'     => 'createddt',
 		  'type' => 'date',
 		));
-		
-		
-	  
+			  
 		$this->addColumn('action', array(
 			'header'    => Mage::helper('inquiry')->__('Action'),
 			'align'     =>'center',
@@ -80,13 +75,11 @@ class CapacityWebSolutions_Inquiry_Block_Adminhtml_Inquiry_Grid extends Mage_Adm
 			'renderer'  => 'CapacityWebSolutions_Inquiry_Block_Adminhtml_Inquiry_Renderer_Image',
 			'filter' => false,		  
 		));
-		
-		
+			
 		return parent::_prepareColumns();
 	}
 
-	public function isCustCreated($value, $row, $column, $isExport)
-	{
+	public function isCustCreated($value, $row, $column, $isExport)	{
 		if ($value=="Created") {
 			$cell = '<span class="grid-severity-notice"><span>Created</span></span>';
 		} else {
@@ -95,8 +88,7 @@ class CapacityWebSolutions_Inquiry_Block_Adminhtml_Inquiry_Grid extends Mage_Adm
 		return $cell;
 	}
 
-	protected function _prepareMassaction()
-	{
+	protected function _prepareMassaction()	{
 		$this->setMassactionIdField('dealer_id');
 		$this->getMassactionBlock()->setFormFieldName('dealer');
 
@@ -108,8 +100,7 @@ class CapacityWebSolutions_Inquiry_Block_Adminhtml_Inquiry_Grid extends Mage_Adm
 		return $this;
 	}
 
-	public function getRowUrl($row)
-	{
+	public function getRowUrl($row)	{
 		return $this->getUrl('*/*/edit', array('id' => $row->getId()));
 	}
 

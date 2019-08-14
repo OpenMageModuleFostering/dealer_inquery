@@ -17,7 +17,7 @@ class CapacityWebSolutions_Inquiry_Block_Adminhtml_Inquiry_Edit extends Mage_Adm
         $this->_controller = 'adminhtml_inquiry';
 		$this->_addButton('adminhtml_inquiry', array(
 			'label' => $this->__('Create Customer'),
-			'onclick' => "setLocation('{$this->getUrl('*/adminhtml_inquiry/createCustomer', array('id' => Mage::registry('inquiry_data')->getId()))}')",
+			'onclick' => "setLocation('{$this->getUrl('*/inquiry/createCustomer', array('id' => Mage::registry('inquiry_data')->getId()))}')",
 		));
         
         $this->_updateButton('delete', 'label', Mage::helper('inquiry')->__('Delete'));

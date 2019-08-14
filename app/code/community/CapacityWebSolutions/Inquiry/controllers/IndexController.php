@@ -61,7 +61,8 @@ class CapacityWebSolutions_Inquiry_IndexController extends Mage_Core_Controller_
 				}
 						
 				if(!empty($data['date_time'])){
-					$data['date_time'] = preg_replace('#(\d{2})/(\d{2})/(\d{4})\s(.*)#', '$3-$2-$1 $4', $data['date_time']);//convert datetime to mysql format
+					$data = $this->_filterDateTime($data, array('date_time'));//convert datetime to mysql format
+					//$data['date_time'] = preg_replace('#(\d{2})/(\d{2})/(\d{4})\s(.*)#', '$3-$2-$1 $4', $data['date_time']);
 				}
 				
 				if(!empty($_FILES['file']['name'][0]))
@@ -291,7 +292,26 @@ class CapacityWebSolutions_Inquiry_IndexController extends Mage_Core_Controller_
 		$image_name = Mage::helper('inquiry')->createCaptchaImage();
 		$this->getResponse()->clearHeaders()->setHeader('Content-type','application/json',true);
         $this->getResponse()->setBody(json_encode($image_name));
-	}  
-	
+	} 
+
+	public function regionlistAction(){
+		$state = "";
+		$countrycode = $this->getRequest()->getParam('country');
+		if ($countrycode != '') {
+			$statearray = Mage::getModel('directory/region_api')->items($countrycode);
+			if(!empty($statearray)){
+				$state = "<select id='state' name='state' class='drop required-entry'><option value=''>--Please Select--</option>";
+				foreach ($statearray as $_state) {
+					if($_state['region_id']){
+						$state .= "<option value='".$_state['region_id']."'>" . $_state['name'] . "</option>";
+					}
+				}
+				$state .= "</select>";
+			}else{
+				$state .= "<input type='text' name='state' size='45' class='input-text required-entry' />";
+			}
+		}
+		echo $state;
+	}
 }	
 

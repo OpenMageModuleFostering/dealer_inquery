@@ -19,7 +19,7 @@ function clearFileInputField(tagId) {
 	function refresh(){
 		var image = document.getElementById("captcha_image");
 		<?php 
-		$url = Mage::helper('adminhtml')->getUrl('inquiry/index/refresh');
+		$url = $this->getUrl('inquiry/index/refresh');
 		?>
 		var urlpage = '<?php echo $url;?>';
 		new Ajax.Request(urlpage, {
@@ -34,6 +34,27 @@ function clearFileInputField(tagId) {
 	}
 </script>
 <?php endif; ?>
+<script>
+	function getRegion(){
+		var country = jQuery("#country option:selected").val();
+		var countrycode = country.split("$$$");
+		<?php 
+		$url = $this->getUrl('inquiry/index/regionlist');
+		?>
+		var urlpage = '<?php echo $url;?>';
+		new Ajax.Request(urlpage, {
+			method:'post',
+			showLoader : true,
+			parameters: {country:countrycode[0]},
+			onSuccess: function(data) {
+				jQuery('#state_div').empty();
+				jQuery('#state_div').append(data.responseText);
+			},
+			onFailure: function() { alert('Something went wrong...'); }
+	
+		});
+	}
+</script>
 <?php $image_name = Mage::helper('inquiry')->createCaptchaImage(); ?>
 <?php $filename = Mage::getBaseDir(Mage_Core_Model_Store::URL_TYPE_MEDIA).DS."inquiry".DS."captcha".DS.$image_name;?>
 <?php if ( ! is_writable(dirname($filename))) : ?>
@@ -109,36 +130,24 @@ function clearFileInputField(tagId) {
                     <?php endif; ?>
                 </li>
                 <li class="fields">
-                    <?php if($this->getStateHide()): ?>
-                	 <div class="field">
-						<?php $state_label = $this->getState()?$this->getState():"State / Province"; ?>
-                     	<label><?php echo $this->__($state_label); ?><span class="required"><em>*</em></span></label>
-                        <div class="input-box">
-	                        <input type="text" name="state" size="45" class="input-text required-entry" value="<?php echo $this->escapeHtml($this->getFormData()->getState()) ?>"/>
-                        </div>
-                     </div>
-                     <?php endif; ?>
-                     
 					<?php if($this->getCountryHide()): ?>
                      <div class="field">
 						<?php $country_label = $this->getCountry()?$this->getCountry():"Country"; ?>
                      	<label><?php echo $this->__($country_label); ?><span class="required"><em>*</em></span></label>
                         <div class="input-box">
 						<?php $country_sess = $this->escapeHtml($this->getFormData()->getCountry()) ?>
-                            <select name="country" id="country" class="drop" class="input-text required-entry">
+                            <select name="country" id="country" class="drop required-entry" onchange="getRegion(this)" >
+								<option value=''>--Please Select--</option>
                                 <?php
-                                    $countryCode = Mage::getStoreConfig('general/country/default');
-                                    $country_name=Mage::app()->getLocale()->getCountryTranslation($countryCode);
-                                    $collection = Mage::getModel('directory/country')->getCollection();
-                                    foreach ($collection as $country)
-                                    {
+									$collection = Mage::getModel('directory/country')->getCollection();
+                                    foreach ($collection as $country){
 										$cid = $country->getId();
 										$cname = $country->getName(); 
 										$country = $cid.'$$$'.$cname;
 										
 									?>
 										<option value="<?php echo $cid.'$$$'.$cname; ?>"<?php 
-										if($country==$country_sess || (empty($country_sess) && $cid == $countryCode)){ 
+										if($country==$country_sess){ 
 										echo "SELECTED";
 										} ?> ><?php echo $cname; ?></option>
 									<?php 
@@ -148,6 +157,40 @@ function clearFileInputField(tagId) {
                         </div>
                      </div>
                      <?php endif; ?> 
+					<?php if($this->getStateHide()): ?>
+						<div class="field">
+							<?php $state_label = $this->getState()?$this->getState():"State / Province"; ?>
+							<label><?php echo $this->__($state_label); ?><span class="required"><em>*</em></span></label>
+							<div id="state_div" class="input-box">
+							<?php $statesess = $this->escapeHtml($this->getFormData()->getState()) ?>
+							<?php if($statesess): ?>
+							<?php $statearray = $this->getStateFromCountry($country_sess); ?>
+								<?php 
+									if(!empty($statearray)){
+										?>
+										<select id='state' name='state' class='drop required-entry'><option value=''>--Please Select--</option>";
+										<?php
+										foreach ($statearray as $_state) {
+											if($_state['region_id']){
+												?>
+												<option value="<?php echo $_state['region_id']; ?>" <?php if($statesess==$_state['region_id']){echo "selected";}?>><?php echo $_state['name']; ?></option>
+												<?php
+											}
+										}
+										?>
+										</select>
+										<?php
+									}else{ ?>
+										<input type="text" name="state" size="45" class="input-text required-entry" value="<?php echo $this->escapeHtml($this->getFormData()->getState()) ?>"/>
+									<?php
+									}
+								?>
+							<?php else: ?>
+								<input type="text" name="state" size="45" class="input-text required-entry" value="<?php echo $this->escapeHtml($this->getFormData()->getState()) ?>"/>
+							<?php endif; ?>
+							</div>
+						</div>
+                     <?php endif; ?>
                 </li>
                 <li class="fields">
                      <?php if($this->getPostalCodeHide()): ?>
@@ -199,13 +242,13 @@ function clearFileInputField(tagId) {
 						<?php $datetime_label = $this->getDateTime()?$this->getDateTime():"Date Time"; ?>
                     	<label><?php echo $this->__($datetime_label); ?></label>
                         <div class="input-box">
-                        	<input type="text" name="date_time" id="date_time" size="45" class="input-text validate-date" placeholder="dd/mm/yyyy HH:MM:SS" value="<?php echo $this->escapeHtml($this->getFormData()->getDateTime()) ?>"/>  <img title="Select date" id="date-picker-cal" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN) . 'adminhtml/default/default/images/grid-cal.gif'; ?>">
+                        	<input type="text" name="date_time" id="date_time" size="45" class="input-text validate-date" placeholder="mm/dd/yyyy HH:MM:SS" value="<?php echo $this->escapeHtml($this->getFormData()->getDateTime()) ?>"/>  <img title="Select date" id="date-picker-cal" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN) . 'adminhtml/default/default/images/grid-cal.gif'; ?>">
                         </div>
                     </div>
 					<script type="text/javascript">// <![CDATA[
 						Calendar.setup({
 							inputField : 'date_time',
-							ifFormat : '%d/%m/%Y %H:%M:%S',
+							ifFormat : '%m/%d/%Y %H:%M:%S',
 							button : 'date-picker-cal',
 							align : 'Br',
 							singleClick : true ,
@@ -290,15 +333,11 @@ function clearFileInputField(tagId) {
 //< ![CDATA[
 var customForm = new VarienForm('dealerInquiry');
 //]]>
-	function isNumberKey(evt)
-	{
-		 var charCode = (evt.which) ? evt.which : evt.keyCode
-		 if (charCode > 31 && (charCode < 48 || charCode > 57))
-		 {
+	function isNumberKey(evt){
+		var charCode = (evt.which) ? evt.which : evt.keyCode
+		if (charCode > 31 && (charCode < 48 || charCode > 57)) {
 		 	return false;
 		}		
-		 return true;
+		return true;
 	} 
-	
-
 </script>
