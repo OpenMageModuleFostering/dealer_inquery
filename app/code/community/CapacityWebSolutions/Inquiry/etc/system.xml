@@ -55,25 +55,34 @@
 								<enable_toplink>1</enable_toplink>
 							</depends>
 						</toplink>
-						<heading translate="label">
-							<label>Heading</label>
-							<comment><![CDATA[Here, We can Set Dealer inquiry Form title.]]></comment>
-							<frontend_type>text</frontend_type>
+						<page_layout translate="label">
+							<label>Page layout</label>
+							<comment><![CDATA[Here, We can Set Dealer inquiry Page Layout.]]></comment>
+							<source_model>page/source_layout</source_model>
+							<frontend_type>select</frontend_type>
 							<sort_order>3</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
-						</heading>
-						<enable_js translate="label">
-							<label>Include Jquery</label>
-							<comment><![CDATA[Select Yes for include the jquery library.]]></comment>
-							<source_model>adminhtml/system_config_source_yesno</source_model>
-							<frontend_type>select</frontend_type>
-							<sort_order>4</sort_order>
+						</page_layout>
+						<page_title>
+							<label>Page Title</label>
+							<comment><![CDATA[Here, We can Set Dealer inquiry Page title.]]></comment>
+							<frontend_type>text</frontend_type>
+							<sort_order>5</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
-						</enable_js>
+						</page_title>
+						<heading translate="label">
+							<label>Heading</label>
+							<comment><![CDATA[Here, We can Set Dealer inquiry Form title.]]></comment>
+							<frontend_type>text</frontend_type>
+							<sort_order>10</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</heading>
 						<description translate="label">
 							<label>Description</label>
 							<comment><![CDATA[This text will appear under the Dealer inquiry Form title.]]></comment>
@@ -87,7 +96,7 @@
 							<label>Submit button text</label>
 							<comment><![CDATA[Set text for the submit button of the form. If empty the default value "Submit" will be used]]></comment>
 							<frontend_type>text</frontend_type>
-							<sort_order>30</sort_order>
+							<sort_order>25</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
@@ -159,6 +168,26 @@
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
 						</email_template>
+						<send_to translate="label">
+							<label>Email Send to</label>
+							<frontend_type>select</frontend_type>
+							<source_model>inquiry/system_config_source_ownermail</source_model>
+							<sort_order>20</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</send_to>
+						<owner_email translate="label">
+							<label>Owner Email</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>25</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<depends>
+								<send_to>custom</send_to>
+							</depends>
+						</owner_email>
 					</fields>
                 </admin_email>
             </groups>
@@ -375,6 +404,14 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
 						</extra_field_three>
+						<captcha translate="label">
+							<label>Captcha</label>
+							<frontend_type>text</frontend_type>
+                            <sort_order>35</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+						</captcha>
 					</fields>
                 </change_label>
             </groups>
@@ -386,7 +423,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                     <fields>
+					<fields>
             			<l_name translate="label">
                             <label>Last Name</label>
 							<source_model>adminhtml/system_config_source_yesno</source_model>

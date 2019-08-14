@@ -38,7 +38,8 @@ class CapacityWebSolutions_Inquiry_Block_Inquiry extends Mage_Core_Block_Templat
 		$this->setExtraFieldOne(trim(Mage::getStoreConfig('inquiry/change_label/extra_field_one')));
 		$this->setExtraFieldTwo(trim(Mage::getStoreConfig('inquiry/change_label/extra_field_two')));
 		$this->setExtraFieldThree(trim(Mage::getStoreConfig('inquiry/change_label/extra_field_three')));
-		
+		$this->setCaptcha(trim(Mage::getStoreConfig('inquiry/change_label/captcha')));
+				
 		//show/hide labels settings
 		$this->setLastNameHide((bool)Mage::getStoreConfig('inquiry/label_hide/l_name'));  
 		$this->setVatNumberHide((bool)Mage::getStoreConfig('inquiry/label_hide/vat_number')); 
@@ -69,16 +70,6 @@ class CapacityWebSolutions_Inquiry_Block_Inquiry extends Mage_Core_Block_Templat
 		return $collection;
 	}
 	
-	public function getRandomCode()
-	{
-		$an = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-		$su = strlen($an) - 1;
-		return substr($an, rand(0, $su), 1) .
-			substr($an, rand(0, $su), 1) .
-			substr($an, rand(0, $su), 1) .
-			substr($an, rand(0, $su), 1);
-	}  
-	
 	//for add top link
 	public function addTopLinkStores()
 	{	
@@ -90,6 +81,20 @@ class CapacityWebSolutions_Inquiry_Block_Inquiry extends Mage_Core_Block_Templat
 			$toplinkBlock->addLink($this->__($label),'inquiry/',$label,true,array(),90);
 		}
 	}
-
+	
+	//for get form data from session after captcha not match
+	public function getFormData()
+    {
+		$data = $this->getData('inquiry_data');
+		if (is_null($data)) {
+			$formData = Mage::getSingleton('core/session')->getInquiryFormData();
+            $data = new Varien_Object();
+            if ($formData) {
+                $data->addData($formData);
+			}
+			$this->setData('inquiry_data', $data);
+		}
+		return $data;
+	}
+	
 }
-

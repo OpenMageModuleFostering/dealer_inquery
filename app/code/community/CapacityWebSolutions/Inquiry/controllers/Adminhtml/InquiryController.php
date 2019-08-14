@@ -142,18 +142,23 @@ class CapacityWebSolutions_Inquiry_Adminhtml_InquiryController extends Mage_Admi
 				$customer->save();
 				$this->addAddress($dealer_data,$customer->getId());
 				$this->sendMail($dealer_data,$randompass);
-				Mage::getSingleton('core/session')->addSuccess("Customer Account Created successfully.");
-					
+				Mage::getSingleton('core/session')->addSuccess("The customer has been created successfully.");
+				
+				Mage::dispatchEvent('adminhtml_customer_save_after', array(
+                    'customer'  => $customer,
+                    'request'   => $this->getRequest()
+                ));
+				
 				//for update is customer created status
-				$dealer_coll = Mage::getModel('inquiry/inquiry')->getCollection()
+				/* $dealer_coll = Mage::getModel('inquiry/inquiry')->getCollection()
 								->addFieldToFilter('email',$customer->getEmail())
 								->addFieldToFilter('websiteid',$customer->getWebsiteId());
 				
 				foreach($dealer_coll as $d){
-						$coll = Mage::getModel("inquiry/inquiry")->load($d->getDealerid());
-						$coll->setData('iscustcreated','1');
-						$coll->save();
-				}
+					$coll = Mage::getModel("inquiry/inquiry")->load($d->getDealerid());
+					$coll->setData('iscustcreated','1');
+					$coll->save();
+				}  */
 					
 			}
 			catch (Exception $e) {
@@ -161,7 +166,7 @@ class CapacityWebSolutions_Inquiry_Adminhtml_InquiryController extends Mage_Admi
 			}
 			
 		}else{
-			Mage::getSingleton('core/session')->addError("Customer Account Already Created.");
+			Mage::getSingleton('core/session')->addError("The customer account already created.");
 		}
 		$this->_redirectReferer();
 	}
@@ -231,7 +236,7 @@ class CapacityWebSolutions_Inquiry_Adminhtml_InquiryController extends Mage_Admi
 		$templateId = Mage::getStoreConfig(self::EMAIL_TEMPLATE_XML_PATH, $dealer_data['storeid']);
 		$customerEmailId = $dealer_data['email']; 
 		$customerName = $dealer_data['firstname']." ".$dealer_data['lastname'];
-		$adminEmail = Mage::getStoreConfig('trans_email/ident_general/email', $dealer_data['storeid']); 
+		$adminEmail = Mage::helper('inquiry')->getOwnerEmail( $dealer_data['storeid']); 
 		$adminName = Mage::getStoreConfig('trans_email/ident_general/name', $dealer_data['storeid']);
 		$store_name = Mage::getStoreConfig('general/store_information/name', $dealer_data['storeid']);
 		$mailSubject = Mage::getStoreConfig('inquiry/create_account/heading',$dealer_data['storeid']);

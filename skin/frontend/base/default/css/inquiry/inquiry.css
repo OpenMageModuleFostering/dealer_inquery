@@ -5,22 +5,19 @@
 	@author		: Capacity Web Solutions Pvt. Ltd.
 	@support	: magento@capacitywebsolutions.com	
 ***************************************************************************/
-
-@import url(http://fonts.googleapis.com/css?family=Roboto:100,100italic,300,300italic,400,400italic,500,500italic,700,700italic,900,900italic);
-@import url(http://fonts.googleapis.com/css?family=Special+Elite);
 .clear { clear:both; }
-.inquiryForm { width:100%; background:#f7f7f7; padding:20px; font-family:'Roboto', Arial, Helvetica, sans-serif;  box-sizing:border-box; }
-.inquiryForm h1 { color:#346699; font:500 30px/32px 'Roboto', Arial, Helvetica, sans-serif; padding:0; text-shadow:0 2px 0px #fff; border-bottom:2px solid #ddd; padding-bottom:10px; margin:0 0 10px; }
+.inquiryForm { width:100%; background:#f7f7f7; padding:20px; font-family:'Raleway', Arial, Helvetica, sans-serif;  box-sizing:border-box; }
+.inquiryForm h1 { color:#346699; font:500 30px/32px 'Raleway', Arial, Helvetica, sans-serif; padding:0; text-shadow:0 2px 0px #fff; border-bottom:2px solid #ddd; padding-bottom:10px; margin:0 0 10px; }
 .inquiryForm h1 img { float:left; margin-right:7px; vertical-align:middle; }
 .indicates { float:right; color:#FF0000; margin-bottom:10px; }
 .inquiryForm .fieldset { clear:both; background:none; border:0 none; padding:0; margin:0; }
 .inquiryForm .form-list .field, .inquiryForm .form-list .wide, .inquiryForm .form-list .control { margin-bottom:0; }
 .inquiryForm .fieldset .form-list li { margin-bottom:0; }
-.inquiryForm .fieldset .form-list .field { width:600px; margin:0 0 10px 0; float:none; }
-.inquiryForm .fieldset .form-list .input-box { width:500px; }
-.inquiryForm .fieldset .form-list .fields.last { width:310px; float:left; }
+.inquiryForm .fieldset .form-list .field { width:48%; margin:0 0 10px; float:none; }
+.inquiryForm .fieldset .form-list .input-box { width:100%; }
+.inquiryForm .fieldset .form-list .fields.last { width:50%; float:left; }
 .inquiryForm .fieldset .form-list textarea { height:inherit; }
-.inquiryForm .fieldset .form-list label { color:#333; font:500 14px/18px 'Roboto', Arial, Helvetica, sans-serif; margin-bottom:3px; display:block; }
+.inquiryForm .fieldset .form-list label { color:#333; font:500 14px/18px 'Raleway', Arial, Helvetica, sans-serif; margin-bottom:3px; display:block; }
 .inquiryForm .fieldset .form-list input, .inquiryForm .fieldset .form-list select,
 .inquiryForm .fieldset .form-list textarea { background:#fff; border:1px solid #ddd; padding:5px; font-size:14px; color:#555; }
 .inquiryForm .fieldset .form-list input, .inquiryForm .fieldset .form-list select,
@@ -33,45 +30,54 @@
 .captcha-left { float:left; }
 .captcha-left b { color:#000; font:28px/32px 'Special Elite'; border:1px solid #ddd; padding:11px 90px 2px; background:#fff1d8; text-align:center; margin-right:10px; box-shadow:1px 1px 1px #ddd; -webkit-box-shadow:1px 1px 1px #ddd; }
 .inquiryForm .fieldset .form-list .fields.last label { margin-bottom:15px; }
-.inquiryForm .fieldset .form-list .fields.last input.input-text { width:77%; margin-top:10px; }
-#img_refresh { float:left; margin-top:-11px; }
+.inquiryForm .fieldset .form-list .fields.last input.input-text { width:45%; margin-top:10px; }
+#img_refresh { float:left; margin-left:10px; }
 #img_refresh img { cursor:pointer; background:#ffa200; border:2px solid #555; padding:10px; box-shadow:1px 1px 1px #ddd; -webkit-box-shadow:1px 1px 1px #ddd; border-radius:30px; -webkit-border-radius:30px; }
-.inquiryForm .button { color:#000; background:#ffa200; padding:10px 30px; font:600 18px/22px 'Roboto', Arial, Helvetica, sans-serif; text-shadow:0 1px 0px #fff; margin-top:15px; transition:all 0.5s ease-in-out 0s; -moz-transition:all 0.5s ease-in-out; -webkit-transition:all 0.5s ease-in-out; border:2px solid #fff; box-shadow:1px 2px 2px #999; -webkit-box-shadow:1px 2px 2px #999; }
+.inquiryForm .button { color:#000; background:#ffa200; padding:10px 55px; font:600 18px/22px 'Raleway', Arial, Helvetica, sans-serif; text-shadow:0 1px 0px #fff; margin:10px 0; transition:all 0.5s ease-in-out 0s; -moz-transition:all 0.5s ease-in-out; -webkit-transition:all 0.5s ease-in-out; border:2px solid #fff; box-shadow:1px 2px 2px #999; -webkit-box-shadow:1px 2px 2px #999; }
 .inquiryForm .button:hover { color:#fff; background:#346699; text-shadow:0 1px 0px #888; } 
 .inquiryForm button.button span { color:inherit; }
 .inquiryForm button.button span { background:none; border:0 none; font:inherit; height:inherit; }
 p.required, .validation-advice { color:#FF0000; font-size:13px; margin:5px 0 0; }
 
 .inquiryForm .fieldset .form-list  input#date_time { width:50%; }
-.inquiryForm .fieldset .form-list  input#file { width:70%; }
+.inquiryForm .fieldset .form-list  input#file { width:50%; }
 img#date-picker-cal { display:inline-block; margin-left:10px; }
 div#clearfile { display:inline-block; margin-left:10px; }
+
+.captcha-input-container { width:22.4%; margin:0 0 10px !important; }
 
 @media (max-width:1200px) { 
 	.inquiryForm .fieldset .form-list .field { width:60%; margin:0 0 10px 0; float:none; }
 	.inquiryForm .fieldset .form-list .input-box { width:100%; }
 	.inquiryForm .fieldset .form-list .fields.last { width:50%; margin:0; }
+	
+	.captcha-input-container { width:60%; }
 
 }
 @media (max-width:770px) { 
      .inquiryForm .fieldset .form-list .field { width:100%; clear:both; }
 	.inquiryForm .fieldset .form-list input, .inquiryForm .fieldset .form-list select, .inquiryForm .fieldset .form-list textarea,
 	.inquiryForm .fieldset .form-list .fields.last input.input-text, .inquiryForm .fieldset .form-list .fields.last { width:100%; }
+	.captcha-input-container, .inquiryForm .fieldset .form-list  input#file { width:100%; }
+	.inquiryForm .fieldset .form-list  input#date_time { width:80%; }
 }
 @media (max-width:470px) { 
 	.inquiryForm .fieldset .form-list .field { width:100%; clear:both; }
 	.inquiryForm .fieldset .form-list input, .inquiryForm .fieldset .form-list select, .inquiryForm .fieldset .form-list textarea,
 	.inquiryForm .fieldset .form-list .fields.last input.input-text, .inquiryForm .fieldset .form-list .fields.last { width:100%; }
+	
+	.inquiryForm .button { padding:10px 51px; }
+	
+	.captcha-main { float:left; }
 }
 
 @media (max-width:390px) { 
-	.inquiryForm h1 { font-size:28px; }
+	.inquiryForm h1 { font-size:26px; }
 	.captcha-left { margin-bottom:15px; }
-	#img_refresh, .captcha-left { clear:both; float:none; }
 	#img_refresh { text-align:center; }
 }
 
 
 
-.inquiryThank  { width:100%; background:#f7f7f7; padding:20px; font-family:'Roboto', Arial, Helvetica, sans-serif;  box-sizing:border-box; }
-.inquiryThank h1 {  border-bottom:2px solid #ddd; color:#346699; font:500 30px/32px 'Roboto',Arial,Helvetica,sans-serif; margin:0 0 10px; padding:0 0 10px; text-shadow:0 2px 0 #fff; }
+.inquiryThank  { width:100%; background:#f7f7f7; padding:20px; font-family:'Raleway', Arial, Helvetica, sans-serif;  box-sizing:border-box; }
+.inquiryThank h1 {  border-bottom:2px solid #ddd; color:#346699; font:500 30px/32px 'Raleway',Arial,Helvetica,sans-serif; margin:0 0 10px; padding:0 0 10px; text-shadow:0 2px 0 #fff; }

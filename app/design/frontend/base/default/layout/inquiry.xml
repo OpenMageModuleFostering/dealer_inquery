@@ -10,30 +10,32 @@
 	</default>
 	<inquiry_index_index>
 	    <reference name="head">
-			<action method="addCss" ifconfig="inquiry/general/enabled"><stylesheet>css/inquiry.css</stylesheet></action>
+			<action method="addCss" ifconfig="inquiry/general/enabled"><stylesheet>css/inquiry/inquiry.css</stylesheet></action>
 			<action method="addItem" ifconfig="inquiry/general/enabled"><type>js_css</type><name>calendar/calendar-win2k-1.css</name><params></params></action>
 			<action method="addItem" ifconfig="inquiry/general/enabled"><type>js</type><name>calendar/calendar.js</name></action>
 			<action method="addItem" ifconfig="inquiry/general/enabled"><type>js</type><name>calendar/calendar-setup.js</name></action>
 			<block type="core/html_calendar" name="head.calendar" as="calendar">
 				<action method="setTemplate" ifconfig="inquiry/general/enabled"><template>page/js/calendar.phtml</template></action>
 			</block>
+			
 		</reference>     
-	   	<reference name="root">
+	   	<!-- <reference name="root">
 			<action method="setTemplate" ifconfig="inquiry/general/enabled"><template>page/1column.phtml</template></action>
-		</reference>
+		</reference> -->
 		<reference name="content">
-			<block type="inquiry/inquiry" name="inquiry">
-				<action method="setTemplate" ifconfig="inquiry/general/enabled"><template>inquiry/inquiry.phtml</template></action>
+			<block type="inquiry/inquiry" name="inquiry" >
+				<action method="setTemplate" ifconfig="inquiry/general/enabled"><template>inquiry/inquiry.phtml</template>
+				</action>	
 			</block>
 		</reference>
 	</inquiry_index_index>
 	<inquiry_index_success>
 	    <reference name="head">
-			<action method="addCss" ifconfig="inquiry/general/enabled"><stylesheet>css/inquiry.css</stylesheet></action>
+			<action method="addCss" ifconfig="inquiry/general/enabled"><stylesheet>css/inquiry/inquiry.css</stylesheet></action>
 		</reference>
-		<reference name="root">
+		<!-- <reference name="root">
 			<action method="setTemplate" ifconfig="inquiry/general/enabled"><template>page/1column.phtml</template></action>
-		</reference>
+		</reference> -->
 		<reference name="content">
 			<block type="inquiry/inquiry" name="inquiryThanks">
 				<action method="setTemplate" ifconfig="inquiry/general/enabled"><template>inquiry/thanks.phtml</template></action>

@@ -11,99 +11,100 @@ class CapacityWebSolutions_Inquiry_IndexController extends Mage_Core_Controller_
 {	
 	const OWNER_EMAIL_TEMPLATE_XML_PATH = 'inquiry/admin_email/email_template';
 	const CUSTOMER_EMAIL_TEMPLATE_XML_PATH = 'inquiry/customer_email/email_template';
+	const INQUIRY_FORM_TITLE = 'inquiry/general/page_title';
 	
     public function indexAction() {
-		$this->_title($this->__('Dealer Inquiry'));
-		$this->loadLayout(array('default'));
+		$title = Mage::getStoreConfig(self::INQUIRY_FORM_TITLE);
+		$this->_title($this->__($title));
+		$page_layout = Mage::helper("inquiry")->getDealerPageLayout();
+		$this->loadLayout()->getLayout()->getBlock('root')->setTemplate('page/'.$page_layout);
 		$this->renderLayout();
+		Mage::getSingleton('core/session')->setInquiryFormData(false);
 	}
 		
-	public function thanksAction() {
+	public function saveAction() {
 		if($this->getRequest()->getPost())
 		{
 			$data = $this->getRequest()->getPost();
+			
 			$captcha =  $this->getRequest()->getParam("captcha");
-			$captcha_code =  $this->getRequest()->getParam("captcha_code");
-			if($captcha == $captcha_code)
-			{		 
-				$storeid = Mage::app()->getStore()->getStoreId();
-				$websiteid = Mage::app()->getWebsite()->getId(); 
+			$captcha_code =  Mage::getSingleton('core/session')->getCaptcha();
+			if(!empty($captcha) && $captcha != $captcha_code)
+			{ 
+				Mage::getSingleton('core/session')->addError(Mage::helper('inquiry')->__('Captcha code does not match!'));
+				Mage::getSingleton('core/session')->setInquiryFormData($data);
+				$this->_redirect('*/*/');return;
+			}
+			$storeid = Mage::app()->getStore()->getStoreId();
+			$websiteid = Mage::app()->getWebsite()->getId(); 
+			
+			$data['storeid']=$storeid;
+			$data['websiteid']=$websiteid;
+			
+			$model = Mage::getModel("inquiry/inquiry");
+			$collection = $model->getCollection()
+									->addFieldToFilter('email',$data['email'])
+									->addFieldToFilter('storeid',$storeid);
+				   
+			if(!$collection->getSize())	{ 	
+				$data['createddt']=Mage::getModel('core/date')->date('Y-m-d H:i:s');
+				$customer = Mage::getModel("customer/customer"); 
+				$customer->setWebsiteId($data['websiteid']); 
+				$customer->loadByEmail($data['email']);
 				
+				if($customer->getId()){
+					$data['iscustcreated']=1;
+				}
+						
+				if(!empty($data['date_time'])){
+					$data['date_time'] = preg_replace('#(\d{2})/(\d{2})/(\d{4})\s(.*)#', '$3-$2-$1 $4', $data['date_time']);//convert datetime to mysql format
+				}
 				
-				$data['storeid']=$storeid;
-				$data['websiteid']=$websiteid;
-				
-				$model = Mage::getModel("inquiry/inquiry");
-				$collection = $model->getCollection()
-										->addFieldToFilter('email',$data['email'])
-										->addFieldToFilter('storeid',$storeid);
-					   
-				if(!$collection->getSize())
-				{ 	
-					$data['createddt']=Mage::getModel('core/date')->date('Y-m-d H:i:s');
-					$customer = Mage::getModel("customer/customer"); 
-					$customer->setWebsiteId($data['websiteid']); 
-					$customer->loadByEmail($data['email']);
-					
-					if($customer->getId()){
-						$data['iscustcreated']=1;
-					}
-							
-					if(!empty($data['date_time'])){
-						$data['date_time'] = preg_replace('#(\d{2})/(\d{2})/(\d{4})\s(.*)#', '$3-$2-$1 $4', $data['date_time']);//convert datetime to mysql format
-					}
-					
-					if(!empty($_FILES['file']['name'][0]))
+				if(!empty($_FILES['file']['name'][0]))
+				{
+					$filetypes = Mage::getStoreConfig('inquiry/label_hide/file_type');
+					$filetype_array = array();
+					$filetype_array = explode(',',$filetypes);
+					foreach($_FILES['file']['name'] as $key => $fname)
 					{
-						$filetypes = Mage::getStoreConfig('inquiry/label_hide/file_type');
-						$filetype_array = array();
-						$filetype_array = explode(',',$filetypes);
-						foreach($_FILES['file']['name'] as $key => $fname)
-						{
-							try {
-								$path = Mage::getBaseDir('media') . DS . 'inquiry' . DS . 'upload' . DS;
-								$uploader = new Varien_File_Uploader(
-															array(
-														'name' => $_FILES['file']['name'][$key],
-														'type' => $_FILES['file']['type'][$key],
-														'tmp_name' => $_FILES['file']['tmp_name'][$key],
-														'error' => $_FILES['file']['error'][$key],
-														'size' => $_FILES['file']['size'][$key]
-															)
-													);
-								$fname = preg_replace('/[^a-zA-Z0-9._]/s', '', $_FILES['file']['name'][$key]);
-								$uploader->setAllowedExtensions($filetype_array);  //Allowed extension for file
-								$uploader->setAllowRenameFiles(false);             
-								$uploader->setFilesDispersion(false);
-								$path_parts = pathinfo($fname);
-								$fileName = $path_parts['filename'].'_'.time().'.'.$path_parts['extension'];//rename file
-								$uploader->save($path, $fileName);
-								$data['file'][] = $fileName;
-							}catch (Exception $e) {
-								$data['file'] = '';
-								Mage::getSingleton('core/session')->addError($e->getMessage());
-								$this->_redirect('*/*/');return;
-							}
+						try {
+							$path = Mage::getBaseDir('media') . DS . 'inquiry' . DS . 'upload' . DS;
+							$uploader = new Varien_File_Uploader(
+														array(
+													'name' => $_FILES['file']['name'][$key],
+													'type' => $_FILES['file']['type'][$key],
+													'tmp_name' => $_FILES['file']['tmp_name'][$key],
+													'error' => $_FILES['file']['error'][$key],
+													'size' => $_FILES['file']['size'][$key]
+														)
+												);
+							$fname = preg_replace('/[^a-zA-Z0-9._]/s', '', $_FILES['file']['name'][$key]);
+							$uploader->setAllowedExtensions($filetype_array);  //Allowed extension for file
+							$uploader->setAllowRenameFiles(false);             
+							$uploader->setFilesDispersion(false);
+							$path_parts = pathinfo($fname);
+							$fileName = $path_parts['filename'].'_'.time().'.'.$path_parts['extension'];//rename file
+							$uploader->save($path, $fileName);
+							$data['file'][] = $fileName;
+						}catch (Exception $e) {
+							$data['file'] = '';
+							Mage::getSingleton('core/session')->addError($e->getMessage());
+							$this->_redirect('*/*/');return;
 						}
 					}
-					$model->setData($data);
-					$model->save();
-		
-					$this->sendOwnerMail($data);//send mail to owner
-					$this->sendCustomerMail($data);//send mail to dealer
 				}
-				else
-				{
-					Mage::getSingleton('core/session')->addError(Mage::helper('inquiry')->__('Email id already exits !'));
-					$this->_redirect('*/*/');return;
-				}
+				$model->setData($data);
+				$model->save();
+	
+				$this->sendOwnerMail($data);//send mail to owner
+				$this->sendCustomerMail($data);//send mail to dealer
 			}
 			else
 			{
-				Mage::getSingleton('core/session')->addError(Mage::helper('inquiry')->__('Captcha code does not match!'));
+				Mage::getSingleton('core/session')->addError(Mage::helper('inquiry')->__('Email id already exits !'));
+				Mage::getSingleton('core/session')->setInquiryFormData($data);
 				$this->_redirect('*/*/');return;
 			}
-		
 		}
 		$this->_redirect('*/*/success');
 	}
@@ -113,8 +114,9 @@ class CapacityWebSolutions_Inquiry_IndexController extends Mage_Core_Controller_
 		$config_change_label = Mage::getStoreConfig('inquiry/change_label');
 		$adminSubject = Mage::getStoreConfig('inquiry/admin_email/heading');
 		$adminName = Mage::getStoreConfig('trans_email/ident_general/name'); //sender name
-		$adminEmail = Mage::getStoreConfig('trans_email/ident_general/email');
-		
+		$send_to = Mage::getStoreConfig('inquiry/admin_email/send_to');
+		$adminEmail = Mage::helper("inquiry")->getOwnerEmail();
+				
 		//template variables
 		$emailTemplateVariables = array();
 		$emailTemplateVariables['subject'] = $adminSubject;	
@@ -323,14 +325,12 @@ class CapacityWebSolutions_Inquiry_IndexController extends Mage_Core_Controller_
 		$customerName = $data['firstname']." ".$lastname;
 		$store_name = Mage::getStoreConfig('general/store_information/name');
 		$adminName = Mage::getStoreConfig('trans_email/ident_general/name'); //sender name
-		$adminEmail = Mage::getStoreConfig('trans_email/ident_general/email');			
+		$adminEmail = Mage::helper("inquiry")->getOwnerEmail();			
 		
 		//load the custom template to the email 
 		$templateId = Mage::getStoreConfig(self::CUSTOMER_EMAIL_TEMPLATE_XML_PATH);
-		
-		$sender = Array('name'  => $adminName,
-					  'email' => $adminEmail);
-		
+		$sender = Array('name'  => $adminName,'email' => $adminEmail);
+					  
 		$vars = Array();
 		$vars = Array('name'=>$customerName,'subject'=>$subject_title);
 		$translate  = Mage::getSingleton('core/translate');
@@ -341,8 +341,19 @@ class CapacityWebSolutions_Inquiry_IndexController extends Mage_Core_Controller_
 	}
 	
 	public function successAction(){
-		$this->loadLayout(array('default'));
+		$title = Mage::getStoreConfig(self::INQUIRY_FORM_TITLE);
+		$this->_title($this->__($title));
+		//$this->loadLayout(array('default'));
+		$page_layout = Mage::helper("inquiry")->getDealerPageLayout();
+		$this->loadLayout()->getLayout()->getBlock('root')->setTemplate('page/'.$page_layout);
 		$this->renderLayout();
 	}
+		
+	public function refreshAction() {  
+		$image_name = Mage::helper('inquiry')->createCaptchaImage();
+		$this->getResponse()->clearHeaders()->setHeader('Content-type','application/json',true);
+        $this->getResponse()->setBody(json_encode($image_name));
+	}  
+	
 }	
 ?>
