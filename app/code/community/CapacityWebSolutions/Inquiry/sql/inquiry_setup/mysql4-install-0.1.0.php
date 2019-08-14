@@ -1,5 +1,14 @@
 <?php
 
+/***************************************************************************
+	@extension	: Dealer Inquiry Extension.
+	@copyright	: Copyright (c) 2014 Capacity Web Solutions.
+	( http://www.capacitywebsolutions.com )
+	@author		: Capacity Web Solutions Pvt. Ltd.
+	@support	: magento@capacitywebsolutions.com	
+***************************************************************************/
+
+
 $installer = $this;
 
 $installer->startSetup();
@@ -28,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `{$this->getTable('dealerinquiry')}` (
   `createddt` datetime NOT NULL,
   `updateddt` datetime NOT NULL,
   PRIMARY KEY (`dealerid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0 ;
+) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci AUTO_INCREMENT=0;
 
 
 ");

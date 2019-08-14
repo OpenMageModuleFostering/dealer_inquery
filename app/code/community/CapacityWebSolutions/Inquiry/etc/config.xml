@@ -1,8 +1,19 @@
 <?xml version="1.0"?>
+
+<!--
+/***************************************************************************
+	@extension	: Dealer Inquiry Extension.
+	@copyright	: Copyright (c) 2014 Capacity Web Solutions.
+	( http://www.capacitywebsolutions.com )
+	@author		: Capacity Web Solutions Pvt. Ltd.
+	@support	: magento@capacitywebsolutions.com	
+***************************************************************************/
+-->
+
 <config>
 	<modules>
 		<CapacityWebSolutions_Inquiry>
-			<version>0.1.0</version>
+			<version>1.2.0</version>
 		</CapacityWebSolutions_Inquiry>
     </modules>
 	<global>

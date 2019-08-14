@@ -1,8 +1,12 @@
 <?php
-/**
- * @copyright  Copyright (c) 2010 Capacity Web Solutions Pvt. Ltd  (http://www.capacitywebsolutions.com)
- * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- */
+/***************************************************************************
+	@extension	: Dealer Inquiry Extension.
+	@copyright	: Copyright (c) 2014 Capacity Web Solutions.
+	( http://www.capacitywebsolutions.com )
+	@author		: Capacity Web Solutions Pvt. Ltd.
+	@support	: magento@capacitywebsolutions.com	
+***************************************************************************/
+
  $code =  trim($this->getRandomCode()); 
  $_taxvat = $this->getLayout()->createBlock('customer/widget_taxvat'); 
  $heading = Mage::getStoreConfig('inquiry/general/heading');
@@ -67,9 +71,9 @@ jq("#img_refresh").click(function(){
 <?php endif; ?>
 
 <div id="about-copy" class="inquiryForm">
-	<h1><img src="<?php echo $this->getSkinUrl('images/inquiry-icon.png') ?>" alt="" /><?php if($heading): ?><?php echo $heading; ?><?php endif; ?></h1>
+	<h1><img src="<?php echo $this->getSkinUrl('images/inquiry-icon.png') ?>" alt="" /><?php if($heading): ?><?php echo $this->__($heading); ?><?php echo $heading; ?><?php endif; ?></h1>
 	<p><?php if($des_gen): ?><?php echo $des_gen; ?><?php endif; ?></p>
-    <div class="indicates"><span class="required"><em>*</em></span>Indicates required.</div>
+    <div class="indicates"><span class="required"><em>*</em></span><?php echo $this->__('Indicates required.') ?></div>
 	<?php 
 		$msg = Mage::getSingleton('core/session')->getSomeSessionVar();
 	    if($msg == 'wrong') { ?>
