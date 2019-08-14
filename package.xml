@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package>
+    <name>Dealer_Inquery</name>
+    <version>1.1.7</version>
+    <stability>stable</stability>
+    <license uri="http://opensource.org/licenses/osl-3.0.php">OSL 3.0</license>
+    <channel>community</channel>
+    <extends/>
+    <summary>This extension is providing inquiry form.</summary>
+    <description>Dealer filled the details like name, address, contact number, email, website and description inquiry form. It informs to customer and admin by email when customer submits inquiry form. This extension also provides customer listing who submit inquiry form in admin under "&amp;lt;strong&amp;gt;Dealer Management &amp;lt;/strong&amp;gt;"section. You can view inquiry details of customer and also delete the inquiry information. This extension provides create customer link from dealer listing page.</description>
+    <notes>Dealer Inquiry</notes>
+    <authors><author><name>Capacity Web Solutions</name><user>capacitywebsolutions</user><email>magento@capacitywebsolutions.com</email></author></authors>
+    <date>2014-04-14</date>
+    <time>08:00:10</time>
+    <contents><target name="mageetc"><dir name="modules"><file name="CapacityWebSolutions_Inquiry.xml" hash="02eb95f93a47babe658b8cacd8a79dba"/></dir></target><target name="magecommunity"><dir name="CapacityWebSolutions"><dir name="Inquiry"><dir name="Block"><file name="Inquiry.php" hash="7d347b958e48042bf9199dd8652a238c"/><dir name="Manage"><file name="Inquiry.php" hash="d0cadb3d6d8ba0622f713825d38e2d3c"/></dir></dir><dir name="Helper"><file name="Data.php" hash="3727f4f66a8f27b8c2aee88808934919"/></dir><dir name="Model"><file name="Inquiry.php" hash="309fa846d6e985e7635661496d4fffce"/><dir name="Mysql4"><dir name="Inquiry"><file name="Collection.php" hash="39606de6d66f5a19431a5d12a3f78805"/></dir><file name="Inquiry.php" hash="dab34dd0311dd0d57f0a95650d01b7f4"/></dir></dir><dir name="controllers"><file name="IndexController.php" hash="980d95e6a6dae2fee3ee13301159fdbe"/><dir name="Manage"><file name="InquiryController.php" hash="3e33e29fabb571398575f6e7d94bb7ff"/></dir></dir><dir name="etc"><file name="config.xml" hash="e066dec62d1274c31ddbad897d7426d9"/><file name="system.xml" hash="fb05d6914d3729f61928afa4041eedec"/></dir><dir name="sql"><dir name="inquiry_setup"><file name="mysql4-install-0.1.0.php" hash="45f417fea69d215ad277cda782b6d992"/></dir></dir></dir></dir></target><target name="magedesign"><dir name="frontend"><dir name="default"><dir name="default"><dir name="template"><dir name="inquiry"><file name="inquiry.phtml" hash="a6bc536bd1a4f0e7cf806f2978ec4700"/><file name="thanks.phtml" hash="95d22dd2acc640c5340fe4ab4247fa52"/></dir></dir><dir name="layout"><file name="inquiry.xml" hash="6a0be068b04f1eb8aa4a6364e64e6a55"/></dir></dir></dir></dir><dir name="adminhtml"><dir name="default"><dir name="default"><dir name="layout"><file name="inquiry.xml" hash="ca5a9dd55f3aef957f8e3835518f44f8"/></dir><dir name="template"><dir name="inquiry"><file name="inquiry.phtml" hash="8c26b9c35bbb575a7497d403b0fcb26a"/><file name="view.phtml" hash="b469d03f48d7e823b948a776c0a97f2d"/></dir></dir></dir></dir></dir></target><target name="mageweb"><dir name="js"><dir name="inquiry"><file name="jquery.min.js" hash="8fc25e27d42774aeae6edbc0a18b72aa"/></dir></dir></target><target name="mageskin"><dir name="frontend"><dir name="default"><dir name="default"><dir name="images"><file name="refresh.jpg" hash="dc1273e8a796b6bbfcb405ec92ff0b18"/></dir></dir></dir></dir></target></contents>
+    <compatible/>
+    <dependencies><required><php><min>5.0.0</min><max>5.5.5</max></php></required></dependencies>
+</package>

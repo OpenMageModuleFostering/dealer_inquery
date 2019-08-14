@@ -1,0 +1,405 @@
+<?php
+/**
+ * @copyright  Copyright (c) 2010 Capacity Web Solutions Pvt. Ltd  (http://www.capacitywebsolutions.com)
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+ $code =  trim($this->getRandomCode()); 
+ $_taxvat = $this->getLayout()->createBlock('customer/widget_taxvat'); 
+ $heading = Mage::getStoreConfig('inquiry/general/heading');
+ $des_gen = Mage::getStoreConfig('inquiry/general/description');
+ $btn_text = Mage::getStoreConfig('inquiry/general/btn_text');
+ $first_name = Mage::getStoreConfig('inquiry/change_label/f_name');
+ $last_name = Mage::getStoreConfig('inquiry/change_label/l_name'); 
+ $company_name = Mage::getStoreConfig('inquiry/change_label/company_name'); 
+ $vat_number = Mage::getStoreConfig('inquiry/change_label/vat_number'); 
+ $address = Mage::getStoreConfig('inquiry/change_label/address'); 
+ $city = Mage::getStoreConfig('inquiry/change_label/city'); 
+ $state = Mage::getStoreConfig('inquiry/change_label/state'); 
+ $country = Mage::getStoreConfig('inquiry/change_label/country'); 
+ $postal_code = Mage::getStoreConfig('inquiry/change_label/postal_code'); 
+ $contact_number = Mage::getStoreConfig('inquiry/change_label/contact_number'); 
+ $email = Mage::getStoreConfig('inquiry/change_label/email'); 
+ $website = Mage::getStoreConfig('inquiry/change_label/website');
+ $description = Mage::getStoreConfig('inquiry/change_label/description'); 
+ $last_name_hide = Mage::getStoreConfig('inquiry/label_hide/l_name');  
+ $vat_number_hide = Mage::getStoreConfig('inquiry/label_hide/vat_number'); 
+ $address_hide = Mage::getStoreConfig('inquiry/label_hide/address'); 
+ $city_hide = Mage::getStoreConfig('inquiry/label_hide/city'); 
+ $state_hide = Mage::getStoreConfig('inquiry/label_hide/state'); 
+ $country_hide = Mage::getStoreConfig('inquiry/label_hide/country'); 
+ $postal_code_hide = Mage::getStoreConfig('inquiry/label_hide/postal_code'); 
+ $website_hide = Mage::getStoreConfig('inquiry/label_hide/website');
+ $captcha_hide = Mage::getStoreConfig('inquiry/label_hide/captcha');
+?>
+<?php if($captcha_hide): ?>
+<script src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB).'js/inquiry/jquery.min.js'?>">
+</script>
+<script>
+var jq = $.noConflict();
+jq(document).ready(function(){
+jq("#img_refresh").click(function(){
+   jq("#captcha").load(location.href + " #captcha");
+	});
+});
+</script>
+<script language="JavaScript" type="text/JavaScript">
+    function captchacode()
+    {
+		var captcha = document.getElementById('capt').value;
+		var captcha_code = document.getElementById('captcha_code').value;
+		if (captcha == "")
+		{
+			return true;
+		}
+		if (captcha==captcha_code)
+		{
+			return true;
+		}
+		else
+		{
+			alert ("captcha code does not match!");
+			return false;
+		}
+	}
+</script>
+<?php endif; ?>
+
+<style>
+.required { color: #EB340A; }
+.captcha-left {
+	border :1px solid;
+    float: left;
+    text-align:center; 
+    width: 80px;
+	height:30px;
+	font-size:18px;  letter-spacing:6px;
+	}
+.captcha-main {
+    width: 130px;
+	height : 45px; 
+}	
+.captcha-right
+{
+	border: 0 none; cursor: pointer;
+	float:right;
+}
+</style>
+
+<div id="about-copy">
+	<h1>
+		<?php if($heading): ?>
+		<?php echo $heading; ?>
+		<?php endif; ?>
+	</h1>
+	<P>
+		<?php if($des_gen): ?> 
+		<?php echo $des_gen; ?>
+		<?php endif; ?>
+	</p>
+	<?php 
+		$msg = Mage::getSingleton('core/session')->getSomeSessionVar();
+	    if($msg == 'wrong') { ?>
+			<div id="messages">
+				<ul class="messages">
+					<li class="error-msg">
+						<ul><li>
+							<span style="font-size:12px;">captcha code does not match!</span>
+						</li></ul>
+					</li>
+				</ul>
+			</div>
+	<?php Mage::getSingleton('core/session')->unsSomeSessionVar();
+	      $msg = '';  } ?>
+	<?php 
+		$msgs = Mage::getSingleton('core/session')->getSomeSessionVar();
+	    if($msgs == 'email_wrong') { ?>
+			<div id="messages">
+				<ul class="messages">
+					<li class="error-msg">
+						<ul><li>
+							<span style="font-size:12px;">Email id already exits !</span>
+						</li></ul>
+					</li>
+				</ul>
+			</div>
+	<?php Mage::getSingleton('core/session')->unsSomeSessionVar();
+	      $msg = '';  } ?>	  
+
+    <form name="dealerInquiry" id="dealerInquiry" action="<?php echo $this->getUrl("inquiry/index/thanks"); ?>" method="post">
+		<table width="100%" border="0" cellpadding="0" cellspacing="10px" style="border-spacing:10px;">
+            <tr>
+                <Td colspan="2" style="text-align:right; color:red;"><span class="required">*</span> Indicates required.</Td>
+            </tr>
+			<tr>
+                <td width="20%">
+					<?php if($first_name): ?>
+					<?php echo $first_name; ?>
+					<?php else: ?>
+					<?php echo "First Name"; ?>
+					<?php endif; ?>
+					<span class="required">*</span>
+				</td>
+                <td>
+                    <input type="text" name="fname" id="fname" size="45" class="input-text required-entry" />
+                </td>
+            </tr>
+			<?php if($last_name_hide): ?>  
+            <tr>
+                <td>
+					<?php if($last_name): ?> 
+					<?php echo $last_name; ?>
+					<?php else: ?>
+					<?php echo "Last Name"; ?>					
+					<?php endif; ?>
+					<span class="required">*</span>
+				</td>
+                <td>
+					<input type="text" name="lname" size="45" class="input-text required-entry" />
+				</td>
+            </tr>
+            <?php endif;  ?>
+			<tr>
+                <td>
+					<?php if($company_name): ?>
+					<?php echo $company_name; ?>
+					<?php else: ?>
+					<?php echo "Company Name"; ?>
+					<?php endif; ?>
+					<span class="required">*</span>
+				</td>
+                <td>
+					<input type="text" name="company" size="45" class="input-text required-entry" /> 
+				</td>
+            </tr>
+			<?php 	
+				if($vat_number_hide): 
+				if($_taxvat->isEnabled()):
+				if($_taxvat->isRequired()):
+			?>
+			<tr>
+                <td>
+					<label for="_accounttaxvat">
+						<?php if($vat_number): ?>
+						<?php echo $vat_number; ?>
+						<?php else: ?>
+						<?php echo "Tax/VAT Number"; ?>
+						<?php endif; ?>
+					</label>
+					<span class="required">*</span>
+				</td>
+                <td>
+					<input type="text" name="account_taxvat" size="45" class="input-text required-entry" /></td>
+            </tr>
+            <?php else: ?>
+	        <tr>
+                <td>
+					<label for="_accounttaxvat">
+						<?php if($vat_number): ?>
+						<?php echo $vat_number; ?>
+						<?php else: ?>
+						<?php echo "Tax/VAT Number"; ?>
+						<?php endif;  ?>
+					</label>
+				</td>
+                <td>
+					<input type="text" name="account_taxvat" size="45" class="input-text" />
+				</td>
+            </tr>
+			<?php endif; endif; endif; ?>
+			<?php if($address_hide): ?>  
+            <tr>
+                <td>
+					<?php if($address): ?>
+					<?php echo $address; ?> 
+					<?php else: ?>
+					<?php echo "Address"; ?>
+					<?php endif; ?>
+					<span class="required">*</span>
+				</td>
+                <td>
+					<textarea name="address" cols="42" rows="2" class="input-text required-entry"></textarea>
+				</td>
+            </tr>
+			<?php endif; ?>
+			<?php if($city_hide): ?>  
+            <tr>
+                <td>
+					<?php if($city): ?>
+					<?php echo $city; ?>
+					<?php else: ?>
+					<?php echo "City"; ?>		
+					<?php endif;  ?>
+					<span class="required">*</span>
+				</td>
+                <td>
+					<input type="text" name="city" size="45" class="input-text required-entry" /> 
+				</td>
+            </tr>
+			<?php endif; ?>
+			<?php if($state_hide): ?>  
+            <tr>
+                <td>
+					<?php if($state): ?>
+					<?php echo $state; ?>
+					<?php else: ?>
+					<?php echo "State / Province"; ?>
+					<?php endif;  ?>
+					<span class="required">*</span>
+				</td>
+                <td>
+					<input type="text" name="state_id" size="45" class="input-text required-entry" />				
+				</td>
+            </tr>
+			<?php endif; ?>
+			<?php if($country_hide): ?>  
+            <tr>
+              	<td>
+					<?php if($country): ?> 
+					<?php echo $country; ?>
+					<?php else: ?>
+					<?php echo "Country"; ?>
+					<?php endif;  ?>
+					<span class="required">*</span>
+				</td>
+                <td>
+                    <select name="country" id="country" class="drop" class="input-text required-entry">
+					<?php
+						$countryCode = Mage::getStoreConfig('general/country/default');
+						$country_name=Mage::app()->getLocale()->getCountryTranslation($countryCode);
+						$collection = Mage::getModel('directory/country')->getCollection();
+                        foreach ($collection as $country)
+                        {
+                        $cid = $country->getId();
+                        $cname = $country->getName(); 
+					?>
+                        <option value="<?php echo $cid.'$$$'.$cname; ?>"<?php if($cid == $countryCode) echo "SELECTED" ?> ><?php echo $cname; ?></option>
+					<?php 
+						} 
+                    ?>
+                    </select>
+             	</td>
+            </tr>
+			<?php endif; ?>
+            <?php if($postal_code_hide): ?>       
+            <tr>
+                <td>
+					<?php if($postal_code): ?>
+					<?php echo $postal_code; ?>
+					<?php else: ?>
+					<?php echo "ZIP / Postal Code"; ?>	
+					<?php endif; ?>
+					<span class="required">*</span>
+				</td>
+                <td>
+					<input type="text" name="zip" id="zip" size="45" maxlength="10" class="required-entry input-text required-entry input-text required-entry validation-passed" /> 
+				</td>
+            </tr>
+			<?php endif; ?>
+			<tr>
+                <td>
+					<?php if($contact_number): ?> 
+					<?php echo $contact_number; ?>
+					<?php else: ?>
+					<?php echo "Contact Number"; ?>
+					<?php endif; ?>
+					<span class="required">*</span>
+				</td>
+                <td>
+					<input type="text" name="phone" size="45" onKeyPress="return isNumberKey(event)" maxlength="15" class="input-text validate input-text required-entry"/>
+				</td>
+			</tr>
+			<tr>
+                <td>
+					<?php if($email): ?>
+					<?php echo $email; ?>
+					<?php else: ?>
+					<?php echo "Email"; ?>	
+					<?php endif; ?>
+					<span class="required">*</span>
+				</td>
+                <td>
+					<input type="text" name="email" size="45" class="input-text validate-email required-entry" /> 
+				</td>
+            </tr>
+			<?php if($website_hide): ?>  
+            <tr>
+                <td>
+					<?php if($website): ?>
+					<?php echo $website; ?>
+					<?php else: ?>
+					<?php echo "Website"; ?>
+					<?php endif; ?>
+				</td>
+                <td>
+					<input type="text" name="website" size="45" class="input-text" /> 
+				</td>
+            </tr>
+			<?php endif; ?>
+			<tr>
+				<td>
+					<?php if($description): ?> 
+					<?php echo $description; ?>
+					<?php else: ?>
+					<?php echo "Business Description"; ?>
+					<?php endif; ?>
+				</td>
+                <td>
+					<textarea name="bdesc" cols="75" rows="6" class="input-text"></textarea>
+				</td>
+            </tr>
+			<?php if($captcha_hide): ?>  
+			<tr>
+				<td>&nbsp;</td>
+              	<td>
+					<div style="border:1px solid; padding:10px 2px 1px 6px; width:23%;"> 
+						<div class="captcha-main" height="25px;">
+							<div id="captcha" class="captcha-left">
+								<b><?php echo $code; ?></b>&nbsp; 
+								<input type="hidden" value="<?php
+								echo $code;	?>" id="captcha_code" size="45" name="captcha_code">
+ 						    </div> 
+							<div class="captcha-right">
+								<span id="img_refresh">
+									<img width="30px" height="30px" src="<?php echo $this->getSkinUrl('images/refresh.jpg') ?>"> 
+								</span>
+							</div>
+                        </div>		 
+						<input type="text" name="captcha" id="capt" size="24" value="" class="input-text required-entry" /> &nbsp; &nbsp;&nbsp;
+					</div>
+				</td>
+            </tr>
+			<?php endif; ?>
+            <tr>
+				<td>&nbsp;</td>
+                <td>
+					<button type="submit" name="SUBMIT"  class="button" value="SUBMIT" onclick="return captchacode() ;">
+						<span>
+							<span>
+								<?php if($btn_text): ?>
+								<?php echo $btn_text; ?>
+                                <?php else: ?>
+								<?php echo "Submit"; ?>
+								<?php endif;  ?>
+							</span>
+						</span>
+					</button>
+				</td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script type="text/javascript">
+//< ![CDATA[
+var customForm = new VarienForm('dealerInquiry');
+//]]>
+	function isNumberKey(evt)
+	{
+		 var charCode = (evt.which) ? evt.which : evt.keyCode
+		 if (charCode > 31 && (charCode < 48 || charCode > 57))
+		 {
+		 	return false;
+		}		
+		 return true;
+	} 
+
+</script>

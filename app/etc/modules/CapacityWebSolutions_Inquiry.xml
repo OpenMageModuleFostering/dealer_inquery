@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+	<modules>
+		<CapacityWebSolutions_Inquiry>
+			<active>true</active>
+			<codePool>community</codePool>
+		</CapacityWebSolutions_Inquiry>
+	</modules>
+</config>

@@ -1,0 +1,166 @@
+<?xml version="1.0"?>
+<config>
+	<modules>
+		<CapacityWebSolutions_Inquiry>
+			<version>0.1.0</version>
+		</CapacityWebSolutions_Inquiry>
+    </modules>
+	<global>
+		<blocks>
+			<inquiry>
+				<rewrite>
+					<inquiry>CapacityWebSolutions_Inquiry_Block_Inquiry</inquiry>
+				</rewrite>
+			</inquiry>
+		</blocks>
+		<models>
+			<inquiry>
+				<class>CapacityWebSolutions_Inquiry_Model</class>
+				<resourceModel>inquiry_mysql4</resourceModel>
+			</inquiry>
+			<inquiry_mysql4>
+				<class>CapacityWebSolutions_Inquiry_Model_Mysql4</class>
+					<entities>
+						<inquiry>
+							<table>dealerinquiry</table>
+						</inquiry>
+					</entities>
+			</inquiry_mysql4>
+		</models>
+		<helpers> 
+			<inquiry>
+				<class>CapacityWebSolutions_Inquiry_Helper</class>
+			</inquiry>
+		</helpers>
+		<resources>
+			<inquiry_setup>
+				<setup>
+					<module>CapacityWebSolutions_Inquiry</module>
+				</setup>
+				<connection>
+					<use>core_setup</use>
+				</connection>
+			</inquiry_setup>
+		</resources> 
+	</global>
+	<admin>
+		<routers>
+			<inquiry>
+				<use>admin</use>
+				<args>
+					<module>CapacityWebSolutions_Inquiry</module>
+					<frontName>inquiry</frontName>
+				</args>
+			</inquiry>
+        </routers>
+    </admin>
+	<frontend>
+		<routers>
+			<inquiry>
+				<use>standard</use>
+				<args>
+					<module>CapacityWebSolutions_Inquiry</module>
+					<frontName>inquiry</frontName>
+				</args>
+			</inquiry>
+		</routers>
+		<layout>
+			<updates>
+				<inquiry>
+					<file>inquiry.xml</file>
+				</inquiry>
+			</updates>
+		</layout>
+	</frontend>
+    <adminhtml>
+		<menu>
+			<inquiry module="inquiry">
+				<title>Dealer Inquiries</title>
+				<sort_order>71</sort_order>               
+				<children>
+					<items module="inquiry">
+						<title>Dealer Management</title>
+						<sort_order>0</sort_order>
+						<action>inquiry/manage_inquiry</action> 
+					</items>
+					<dealer_settings module="inquiry">
+						<title>Settings</title>
+						<sort_order>10</sort_order>
+						<action>adminhtml/system_config/edit/section/inquiry</action> 
+					</dealer_settings>
+				</children>
+			</inquiry>
+		</menu>
+    	<layout>
+            <updates>
+                <inquiry>
+					<file>inquiry.xml</file>
+                </inquiry>
+            </updates>
+        </layout>
+		<acl>
+			<resources>
+				<admin>
+					<children>
+						<system>
+							<children>
+								<config>
+									<children>
+										<inquiry>
+											<title>Inquiry</title>
+										</inquiry>
+									</children>
+								</config>
+							</children>
+						</system>
+					</children>
+				</admin>
+			</resources>
+		</acl>
+	</adminhtml>
+	<default>
+		<inquiry>
+			<general>
+				<enabled>1</enabled>
+				<heading>Dealer Inquiry</heading>
+				<description>Write description here and it will display after Title.</description>
+				<success_tital>Thank You.</success_tital>
+				<success_des>Thank you for contacting us.</success_des>
+			</general>
+			<customer_email>
+				<heading>Thank you for contacting Owner</heading>
+				<description>Thank you for contacting Owner. A company representative will contact you with more information within two business days.</description>
+			</customer_email>
+			<register_email>
+				<heading>Registration Details of Dealer Inquiry</heading>
+				<description>Thank You for Register with Owner.Your Login Details for access your Account.....</description>
+			</register_email>
+			<change_label>
+				<f_name>First Name</f_name>
+				<l_name>Last Name</l_name>
+				<company_name>Company Name</company_name>
+				<vat_number>Tax/VAT Number</vat_number>
+				<address>Address</address>
+				<city>City</city>
+				<state>State / Province</state>
+				<country>Country</country>
+				<postal_code>ZIP / Postal Code</postal_code>
+				<contact_number>Contact Number</contact_number>
+				<email>Email</email>
+				<website>Website</website>
+				<description>Business Description</description>
+			</change_label>
+			<label_hide>
+				<l_name>1</l_name>
+				<vat_number>1</vat_number>
+				<address>1</address>
+				<city>1</city>
+				<state>1</state>
+				<country>1</country>
+				<postal_code>1</postal_code>
+				<website>1</website>
+				<captcha>1</captcha>
+			</label_hide>
+		</inquiry>
+	</default>
+</config>
