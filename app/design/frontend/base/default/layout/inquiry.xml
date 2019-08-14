@@ -3,10 +3,13 @@
 <layout version="0.1.0">
 	<default>
 		 <reference name="top.links">
-            <action method="addLink" translate="label title" module="inquiry" ifconfig="inquiry/general/enabled"><label>Dealer Inquiry</label><url>inquiry/</url><title>Dealer Inquiry</title><prepare>true</prepare><urlParams/><position>100</position></action>
+            <action method="addLink" translate="label title" module="inquiry" ifconfig="inquiry/general/enabled"><label>Dealer Inquiry</label><url>inquiry/</url><title>Dealer Inquiry</title><prepare>true</prepare><urlParams/><position>90</position></action>
         </reference>
 	</default>
 	<inquiry_index_index>
+	    <reference name="head">
+			<action method="addCss"><stylesheet>css/inquiry.css</stylesheet></action>
+		</reference>     
 	   	<reference name="root">
 			<action method="setTemplate" ><template>page/1column.phtml</template></action>
 		</reference>
@@ -17,6 +20,9 @@
 		</reference>
 	</inquiry_index_index>
 	<inquiry_index_thanks>
+	    <reference name="head">
+			<action method="addCss"><stylesheet>css/inquiry.css</stylesheet></action>
+		</reference> 
 		<reference name="root">
 			<action method="setTemplate"><template>page/1column.phtml</template></action>
 		</reference>

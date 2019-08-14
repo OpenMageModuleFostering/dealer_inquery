@@ -5,7 +5,9 @@
  */
   $_taxvat = $this->getLayout()->createBlock('customer/widget_taxvat'); 
  $item = $this->getAllDealer($this->getRequest()->getParam("delid"));
- $IsCreated = $this->getIsCreated($item['email']);
+ $website_id = Mage::getModel('core/store')->load($item['storeid'])->getWebsiteId();
+
+ $IsCreated = $this->getIsCreated($item['email'],$website_id);
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -31,7 +33,7 @@
 	<?php if($IsCreated==0) 
 	{
 	?> 
-	&nbsp;&nbsp;<a href="<?php echo Mage::helper("adminhtml")->getUrl("inquiry/manage_inquiry/createCustomer/multival/".$item['email'].'~~'.$item['firstname'].'~~'.$item['lastname'].'~~'.$item['company'].'~~'.$item['address'].'~~'.$item['city'].'~~'.$item['state'].'~~'.$item['zip'].'~~'.$item['phone'].'~~'.$item['country'].'~~'.$item['taxvat']);?>" onclick="javascript:return confirm('Are you sure  to create the account?')">Create Customer</a>
+	&nbsp;&nbsp;<a href="<?php echo Mage::helper("adminhtml")->getUrl("inquiry/manage_inquiry/createCustomer/multival/".$item['email'].'~~'.$item['firstname'].'~~'.$item['lastname'].'~~'.$item['company'].'~~'.$item['address'].'~~'.$item['city'].'~~'.$item['state'].'~~'.$item['zip'].'~~'.$item['phone'].'~~'.$item['country'].'~~'.$item['taxvat'].'~~'.$item['storeid']);?>" onclick="javascript:return confirm('Are you sure  to create the account?')">Create Customer</a>
 	<?php 
 	} 
 	$country1 = explode('$$$',$item['country']);

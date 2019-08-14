@@ -20,9 +20,10 @@ class CapacityWebSolutions_Inquiry_Block_Inquiry extends Mage_Core_Block_Templat
 		$collection = Mage::getModel("inquiry/inquiry")->load($delId)->getData();
 		return $collection;
 	}
-	public function getIsCreated($email)
+	public function getIsCreated($email,$website_id)
 	{
-		$collection = Mage::getModel("customer/customer")->getCollection()->addFieldToFilter("email",$email);
+		$collection = Mage::getModel("customer/customer")->getCollection()->addFieldToFilter("email",$email)->addFieldToFilter("website_id",$website_id);
+	
 		if($collection->count())
 			return 1;
 		else

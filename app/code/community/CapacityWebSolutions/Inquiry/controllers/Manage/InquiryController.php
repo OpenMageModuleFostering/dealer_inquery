@@ -48,6 +48,8 @@ class CapacityWebSolutions_Inquiry_Manage_InquiryController extends Mage_Adminht
 	{	
 		$del = $this->getRequest()->getParam('multival');
 		$values = explode('~~',$del); 
+			
+		
 		$country11 = $values[9];
 		$country1 = explode('$$$',$country11);
 	function RandomPassword($PwdLength=8, $PwdType='standard')
@@ -82,16 +84,18 @@ class CapacityWebSolutions_Inquiry_Manage_InquiryController extends Mage_Adminht
 	$randompass = RandomPassword(9,'standard');
 		
 		$customer = Mage::getModel('customer/customer');
-		$website_id = 1;
+		$website_id = Mage::getModel('core/store')->load($values[11])->getWebsiteId();
 		
 		$customer->setWebsiteId($website_id);
 		$customer->loadByEmail($values[0]);
+		
+	
 		if(!$customer->getId()) 
 		{
 			$groups = Mage::getResourceModel('customer/group_collection')->getData();
 			$groupID = '1';
 			$customer->setData('group_id', $groupID );
-			$customer->setData('website_id', '1' );
+			$customer->setData('website_id', $website_id);
 			$customer->setData('is_active', '1');
 			$customer->setData('customer_activated', '1');
 			$customer->setStatus(1);
@@ -105,23 +109,24 @@ class CapacityWebSolutions_Inquiry_Manage_InquiryController extends Mage_Adminht
 			$customer->save();
 			if($customer->save())
 			{
-				$adminEmail = Mage::getStoreConfig('trans_email/ident_general/email'); 
-				$adminName = Mage::getStoreConfig('trans_email/ident_general/name');
+				$adminEmail = Mage::getStoreConfig('trans_email/ident_general/email', $values[11]); 
+				$adminName = Mage::getStoreConfig('trans_email/ident_general/name', $values[11]);
 				$fromEmail = $adminEmail;
 				$fromName = $adminName;
 			 
 				$toEmail = $values[0]; 
 				$toName = $values[1].$values[2];
 				
-				$email_logo = Mage::getStoreConfig('design/email/logo');
-				$subject_title = Mage::getStoreConfig('inquiry/register_email/heading');
-				$email_desc = Mage::getStoreConfig('inquiry/register_email/description');
-				$store_name = Mage::getStoreConfig('general/store_information/name');
+				$email_logo = Mage::getStoreConfig('design/email/logo' ,$values[11]);
+				$subject_title = Mage::getStoreConfig('inquiry/register_email/heading',$values[11]);
+				$email_desc = Mage::getStoreConfig('inquiry/register_email/description',$values[11]);
+				$store_name = Mage::getStoreConfig('general/store_information/name', $values[11]);
+								
 				$img_media =  Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).'email/logo/'; 
 				$img_logo_final = $img_media.$email_logo;
                 
                 $skin = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN);
-				$skin_name = Mage::getStoreConfig('design/theme/skin');
+				$skin_name = Mage::getStoreConfig('design/theme/skin',$values[11]);
 				if($skin_name == "")
 				{
 				$skin_name = "default";
@@ -130,8 +135,8 @@ class CapacityWebSolutions_Inquiry_Manage_InquiryController extends Mage_Adminht
 				{
 				$skin_name = $skin_name;
 				}
-				$package = Mage::getStoreConfig('design/package/name');
-				$default_logo =  Mage::getStoreConfig('design/header/logo_src');	
+				$package = Mage::getStoreConfig('design/package/name',$values[11]);
+				$default_logo =  Mage::getStoreConfig('design/header/logo_src',$values[11]);	
 		
 				$logo_default = $skin."/frontend/".$package."/".$skin_name."/".$default_logo;
 			
@@ -144,7 +149,18 @@ class CapacityWebSolutions_Inquiry_Manage_InquiryController extends Mage_Adminht
 				$logo_img = "<img src='$img_logo_final'/>";
 				}
 		
-				$body = '<table border="1">
+		        $email_desc = str_replace("{{Name}}",$values[1].' '.$values[2],$email_desc);	 
+		        $email_desc = str_replace("{{username}}",$values[0],$email_desc);	 
+		        $email_desc = str_replace("{{password}}",$randompass,$email_desc);
+                $url = Mage::app()->getStore($values[11])->getBaseUrl(Mage_Core_Model_Store::URL_TYPE_LINK).'customer/account/login/'; 				
+		        $email_desc = str_replace("{{url}}",$url,$email_desc);	 
+		        $email_desc = str_replace("{{storename}}",$store_name,$email_desc);	 
+		
+		      //  echo $email_desc;
+              //  die;				
+		
+		
+				$body = '<table border="0">
 							<tr>
 								<td>
 									<table border="0">
@@ -155,27 +171,11 @@ class CapacityWebSolutions_Inquiry_Manage_InquiryController extends Mage_Adminht
 												<td colspan="2">&nbsp;</td></tr>
 											<tr>
 											
-										<tr>
-											<Td><p style="Font-size:22px;"></b>Hello '.$values[1].' '.$values[2].',</b></p></Td>
-										</tr>
+										
 										<tr>
 											<Td><p>'.$email_desc.'</p></Td>
 										</tr>
-										<tr>
-											<Td><p>Login Email :&nbsp; '.$values[0].' </p></Td>
-										</tr>
-										<tr>
-											<Td><p>Login Password :&nbsp; '.$randompass.' </p></Td>
-										</tr>
-										<tr>
-											<Td><p>You can login directly in your account from here with given login details..... &nbsp;<br /><br />'. Mage::getBaseUrl().'customer/account/login/</p></Td>
-										</tr>
-										<tr>
-											<td colspan="2">&nbsp;</td>
-										</tr>
-										<tr>
-											<td colspan="2"><p style="text-align:center;">Thank You,'.$store_name.'</p></td>
-										</tr>
+										
 									</table>
 								</td>
 							</tr>

@@ -7,7 +7,7 @@ $installer->startSetup();
 $installer->run("
 
 -- DROP TABLE IF EXISTS {$this->getTable('dealerinquiry')};
-CREATE TABLE IF NOT EXISTS `dealerinquiry` (
+CREATE TABLE IF NOT EXISTS `{$this->getTable('dealerinquiry')}` (
   `dealerid` int(11) NOT NULL AUTO_INCREMENT,
   `firstname` varchar(25) NOT NULL,
   `lastname` varchar(25) NOT NULL,

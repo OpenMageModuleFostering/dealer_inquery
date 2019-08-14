@@ -34,6 +34,7 @@ class CapacityWebSolutions_Inquiry_IndexController extends Mage_Core_Controller_
 	
 	public function thanksAction()
     {
+	
 		$this->loadLayout(array('default'));
 		$this->renderLayout();
 		if($_POST['SUBMIT']=='SUBMIT')
@@ -78,8 +79,95 @@ class CapacityWebSolutions_Inquiry_IndexController extends Mage_Core_Controller_
 		
 		$collection->save();
 		
+		$first_name = Mage::getStoreConfig('inquiry/change_label/f_name');
+		if($first_name){
+			$first_name = Mage::getStoreConfig('inquiry/change_label/f_name');
+		}else {
+			$first_name = "First Name";
+		}
+		$last_name = Mage::getStoreConfig('inquiry/change_label/l_name'); 
+		if($last_name){
+			$last_name = Mage::getStoreConfig('inquiry/change_label/l_name');
+		}else {
+			$last_name = "Last Name";
+		}
+		$company_name = Mage::getStoreConfig('inquiry/change_label/company_name'); 
+		if($company_name){
+			$company_name = Mage::getStoreConfig('inquiry/change_label/company_name');
+		}else{
+			$company_name = "Last Name";
+		}
 		
-		$adminContent = '<table border="1">
+		$vat_number = Mage::getStoreConfig('inquiry/change_label/vat_number');
+        if($vat_number){
+			$vat_number = Mage::getStoreConfig('inquiry/change_label/vat_number');
+		}else{
+			$vat_number = "TAX/VAT Number";
+		} 
+	
+		$address = Mage::getStoreConfig('inquiry/change_label/address'); 
+		if($address){
+			$address = Mage::getStoreConfig('inquiry/change_label/address');
+		}else{
+			$address = "Address";
+		} 
+
+		$city = Mage::getStoreConfig('inquiry/change_label/city'); 
+		if($city){
+			$city = Mage::getStoreConfig('inquiry/change_label/city');
+		}else{
+			$city = "City";
+		} 
+
+		$state = Mage::getStoreConfig('inquiry/change_label/state'); 
+		if($state){
+			$state = Mage::getStoreConfig('inquiry/change_label/state');
+		}else{
+			$state = "State/Province";
+		} 
+		
+		$country = Mage::getStoreConfig('inquiry/change_label/country'); 
+		if($country){
+			$country = Mage::getStoreConfig('inquiry/change_label/country');
+		}else{
+			$country = "Country";
+		} 
+		$postal_code = Mage::getStoreConfig('inquiry/change_label/postal_code'); 
+		if($postal_code){
+			$postal_code = Mage::getStoreConfig('inquiry/change_label/postal_code');
+		}else{
+			$postal_code = "ZIP/Postal Code";
+		} 
+				
+		$contact_number = Mage::getStoreConfig('inquiry/change_label/contact_number'); 
+		if($contact_number){
+			$contact_number = Mage::getStoreConfig('inquiry/change_label/contact_number');
+		}else{
+			$contact_number = "Contact Number";
+		} 
+					
+		$email_name = Mage::getStoreConfig('inquiry/change_label/email'); 
+		if($email_name){
+			$email_name = Mage::getStoreConfig('inquiry/change_label/email');
+		}else{
+			$email_name = "Email";
+		} 
+				
+		$website = Mage::getStoreConfig('inquiry/change_label/website');
+		if($website){
+			$website = Mage::getStoreConfig('inquiry/change_label/website');
+		}else{
+			$website = "Website";
+		} 
+		$description = Mage::getStoreConfig('inquiry/change_label/description'); 
+		if($description){
+			$description = Mage::getStoreConfig('inquiry/change_label/description');
+		}else{
+			$description = "Business Description";
+		} 
+		
+	
+		$adminContent = '<table border="0">
 							<tr>
 								<td>
 									<table border="0">
@@ -97,55 +185,55 @@ class CapacityWebSolutions_Inquiry_IndexController extends Mage_Core_Controller_
 											<td>
 												<table border="0">
 													<tr>
-														<td><label>First Name:</label></td>
+														<td><label>'.$first_name.':</label></td>
 														<td><label>'.$fname.'</label></td>
 													</tr>
 													<tr>
-														<td><label>Last Name:</label></td>
+														<td><label>'.$last_name.':</label></td>
 														<td><label>'.$lname.'</label></td>
 													</tr>
 													<tr>
-														<td><label>Company:</label></td>
+														<td><label>'.$company_name.':</label></td>
 														<td><label>'.$company.'</label></td>
 													</tr>
 													<tr>
-														<td><label>TAX/VAT Number:</label></td>
+														<td><label>'.$vat_number.':</label></td>
 														<td><label>'.$taxvat.'</label></td>
 													</tr>
 													<tr>
-														<td><label>Address:</label></td>
+														<td><label>'.$address.':</label></td>
 														<td><label>'.$address.'</label></td>
 													</tr>
 													<tr>
-														<td><label>City:</label></td>
+														<td><label>'.$city.':</label></td>
 														<td><label>'.$city.'</label></td>
 													</tr>
 													<tr>
-														<td><label>State/Province:</label></td>
+														<td><label>'.$state.':</label></td>
 														<td><label>'.$state.'</label></td>
 													</tr>
 													<tr>
-														<td><label>Country:</label></td>
+														<td><label>'.$country.':</label></td>
 														<td><label>'.$country1[1].'</label></td>
 													</tr>
 													<tr>
-														<td><label>ZIP/Postal Code:</label></td>
+														<td><label>'.$postal_code.':</label></td>
 														<td><label>'.$zip.'</label></td>
 													</tr>
 													<tr>
-														<td><label>Contact Phone Number:</label></td>
+														<td><label>'.$contact_number.':</label></td>
 														<td><label>'.$phone.'</label></td>
 													</tr>
 													<tr>
-														<td><label>Email:</label></td>
+														<td><label>'.$email_name.':</label></td>
 														<td><label>'.$email.'</label></td>
 													</tr>
 													<tr>
-														<td><label>Website:</label></td>
+														<td><label>'.$website.':</label></td>
 														<td><label>'.$website.'</label></td>
 													</tr>
 													<tr>
-														<td valign="top" width="15%"><label>Business Description:</label></td>
+														<td valign="top" width="15%"><label>'.$description.':</label></td>
 														<td><label>'.$bdesc.'</label></td>
 													</tr>
 													<tr>
@@ -171,6 +259,7 @@ class CapacityWebSolutions_Inquiry_IndexController extends Mage_Core_Controller_
 		$email_logo = Mage::getStoreConfig('design/email/logo');
 		$subject_title = Mage::getStoreConfig('inquiry/customer_email/heading');
 		$email_desc = Mage::getStoreConfig('inquiry/customer_email/description');
+		$email_desc = str_replace("{{Name}}",$fname.$lname,$email_desc);
 		$store_name = Mage::getStoreConfig('general/store_information/name');
 	
 		$img_media =  Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).'email/logo/'; 
@@ -178,7 +267,7 @@ class CapacityWebSolutions_Inquiry_IndexController extends Mage_Core_Controller_
 		$img_logo_final = $img_media.$email_logo;
 		$default_logo =  Mage::getStoreConfig('design/header/logo_src');	
 		$logo_default = Mage::getDesign()->getSkinUrl().$default_logo; 
-				
+		$email_desc = str_replace("{{Storename}}",$store_name,$email_desc);		
 			
 		if($img_logo_final == $img_media)
 		{
@@ -199,18 +288,9 @@ class CapacityWebSolutions_Inquiry_IndexController extends Mage_Core_Controller_
 											<tr>
 												<td colspan="2">&nbsp;</td></tr>
 											<tr>
-												<Td><p style="Font-size:22px;"></b>Hello '.$fname.' '.$lname.',</b></p></Td>
-											</tr>
-											<tr>
-												<td colspan="2">&nbsp;</td></tr>
-											<tr>
 												<Td><p>'.$email_desc.'. </p></Td>
 											</tr>
-											<tr>
-												<td colspan="2">&nbsp;</td></tr>
-											<tr>
-												<td colspan="2"><p style="text-align:center;">Thank You,'.$store_name.'</p></td>
-											</tr>
+											
 										</table>
 									</td>
 								</tr>

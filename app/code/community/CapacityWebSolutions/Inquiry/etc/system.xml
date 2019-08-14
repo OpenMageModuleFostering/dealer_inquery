@@ -90,7 +90,7 @@
 			<groups>
                 <customer_email translate="label">
                     <label>Dealer inquiry Email Template</label>
-					<comment>After submit dealer inquiry form customer get email notification so you can set Email Subject and Email Description here. </comment>
+					<comment>After submit dealer inquiry form customer get email notification so you can set Email Subject and Email content here. </comment>
                     <frontend_type>text</frontend_type>
                     <sort_order>85</sort_order>
                     <show_in_default>1</show_in_default>
@@ -106,12 +106,13 @@
 							<show_in_store>1</show_in_store>
 						</heading>
 						<description translate="label">
-							<label>Email Description</label>
+							<label>Email content</label>
 							<frontend_type>textarea</frontend_type>
 							<sort_order>20</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
+							<comment><![CDATA[Please do not change {{Name}} & {{Storename}}]]> </comment>
 						</description>
 					</fields>
                 </customer_email>
@@ -119,7 +120,7 @@
 			<groups>
                 <register_email translate="label">
                     <label>Create Customer Email Template</label>
-					<comment>When admin click on create customer button. Customer get email notification of his username and password. So for that email you can set email Subject and email description here.</comment>
+					<comment>When admin click on create customer button. Customer get email notification of his username and password. So for that email you can set email Subject and email content here.</comment>
                     <frontend_type>text</frontend_type>
                     <sort_order>90</sort_order>
                     <show_in_default>1</show_in_default>
@@ -135,12 +136,13 @@
 							<show_in_store>1</show_in_store>
 						</heading>
 						<description translate="label">
-							<label>Email Description</label>
+							<label>Email content</label>
 							<frontend_type>textarea</frontend_type>
 							<sort_order>20</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
+							<comment><![CDATA[Please do not change {{Name}},{{username}},{{password}} & {{storename}}]]> </comment>
 						</description>
 					</fields>
                 </register_email>
