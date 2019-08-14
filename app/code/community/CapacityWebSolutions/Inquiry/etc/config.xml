@@ -13,7 +13,7 @@
 <config>
 	<modules>
 		<CapacityWebSolutions_Inquiry>
-			<version>1.2.0</version>
+			<version>1.2.1</version>
 		</CapacityWebSolutions_Inquiry>
     </modules>
 	<global>
@@ -92,7 +92,7 @@
 					<items module="inquiry">
 						<title>Dealer Management</title>
 						<sort_order>0</sort_order>
-						<action>inquiry/manage_inquiry</action> 
+						<action>inquiry/adminhtml_inquiry/index</action> 
 					</items>
 					<dealer_settings module="inquiry">
 						<title>Settings</title>
@@ -137,6 +137,7 @@
 				<description>Write description here and it will display after Title.</description>
 				<success_tital>Thank You.</success_tital>
 				<success_des>Thank you for contacting us.</success_des>
+				<indicates>Indicates Required.</indicates>
 			</general>
 			<customer_email>
 				<heading>Thank you for contacting Us.</heading>

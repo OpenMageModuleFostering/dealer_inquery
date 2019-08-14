@@ -30,7 +30,7 @@
     </table>
 </div>
 <?php		
-	$prevurl = Mage::helper("adminhtml")->getUrl("inquiry/manage_inquiry/index/"); ?>
+	$prevurl = Mage::helper("adminhtml")->getUrl("inquiry/adminhtml_inquiry/index/"); ?>
 	<div class="back">
 		<a href="<?php echo $prevurl;?>">
 			<span><font size="4px">&laquo;</font> Back</span>
@@ -38,7 +38,7 @@
 	<?php if($IsCreated==0) 
 	{
 	?> 
-	&nbsp;&nbsp;<a href="<?php echo Mage::helper("adminhtml")->getUrl("inquiry/manage_inquiry/createCustomer/multival/".$item['email'].'~~'.$item['firstname'].'~~'.$item['lastname'].'~~'.$item['company'].'~~'.$item['address'].'~~'.$item['city'].'~~'.$item['state'].'~~'.$item['zip'].'~~'.$item['phone'].'~~'.$item['country'].'~~'.$item['taxvat'].'~~'.$item['storeid']);?>" onclick="javascript:return confirm('Are you sure  to create the account?')">Create Customer</a>
+	&nbsp;&nbsp;<a href="<?php echo Mage::helper("adminhtml")->getUrl("inquiry/adminhtml_inquiry/createCustomer/multival/".$item['email'].'~~'.$item['firstname'].'~~'.$item['lastname'].'~~'.$item['company'].'~~'.$item['address'].'~~'.$item['city'].'~~'.$item['state'].'~~'.$item['zip'].'~~'.$item['phone'].'~~'.$item['country'].'~~'.$item['taxvat'].'~~'.$item['storeid']);?>" onclick="javascript:return confirm('Are you sure  to create the account?')">Create Customer</a>
 	<?php 
 	} 
 	$country1 = explode('$$$',$item['country']);

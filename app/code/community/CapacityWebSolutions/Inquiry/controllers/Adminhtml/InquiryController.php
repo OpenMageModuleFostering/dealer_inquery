@@ -8,7 +8,7 @@
 	@support	: magento@capacitywebsolutions.com	
 ***************************************************************************/
  
-class CapacityWebSolutions_Inquiry_Manage_InquiryController extends Mage_Adminhtml_Controller_Action 
+class CapacityWebSolutions_Inquiry_Adminhtml_InquiryController extends Mage_Adminhtml_Controller_Action 
 {
     public function indexAction()
     { 

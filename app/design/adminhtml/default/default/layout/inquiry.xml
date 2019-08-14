@@ -10,16 +10,16 @@
 -->
 
 <layout>
-    <inquiry_manage_inquiry_index>
+    <inquiry_adminhtml_inquiry_index>
         <reference name="content">
             <block type="inquiry/inquiry" name="inquiry" template="inquiry/inquiry.phtml"/>
         </reference>
-    </inquiry_manage_inquiry_index>
+    </inquiry_adminhtml_inquiry_index>
 	
-	<inquiry_manage_inquiry_view>
+	<inquiry_adminhtml_inquiry_view>
         <reference name="content">
             <block type="inquiry/inquiry" name="inquiry" template="inquiry/view.phtml"/>
         </reference>
-    </inquiry_manage_inquiry_view>
+    </inquiry_adminhtml_inquiry_view>
 
 </layout>

@@ -87,6 +87,15 @@
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
 						</success_des>
+						<indicates translate="label">
+							<label>Indicates Required Label</label>
+							<comment>Here, We can Change Dealer inquiry Indicates Required Label. </comment>
+							<frontend_type>text</frontend_type>
+							<sort_order>50</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</indicates>
 					</fields>
                 </general>
             </groups>

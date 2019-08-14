@@ -83,10 +83,10 @@
 					<td class="a-left ">&nbsp;
 						<a href="<?php echo $this->getUrl("inquiry/index/del/delid/".$item['dealerid'])?>" onclick="javascript:return confirm('Are  you sure to delete this Inquire?')"><img src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN)."adminhtml/default/default/images/icon_btn_delete.gif";?>" alt="Delete" title="Delete" /></a>&nbsp;&nbsp;
            
-						<a href="<?php echo Mage::helper("adminhtml")->getUrl("inquiry/manage_inquiry/view/delid/".$item['dealerid']);?>"><img src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN)."adminhtml/default/default/images/fam_page_white.gif";?>" alt="View" title="View" /></a>
+						<a href="<?php echo Mage::helper("adminhtml")->getUrl("inquiry/adminhtml_inquiry/view/delid/".$item['dealerid']);?>"><img src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN)."adminhtml/default/default/images/fam_page_white.gif";?>" alt="View" title="View" /></a>
   
 						<?php if($IsCreated==0) {?>
-						&nbsp;&nbsp;<a href="<?php echo Mage::helper("adminhtml")->getUrl("inquiry/manage_inquiry/createCustomer/multival/".$item['email'].'~~'.$item['firstname'].'~~'.$item['lastname'].'~~'.$item['company'].'~~'.$item['address'].'~~'.$item['city'].'~~'.$item['state'].'~~'.$item['zip'].'~~'.$item['phone'].'~~'.$item['country'].'~~'.$item['taxvat'].'~~'.$item['storeid']);?>" onclick="javascript:return confirm('Are you sure  to create the account?')"><img src="<?php echo  Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN)."adminhtml/default/default/images/fam_page_white_edit.gif";?>" alt="Create Customer" title="Create Customer" /></a></td>
+						&nbsp;&nbsp;<a href="<?php echo Mage::helper("adminhtml")->getUrl("inquiry/adminhtml_inquiry/createCustomer/multival/".$item['email'].'~~'.$item['firstname'].'~~'.$item['lastname'].'~~'.$item['company'].'~~'.$item['address'].'~~'.$item['city'].'~~'.$item['state'].'~~'.$item['zip'].'~~'.$item['phone'].'~~'.$item['country'].'~~'.$item['taxvat'].'~~'.$item['storeid']);?>" onclick="javascript:return confirm('Are you sure  to create the account?')"><img src="<?php echo  Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN)."adminhtml/default/default/images/fam_page_white_edit.gif";?>" alt="Create Customer" title="Create Customer" /></a></td>
 						<?php } ?>
 				</tr>
 				<?php  $i++;
