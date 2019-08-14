@@ -1,12 +1,10 @@
 <?php
 /***************************************************************************
-	@extension	: Dealer Inquiry Extension.
-	@copyright	: Copyright (c) 2015 Capacity Web Solutions.
-	( http://www.capacitywebsolutions.com )
-	@author		: Capacity Web Solutions Pvt. Ltd.
-	@support	: magento@capacitywebsolutions.com	
-***************************************************************************/
- 
+ Extension Name	: Dealer Inquiry
+ Extension URL	: http://www.magebees.com/magento-dealer-inquiry-extension.html
+ Copyright		: Copyright (c) 2015 MageBees, http://www.magebees.com
+ Support Email	: support@magebees.com 
+ ***************************************************************************/ 
 class CapacityWebSolutions_Inquiry_Helper_Data extends Mage_Core_Helper_Abstract
 {
 	public function updateDetails(){
@@ -77,7 +75,7 @@ class CapacityWebSolutions_Inquiry_Helper_Data extends Mage_Core_Helper_Abstract
 		foreach($files as $file) {
 			unlink($file);
 		}
-		
+				
 		if (!file_exists($path)) {
 			mkdir($path, 0777, true);
 		}
@@ -85,6 +83,7 @@ class CapacityWebSolutions_Inquiry_Helper_Data extends Mage_Core_Helper_Abstract
 		$random = rand();
 		$image_name = "captcha-".$random.".jpeg";
 		imagepng($image, $path.DS.$image_name);
+					
 		return $image_name;
 	}
 	

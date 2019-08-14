@@ -1,13 +1,11 @@
 <?php
 /***************************************************************************
-	@extension	: Dealer Inquiry Extension.
-	@copyright	: Copyright (c) 2015 Capacity Web Solutions.
-	( http://www.capacitywebsolutions.com )
-	@author		: Capacity Web Solutions Pvt. Ltd.
-	@support	: magento@capacitywebsolutions.com	
-***************************************************************************/
+ Extension Name	: Dealer Inquiry
+ Extension URL	: http://www.magebees.com/magento-dealer-inquiry-extension.html
+ Copyright		: Copyright (c) 2015 MageBees, http://www.magebees.com
+ Support Email	: support@magebees.com 
+ ***************************************************************************/
 ?>
-
 <?php $code =  trim($this->getRandomCode()); 
 $_taxvat = $this->getLayout()->createBlock('customer/widget_taxvat'); ?>
 <script>
@@ -36,6 +34,11 @@ function clearFileInputField(tagId) {
 	}
 </script>
 <?php endif; ?>
+<?php $image_name = Mage::helper('inquiry')->createCaptchaImage(); ?>
+<?php $filename = Mage::getBaseDir(Mage_Core_Model_Store::URL_TYPE_MEDIA).DS."inquiry".DS."captcha".DS.$image_name;?>
+<?php if ( ! is_writable(dirname($filename))) : ?>
+	<ul class="messages"><li class="notice-msg"><ul><li><span>Your "/media/inquiry" folder does not have sufficient write permissions.</span></li></ul></li></ul>
+<?php endif; ?>
 <div id="about-copy" class="inquiryForm">
 	<h1><img src="<?php echo $this->getSkinUrl('images/inquiry/inquiry-icon.png') ?>" alt="" /><?php if($this->getHeading()): ?><?php echo $this->__($this->getHeading()); ?><?php endif; ?></h1>
 	<p><?php if($this->getDesc()): ?><?php echo $this->getDesc(); ?><?php endif; ?></p>
@@ -48,14 +51,16 @@ function clearFileInputField(tagId) {
         	<ul class="form-list">
             	<li class="fields">
                 	<div class="field">
-						<label><?php if($this->getFirstName()): ?><?php echo $this->__($this->getFirstName()); ?><?php else: ?><?php echo $this->__("First Name:"); ?><?php endif; ?><span class="required"><em>*</em></span></label>
+						<?php $fname_label = $this->getFirstName()?$this->getFirstName():"First Name"; ?>
+						<label><?php echo $this->__($fname_label); ?><span class="required"><em>*</em></span></label>
                         <div class="input-box">
                         	<input type="text" name="firstname" id="firstname" size="45" class="input-text required-entry input-box" value="<?php echo $this->escapeHtml($this->getFormData()->getFirstname()) ?>"/>
                         </div>
                     </div>
                     <?php if($this->getLastNameHide()): ?> 
                     <div class="field">
-                    	<label><?php if($this->getLastName()): ?><?php echo $this->__($this->getLastName()); ?><?php else: ?><?php echo $this->__("Last Name:"); ?><?php endif; ?><span class="required"><em>*</em></span></label>
+						<?php $lname_label = $this->getLastName()?$this->getLastName():"Last Name"; ?>
+                    	<label><?php echo $this->__($lname_label); ?><span class="required"><em>*</em></span></label>
                         <div class="input-box">
                         	<input type="text" name="lastname" size="45" class="input-text required-entry" value="<?php echo $this->escapeHtml($this->getFormData()->getLastname()) ?>"/>
                         </div>
@@ -64,7 +69,8 @@ function clearFileInputField(tagId) {
                 </li>
                 <li class="fields">
                 	<div class="field">
-                    	<label><?php if($this->getCompanyName()): ?><?php echo $this->__($this->getCompanyName()); ?><?php else: ?><?php echo $this->__("Company Name:"); ?><?php endif; ?><span class="required"><em>*</em></span></label>
+						<?php $company_label = $this->getCompanyName()?$this->getCompanyName():"Company Name"; ?>
+                    	<label><?php echo $this->__($company_label); ?><span class="required"><em>*</em></span></label>
                         <div class="input-box">
                         	<input type="text" name="company" size="45" class="input-text required-entry" value="<?php echo $this->escapeHtml($this->getFormData()->getCompany()) ?>"/>
                         </div>
@@ -72,7 +78,8 @@ function clearFileInputField(tagId) {
 				
 					<?php if($this->getVatNumberHide()): ?>
                     <div class="field">
-                    	<label><?php if($this->getVatNumber()): ?><?php echo $this->__($this->getVatNumber()); ?><?php else: ?><?php echo $this->__("Tax/VAT Number:"); ?><?php endif;  ?></label>
+						<?php $tax_label = $this->getVatNumber()?$this->getVatNumber():"Tax/VAT Number"; ?>
+                    	<label><?php echo $this->__($tax_label); ?></label>
                         <div class="input-box">
                         	<input type="text" name="taxvat" size="45" class="input-text" value="<?php echo $this->escapeHtml($this->getFormData()->getTaxvat()) ?>"/> 
                         </div>
@@ -83,7 +90,8 @@ function clearFileInputField(tagId) {
                 <li class="fields">
 					<?php if($this->getAddressHide()): ?>  
                         <div class="field">
-                            <label><?php if($this->getAddress()): ?><?php echo $this->__($this->getAddress()); ?> <?php else: ?><?php echo $this->__("Address:"); ?><?php endif; ?><span class="required"><em>*</em></span></label>
+							<?php $add_label = $this->getAddress()?$this->getAddress():"Address"; ?>
+                            <label><?php echo $this->__($add_label); ?><span class="required"><em>*</em></span></label>
                             <div class="input-box">
                                 <textarea name="address" cols="42" rows="1" class="input-text required-entry"><?php echo $this->escapeHtml($this->getFormData()->getAddress()) ?></textarea>
                             </div>
@@ -92,7 +100,8 @@ function clearFileInputField(tagId) {
                     
                     <?php if($this->getCityHide()): ?>
                     <div class="field">
-                    	<label><?php if($this->getCity()): ?><?php echo $this->__($this->getCity()); ?><?php else: ?><?php echo $this->__("City:"); ?><?php endif;  ?><span class="required"><em>*</em></span></label>
+						<?php $city_label = $this->getCity()?$this->getCity():"City"; ?>
+                    	<label><?php echo $this->__($city_label); ?><span class="required"><em>*</em></span></label>
                         <div class="input-box">
                         	<input type="text" name="city" size="45" class="input-text required-entry" value="<?php echo $this->escapeHtml($this->getFormData()->getCity()) ?>"/> 
                         </div>
@@ -102,7 +111,8 @@ function clearFileInputField(tagId) {
                 <li class="fields">
                     <?php if($this->getStateHide()): ?>
                 	 <div class="field">
-                     	<label><?php if($this->getState()): ?><?php echo $this->__($this->getState()); ?><?php else: ?><?php echo $this->__("State / Province:"); ?><?php endif;  ?><span class="required"><em>*</em></span></label>
+						<?php $state_label = $this->getState()?$this->getState():"State / Province"; ?>
+                     	<label><?php echo $this->__($state_label); ?><span class="required"><em>*</em></span></label>
                         <div class="input-box">
 	                        <input type="text" name="state" size="45" class="input-text required-entry" value="<?php echo $this->escapeHtml($this->getFormData()->getState()) ?>"/>
                         </div>
@@ -111,7 +121,8 @@ function clearFileInputField(tagId) {
                      
 					<?php if($this->getCountryHide()): ?>
                      <div class="field">
-                     	<label><?php if($this->getCountry()): ?><?php echo $this->__($this->getCountry()); ?><?php else: ?><?php echo $this->__("Country:"); ?><?php endif;  ?><span class="required"><em>*</em></span></label>
+						<?php $country_label = $this->getCountry()?$this->getCountry():"Country"; ?>
+                     	<label><?php echo $this->__($country_label); ?><span class="required"><em>*</em></span></label>
                         <div class="input-box">
 						<?php $country_sess = $this->escapeHtml($this->getFormData()->getCountry()) ?>
                             <select name="country" id="country" class="drop" class="input-text required-entry">
@@ -141,7 +152,8 @@ function clearFileInputField(tagId) {
                 <li class="fields">
                      <?php if($this->getPostalCodeHide()): ?>
                   	 <div class="field">
-                    	<label><?php if($this->getPostalCode()): ?><?php echo $this->__($this->getPostalCode()); ?><?php else: ?><?php echo $this->__("ZIP / Postal Code:"); ?><?php endif; ?><span class="required"><em>*</em></span></label>
+						 <?php $zip_label = $this->getPostalCode()?$this->getPostalCode():"ZIP / Postal Code"; ?>
+                    	<label><?php echo $this->__($zip_label); ?><span class="required"><em>*</em></span></label>
                         <div class="input-box">
                  			<input type="text" name="zip" id="zip" size="45" maxlength="10" class="required-entry input-text validation-passed" value="<?php echo $this->escapeHtml($this->getFormData()->getZip()) ?>"/>
                         </div>
@@ -149,7 +161,8 @@ function clearFileInputField(tagId) {
                     <?php endif; ?>
                     
                     <div class="field">
-                    	<label><?php if($this->getContactNumber()): ?><?php echo $this->__($this->getContactNumber()); ?><?php else: ?><?php echo $this->__("Contact Number:"); ?><?php endif; ?><span class="required"><em>*</em></span></label>
+						<?php $contact_label = $this->getContactNumber()?$this->getContactNumber():"Contact Number"; ?>
+                    	<label><?php echo $this->__($contact_label); ?><span class="required"><em>*</em></span></label>
                         <div class="input-box">
                         	<input type="text" name="phone" size="45" onKeyPress="return isNumberKey(event)" maxlength="15" class="input-text validate required-entry" value="<?php echo $this->escapeHtml($this->getFormData()->getPhone()) ?>"/>
                         </div>
@@ -157,14 +170,16 @@ function clearFileInputField(tagId) {
                 </li>
 				<li class="fields">
                     <div class="field">
-	                	<label><?php if($this->getEmail()): ?><?php echo $this->__($this->getEmail()); ?><?php else: ?><?php echo $this->__("Email:"); ?><?php endif; ?><span class="required"><em>*</em></span></label>
+						<?php $email_label = $this->getEmail()?$this->getEmail():"Email"; ?>
+	                	<label><?php echo $this->__($email_label); ?><span class="required"><em>*</em></span></label>
     	            	<div class="input-box">
                         	<input type="text" name="email" size="45" class="input-text validate-email required-entry" value="<?php echo $this->escapeHtml($this->getFormData()->getEmail()) ?>"/>
                         </div>
                     </div>
                     <?php if($this->getWebsiteHide()): ?>
                     <div class="field">
-                    	<label><?php if($this->getWebsite()): ?><?php echo $this->__($this->getWebsite()); ?><?php else: ?><?php echo $this->__("Website:"); ?><?php endif; ?></label>
+						<?php $website_label = $this->getWebsite()?$this->getWebsite():"Website"; ?>
+                    	<label><?php echo $this->__($website_label); ?></label>
                         <div class="input-box">
                         	<input type="text" name="website" size="45" class="input-text" value="<?php echo $this->escapeHtml($this->getFormData()->getWebsite()) ?>"/> 
                         </div>
@@ -173,14 +188,16 @@ function clearFileInputField(tagId) {
                 </li>
                 <li class="fields">
                     <div class="field">
-                        <label><?php if($this->getDescription()): ?><?php echo $this->__($this->getDescription()); ?><?php else: ?><?php echo $this->__("Business Description:"); ?><?php endif; ?></label>
+						<?php $desc_label = $this->getDescription()?$this->getDescription():"Business Description"; ?>
+                        <label><?php echo $this->__($desc_label); ?></label>
                         <div class="input-box">
                             <textarea name="desc" cols="75" rows="2" class="input-text"><?php echo $this->escapeHtml($this->getFormData()->getDesc()) ?></textarea>
                         </div>
                     </div>
                     <?php if($this->getDateTimeHide()): ?>
                     <div class="field">
-                    	<label><?php if($this->getDateTime()): ?><?php echo $this->__($this->getDateTime()); ?><?php else: ?><?php echo $this->__("Date Time:"); ?><?php endif; ?></label>
+						<?php $datetime_label = $this->getDateTime()?$this->getDateTime():"Date Time"; ?>
+                    	<label><?php echo $this->__($datetime_label); ?></label>
                         <div class="input-box">
                         	<input type="text" name="date_time" id="date_time" size="45" class="input-text validate-date" placeholder="dd/mm/yyyy HH:MM:SS" value="<?php echo $this->escapeHtml($this->getFormData()->getDateTime()) ?>"/>  <img title="Select date" id="date-picker-cal" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN) . 'adminhtml/default/default/images/grid-cal.gif'; ?>">
                         </div>
@@ -200,7 +217,8 @@ function clearFileInputField(tagId) {
 				<li class="fields">
 					<?php if($this->getUploadFileHide()): ?>
 					<div class="field">
-                    	<label><?php if($this->getUploadFile()): ?><?php echo $this->__($this->getUploadFile()); ?><?php else: ?><?php echo $this->__("Upload File:"); ?><?php endif; ?></label>
+						<?php $upload_label = $this->getUploadFile()?$this->getUploadFile():"Upload File"; ?>
+                    	<label><?php echo $this->__($upload_label); ?></label>
                         <div class="input-box"  id="uploadFile_div">
                         	<input type="file" id="file" name="file[]" size="45" class="input-text" multiple/>&nbsp;&nbsp;&nbsp;
 							<a id="clearfile" onclick="clearFileInputField('uploadFile_div')" 
@@ -211,7 +229,8 @@ function clearFileInputField(tagId) {
                     
                     <?php if($this->getFieldOneHide()): ?>
                     <div class="field">
-                    	<label><?php if($this->getExtraFieldOne()): ?><?php echo $this->__($this->getExtraFieldOne()); ?><?php else: ?><?php echo $this->__("Extra Field 1:"); ?><?php endif; ?></label>
+						<?php $field_one_label = $this->getExtraFieldOne()?$this->getExtraFieldOne():"Extra Field 1"; ?>
+                    	<label><?php echo $this->__($field_one_label); ?></label>
                         <div class="input-box">
                         	<input type="text" name="extra_field_one" size="45" class="input-text" value="<?php echo $this->escapeHtml($this->getFormData()->getExtraFieldOne()) ?>"/> 
                         </div>
@@ -222,7 +241,8 @@ function clearFileInputField(tagId) {
 				<li class="fields">
 					<?php if($this->getFieldTwoHide()): ?>
                     <div class="field">
-                    	<label><?php if($this->getExtraFieldTwo()): ?><?php echo $this->__($this->getExtraFieldTwo()); ?><?php else: ?><?php echo $this->__("Extra Field 2:"); ?><?php endif; ?></label>
+						<?php $field_two_label = $this->getExtraFieldTwo()?$this->getExtraFieldTwo():"Extra Field 2"; ?>
+                    	<label><?php echo $this->__($field_two_label); ?></label>
                         <div class="input-box">
                         	<input type="text" name="extra_field_two" size="45" class="input-text" value="<?php echo $this->escapeHtml($this->getFormData()->getExtraFieldTwo()) ?>"/> 
                         </div>
@@ -230,7 +250,8 @@ function clearFileInputField(tagId) {
                     <?php endif; ?>
 					<?php if($this->getFieldThreeHide()): ?>
                     <div class="field">
-                    	<label><?php if($this->getExtraFieldThree()): ?><?php echo $this->__($this->getExtraFieldThree()); ?><?php else: ?><?php echo $this->__("Extra Field 3:"); ?><?php endif; ?></label>
+						<?php $field_three_label = $this->getExtraFieldThree()?$this->getExtraFieldThree():"Extra Field 3"; ?>
+                    	<label><?php echo $this->__($field_three_label); ?></label>
                         <div class="input-box">
                         	<input type="text" name="extra_field_three" size="45" class="input-text" value="<?php echo $this->escapeHtml($this->getFormData()->getExtraFieldThree()) ?>"/> 
                         </div>
@@ -240,11 +261,12 @@ function clearFileInputField(tagId) {
                 <li class="fields last">
 					<?php if($this->getCaptchaHide()): ?>
 					<?php //echo $this->getChildHtml('captcha') ?>
-							<label><?php if($this->getCaptcha()): ?><?php echo $this->__($this->getCaptcha()); ?><?php else: ?><?php echo $this->__('Please type the letters below')?><?php endif; ?><span class="required"><em>*</em></span></label>
+					<?php $captcha_label = $this->getCaptcha()?$this->getCaptcha():"Please type the letters below"; ?>
+							<label><?php echo $this->__($captcha_label)?><span class="required"><em>*</em></span></label>
 							<div class="clear"></div>
 							<div class="captcha-main">
 								<div id="captcha" class="captcha-left">
-									<?php $image_name = Mage::helper('inquiry')->createCaptchaImage(); ?>
+									
 									<img src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA)."inquiry/captcha/".$image_name ;?>" id="captcha_image"/>
 								</div> 
 							</div> 
@@ -256,7 +278,8 @@ function clearFileInputField(tagId) {
 			</ul>
 			<div class="clear"></div>
 			<div class="button-set">
-				<button id="submit-inquiry"  type="submit" name="SUBMIT"  class="button" value="SUBMIT"><span><span><?php if($this->getBtnText()): ?><?php echo $this->__($this->getBtnText()); ?><?php else: ?><?php echo $this->__("Submit"); ?><?php endif;  ?></span></span></button>
+				<?php $button_label = $this->getBtnText()?$this->getBtnText():"Submit"; ?>
+				<button id="submit-inquiry"  type="submit" name="SUBMIT"  class="button" value="SUBMIT"><span><span><?php echo $this->__($button_label); ?></span></span></button>
 		     </div>
         </div>
     </form>

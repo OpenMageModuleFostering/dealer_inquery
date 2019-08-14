@@ -2,7 +2,11 @@
 <config>
     <tabs>
         <cws translate="label" module="inquiry">
-            <label>Capacity Web Solutions</label>
+            <label>MageBees</label>
+			<label><![CDATA[<div style="position: absolute;padding: 0 0 0 75px;"><img id="magebees_block" src="" alt="" border="0" /></div>&nbsp;<script>
+            var n = SKIN_URL.indexOf("adminhtml");
+            $('magebees_block').src = SKIN_URL.substring(0, n) + "adminhtml/default/default/images/favicon.ico";
+            </script>]]>MageBees</label>
             <sort_order>100</sort_order>
         </cws>
     </tabs>
@@ -43,6 +47,15 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
 						</enable_toplink>
+                        <url_key>
+                            <label>URL Key</label>
+                            <comment><![CDATA[Relative to Website Base URL.]]></comment>
+                            <frontend_type>text</frontend_type>
+							<sort_order>1</sort_order>
+							<show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </url_key>
 						<toplink translate="label">
 							<label>Top Link Label</label>
 							<comment><![CDATA[Here, We can Set Dealer inquiry Top Link Label.]]></comment>
@@ -65,24 +78,42 @@
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
 						</page_layout>
-						<page_title>
-							<label>Page Title</label>
-							<comment><![CDATA[Here, We can Set Dealer inquiry Page title.]]></comment>
+						<heading translate="label">
+							<label>Heading</label>
+							<comment><![CDATA[Here, We can Set Dealer inquiry Form title.]]></comment>
 							<frontend_type>text</frontend_type>
 							<sort_order>5</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
-						</page_title>
-						<heading translate="label">
-							<label>Heading</label>
-							<comment><![CDATA[Here, We can Set Dealer inquiry Form title.]]></comment>
+						</heading>
+						<page_title>
+							<label>Meta Title</label>
+							<comment><![CDATA[Here, We can Set Dealer inquiry Page title.]]></comment>
 							<frontend_type>text</frontend_type>
 							<sort_order>10</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
-						</heading>
+						</page_title>
+						
+						<meta_description translate="label comment">
+                            <label>Meta Description</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>11</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </meta_description>
+
+                        <meta_keywords translate="label comment">
+                            <label>Meta Keywords</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>12</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </meta_keywords>
 						<description translate="label">
 							<label>Description</label>
 							<comment><![CDATA[This text will appear under the Dealer inquiry Form title.]]></comment>
@@ -101,15 +132,6 @@
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
 						</btn_text>
-						<success_tital translate="label">
-							<label>Success Page Heading</label>
-							<comment><![CDATA[Here, We can Set Dealer inquiry Success Page title.]]></comment>
-							<frontend_type>text</frontend_type>
-							<sort_order>30</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-						</success_tital>
 						<success_des translate="label">
 							<label>Success Page Description</label>
 							<comment><![CDATA[This text will be displayed after the Dealer inquiry form submission.]]></comment>

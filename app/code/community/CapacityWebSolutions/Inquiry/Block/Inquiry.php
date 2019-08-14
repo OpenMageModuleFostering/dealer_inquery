@@ -1,18 +1,18 @@
 <?php
 /***************************************************************************
-	@extension	: Dealer Inquiry Extension.
-	@copyright	: Copyright (c) 2015 Capacity Web Solutions.
-	( http://www.capacitywebsolutions.com )
-	@author		: Capacity Web Solutions Pvt. Ltd.
-	@support	: magento@capacitywebsolutions.com	
-***************************************************************************/
- 
+ Extension Name	: Dealer Inquiry
+ Extension URL	: http://www.magebees.com/magento-dealer-inquiry-extension.html
+ Copyright		: Copyright (c) 2015 MageBees, http://www.magebees.com
+ Support Email	: support@magebees.com 
+ ***************************************************************************/ 
 class CapacityWebSolutions_Inquiry_Block_Inquiry extends Mage_Core_Block_Template
 {
+	
 	public function __construct()
 	{
 		//general settings
 		$this->setLinkEnabled((bool)Mage::getStoreConfig("inquiry/general/enable_toplink"));
+		$this->setUrlKey(trim(Mage::getStoreConfig("inquiry/general/url_key")));
 		$this->setLinkLabel(Mage::getStoreConfig("inquiry/general/toplink"));
 		$this->setHeading(trim(Mage::getStoreConfig('inquiry/general/heading')));
 		$this->setIndicates(trim(Mage::getStoreConfig('inquiry/general/indicates')));
@@ -74,11 +74,12 @@ class CapacityWebSolutions_Inquiry_Block_Inquiry extends Mage_Core_Block_Templat
 	public function addTopLinkStores()
 	{	
 		$enable_link = $this->getLinkEnabled();
+		$url_key =	$this->getUrlKey()?$this->getUrlKey():"inquiry";
 		if($enable_link){
 			$label = trim($this->getLinkLabel());
 			$storeID = Mage::app()->getStore()->getId();
 			$toplinkBlock = $this->getParentBlock();
-			$toplinkBlock->addLink($this->__($label),'inquiry/',$label,true,array(),90);
+			$toplinkBlock->addLink($this->__($label),$url_key,$label,true,array(),90);
 		}
 	}
 	

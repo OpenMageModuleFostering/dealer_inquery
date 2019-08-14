@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<config>
+	<menu>
+		<cws module="inquiry">
+			<title>MageBees</title>
+			<sort_order>70</sort_order>	
+			<children>
+				<inquiry module="inquiry">
+					<title>Dealer Inquiries</title>
+					<sort_order>71</sort_order>								
+					<children>
+						<items module="inquiry">
+							<title>Dealer Management</title>
+							<sort_order>0</sort_order>
+							<action>adminhtml/inquiry/index</action> 
+						</items>
+						<dealer_settings module="inquiry">
+							<title>Settings</title>
+							<sort_order>10</sort_order>
+							<action>adminhtml/system_config/edit/section/inquiry</action>	
+						</dealer_settings>
+					</children>
+				</inquiry>
+			</children>
+		</cws>
+	</menu>
+	<acl>
+		<resources>
+			<admin>
+				<children>
+					<system>
+						<children>
+							<config>
+								<children>
+									<inquiry>
+										<title>Inquiry</title>
+									</inquiry>
+								</children>
+							</config>
+						</children>
+					</system>
+				</children>
+			</admin>
+		</resources>
+	</acl>
+</config>

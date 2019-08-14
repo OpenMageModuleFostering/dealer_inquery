@@ -1,23 +1,27 @@
 <?php
 /***************************************************************************
-	@extension	: Dealer Inquiry Extension.
-	@copyright	: Copyright (c) 2015 Capacity Web Solutions.
-	( http://www.capacitywebsolutions.com )
-	@author		: Capacity Web Solutions Pvt. Ltd.
-	@support	: magento@capacitywebsolutions.com	
-***************************************************************************/
-
+ Extension Name	: Dealer Inquiry
+ Extension URL	: http://www.magebees.com/magento-dealer-inquiry-extension.html
+ Copyright		: Copyright (c) 2015 MageBees, http://www.magebees.com
+ Support Email	: support@magebees.com 
+ ***************************************************************************/
 class CapacityWebSolutions_Inquiry_IndexController extends Mage_Core_Controller_Front_Action
 {	
 	const OWNER_EMAIL_TEMPLATE_XML_PATH = 'inquiry/admin_email/email_template';
 	const CUSTOMER_EMAIL_TEMPLATE_XML_PATH = 'inquiry/customer_email/email_template';
 	const INQUIRY_FORM_TITLE = 'inquiry/general/page_title';
+	const INQUIRY_META_DESC = 'inquiry/general/meta_description';
+	const INQUIRY_META_KEYWORDS = 'inquiry/general/meta_keywords';
 	
     public function indexAction() {
 		$title = Mage::getStoreConfig(self::INQUIRY_FORM_TITLE);
-		$this->_title($this->__($title));
+		//$this->_title($this->__($title));
 		$page_layout = Mage::helper("inquiry")->getDealerPageLayout();
 		$this->loadLayout()->getLayout()->getBlock('root')->setTemplate('page/'.$page_layout);
+		//set meta data
+		$this->getLayout()->getBlock('head')->setTitle($this->__($title));
+		$this->getLayout()->getBlock('head')->setDescription($this->__(Mage::getStoreConfig(self::INQUIRY_META_DESC)));
+        $this->getLayout()->getBlock('head')->setKeywords($this->__(Mage::getStoreConfig(self::INQUIRY_META_KEYWORDS)));
 		$this->renderLayout();
 		Mage::getSingleton('core/session')->setInquiryFormData(false);
 	}
@@ -29,11 +33,11 @@ class CapacityWebSolutions_Inquiry_IndexController extends Mage_Core_Controller_
 			
 			$captcha =  $this->getRequest()->getParam("captcha");
 			$captcha_code =  Mage::getSingleton('core/session')->getCaptcha();
-			if(!empty($captcha) && $captcha != $captcha_code)
-			{ 
+			if(!empty($captcha) && $captcha != $captcha_code)	{ 
 				Mage::getSingleton('core/session')->addError(Mage::helper('inquiry')->__('Captcha code does not match!'));
 				Mage::getSingleton('core/session')->setInquiryFormData($data);
-				$this->_redirect('*/*/');return;
+				//$this->_redirect('*/*/');return;
+				$this->_redirectReferer();return;
 			}
 			$storeid = Mage::app()->getStore()->getStoreId();
 			$websiteid = Mage::app()->getWebsite()->getId(); 
@@ -89,7 +93,8 @@ class CapacityWebSolutions_Inquiry_IndexController extends Mage_Core_Controller_
 						}catch (Exception $e) {
 							$data['file'] = '';
 							Mage::getSingleton('core/session')->addError($e->getMessage());
-							$this->_redirect('*/*/');return;
+							//$this->_redirect('*/*/');return;
+							$this->_redirectReferer();return;
 						}
 					}
 				}
@@ -103,10 +108,15 @@ class CapacityWebSolutions_Inquiry_IndexController extends Mage_Core_Controller_
 			{
 				Mage::getSingleton('core/session')->addError(Mage::helper('inquiry')->__('Email id already exits !'));
 				Mage::getSingleton('core/session')->setInquiryFormData($data);
-				$this->_redirect('*/*/');return;
+				//$this->_redirect('*/*/');return;
+				$this->_redirectReferer();return;
 			}
 		}
-		$this->_redirect('*/*/success');
+		//$this->_redirect('*/*/success');
+		$success_des = Mage::getStoreConfig('inquiry/general/success_des');
+		Mage::getSingleton('core/session')->addSuccess(Mage::helper('inquiry')->__($success_des));
+		$this->_redirectReferer();
+		return;
 	}
 	
 	public function sendOwnerMail($data){
@@ -180,126 +190,54 @@ class CapacityWebSolutions_Inquiry_IndexController extends Mage_Core_Controller_
 		}
 		
 		//labels
-		if($config_change_label['f_name']){
-			$emailTemplateVariables['firstname_label'] = $config_change_label['f_name'];
-		}else {
-			$emailTemplateVariables['firstname_label'] = "First Name";
-		}
+		$emailTemplateVariables['firstname_label'] = $config_change_label['f_name']?$config_change_label['f_name']:"First Name";
 		
-		if($config_change_label['l_name']){
-			$emailTemplateVariables['lastname_label'] = $config_change_label['l_name'];
-		}else {
-			$emailTemplateVariables['lastname_label'] = "Last Name";
-		}
+		$emailTemplateVariables['lastname_label'] = $config_change_label['l_name']?$config_change_label['l_name']:"Last Name";
 		
-		if($config_change_label['company_name']){
-			$emailTemplateVariables['company_label'] = $config_change_label['company_name'];
-		}else{
-			$emailTemplateVariables['company_label'] = "Company Name";
-		}
+		$emailTemplateVariables['company_label'] = $config_change_label['company_name']?$config_change_label['company_name']:"Company Name";
 				
-		if($config_change_label['vat_number']){
-			$emailTemplateVariables['vat_number_label'] = $config_change_label['vat_number'];
-		}else{
-			$emailTemplateVariables['vat_number_label'] = "TAX/VAT Number";
-		} 
-			
-		if($config_change_label['address']){
-			$emailTemplateVariables['address_label'] = $config_change_label['address'];
-		}else{
-			$emailTemplateVariables['address_label'] = "Address";
-		} 
+		$emailTemplateVariables['vat_number_label'] = $config_change_label['vat_number']?$config_change_label['vat_number']:"TAX/VAT Number";
+	
+		$emailTemplateVariables['address_label'] = $config_change_label['address']?$config_change_label['address']:"Address";
 		
-		if($config_change_label['city']){
-			$emailTemplateVariables['city_label'] = $config_change_label['city'];
-		}else{
-			$emailTemplateVariables['city_label'] = "City";
-		} 
+		$emailTemplateVariables['city_label'] = $config_change_label['city']?$config_change_label['city']:"City";
 		
-		if($config_change_label['state']){
-			$emailTemplateVariables['state_label'] = $config_change_label['state'];
-		}else{
-			$emailTemplateVariables['state_label'] = "State/Province";
-		} 
+		$emailTemplateVariables['state_label'] = $config_change_label['state']?$config_change_label['state']:"State/Province";
 			
-		if($config_change_label['country']){
-			$emailTemplateVariables['country_label'] = $config_change_label['country'];
-		}else{
-			$emailTemplateVariables['country_label'] = "Country";
-		} 
+		$emailTemplateVariables['country_label'] = $config_change_label['country']?$config_change_label['country']:"Country";
 		
-		if($config_change_label['postal_code']){
-			$emailTemplateVariables['zip_label'] = $config_change_label['postal_code'];
-		}else{
-			$emailTemplateVariables['zip_label'] = "ZIP/Postal Code";
-		} 
+		$emailTemplateVariables['zip_label'] = $config_change_label['postal_code']?$config_change_label['postal_code']:"ZIP/Postal Code";
 			
-		if($config_change_label['contact_number']){
-			$emailTemplateVariables['phone_label'] = $config_change_label['contact_number'];
-		}else{
-			$emailTemplateVariables['phone_label'] = "Contact Number";
-		} 
+		$emailTemplateVariables['phone_label'] = $config_change_label['contact_number']?$config_change_label['contact_number']:"Contact Number";
 			
-		if($config_change_label['email']){
-			$emailTemplateVariables['email_label'] = $config_change_label['email'];
-		}else{
-			$emailTemplateVariables['email_label'] = "Email";
-		} 
+		$emailTemplateVariables['email_label'] = $config_change_label['email']?$config_change_label['email']:"Email";
 		
 		if(!empty($data['website'])){	
-			if($config_change_label['website']){
-				$emailTemplateVariables['website_label'] = $config_change_label['website'];
-			}else{
-				$emailTemplateVariables['website_label'] = "Website";
-			} 
+			$emailTemplateVariables['website_label'] = $config_change_label['website']?$config_change_label['website']:"Website";
 		}
 		
 		if(!empty($data['desc'])){
-			if($config_change_label['description']){
-				$emailTemplateVariables['description_label'] = $config_change_label['description'];
-			}else{
-				$emailTemplateVariables['description_label'] = "Business Description";
-			} 
+			$emailTemplateVariables['description_label'] = $config_change_label['description']?$config_change_label['description']:"Business Description";
 		}
 		
 		if(!empty($data['date_time'])){
-			if($config_change_label['datetime']){
-				$emailTemplateVariables['datetime_label'] = $config_change_label['datetime'];
-			}else{
-				$emailTemplateVariables['datetime_label'] = "Date Time";
-			}
+			$emailTemplateVariables['datetime_label'] = $config_change_label['datetime']?$config_change_label['datetime']:"Date Time";
 		}
 		
 		if(!empty($data['file'])){
-			if($config_change_label['upload_file']){
-				$emailTemplateVariables['upload_file_label'] = $config_change_label['upload_file'];
-			}else{
-				$emailTemplateVariables['upload_file_label'] = "Uploaded File(s)";
-			}
+			$emailTemplateVariables['upload_file_label'] = $config_change_label['upload_file']?$config_change_label['upload_file']:"Uploaded File(s)";
 		}
 		
 		if(!empty($data['extra_field_one'])){
-			if($config_change_label['extra_field_one']){
-				$emailTemplateVariables['extra_field_one_label'] = $config_change_label['extra_field_one'];
-			}else{
-				$emailTemplateVariables['extra_field_one_label'] = "Extra Field 2";
-			}
+			$emailTemplateVariables['extra_field_one_label'] = $config_change_label['extra_field_one']?$config_change_label['extra_field_one']:"Extra Field 2";
 		}
 		
 		if(!empty($data['extra_field_two'])){
-			if($config_change_label['extra_field_two']){
-				$emailTemplateVariables['extra_field_two_label'] = $config_change_label['extra_field_two'];
-			}else{
-				$emailTemplateVariables['extra_field_two_label'] = "Extra Field 2";
-			}
+			$emailTemplateVariables['extra_field_two_label'] = $config_change_label['extra_field_two']?$config_change_label['extra_field_two']:"Extra Field 2";
 		}
 		
 		if(!empty($data['extra_field_three'])){
-			if($config_change_label['extra_field_three']){
-				$emailTemplateVariables['extra_field_three_label'] = $config_change_label['extra_field_three'];
-			}else{
-				$emailTemplateVariables['extra_field_three_label'] = "Extra Field 3";
-			}
+			$emailTemplateVariables['extra_field_three_label'] = $config_change_label['extra_field_three']?$config_change_label['extra_field_three']:"Extra Field 3";
 		}
 				
 		//load the custom template to the email
@@ -356,4 +294,4 @@ class CapacityWebSolutions_Inquiry_IndexController extends Mage_Core_Controller_
 	}  
 	
 }	
-?>
+

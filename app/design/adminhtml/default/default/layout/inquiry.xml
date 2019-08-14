@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <layout>
-    <inquiry_adminhtml_inquiry_index>
+    <adminhtml_inquiry_index>
        	<reference name="content">
             <block type="inquiry/adminhtml_inquiry" name="inquiry" />
         </reference>
-    </inquiry_adminhtml_inquiry_index>
+    </adminhtml_inquiry_index>
 </layout>
